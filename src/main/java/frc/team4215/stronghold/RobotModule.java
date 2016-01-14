@@ -1,4 +1,4 @@
-package frc.team4215.2016-bot;
+package frc.team4215.stronghold;
 
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
@@ -9,7 +9,7 @@ public class RobotModule extends IterativeModule {
 
     @Override
     public String getModuleName() {
-        return "2016-bot";
+        return "stronghold";
     }
 
     @Override
@@ -19,7 +19,7 @@ public class RobotModule extends IterativeModule {
 
     @Override
     public void robotInit() {
-        logger = new Logger("2016-bot", Logger.ATTR_DEFAULT);
+        logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
         //TODO: Module Init
     }
 }
