@@ -6,15 +6,19 @@ import jaci.openrio.toast.lib.module.IterativeModule;
 public class RobotModule extends IterativeModule {
 
     public static Logger logger;
+    private static String ModuleName = 
+        "stronghold";
+    private static String ModuleVersion = 
+        "0.0.1";
 
     @Override
     public String getModuleName() {
-        return "stronghold";
+        return ModuleName;
     }
 
     @Override
     public String getModuleVersion() {
-        return "0.0.1";
+        return ModuleVersion;
     }
 
     @Override
