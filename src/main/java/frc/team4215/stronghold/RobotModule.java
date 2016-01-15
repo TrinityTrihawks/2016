@@ -24,6 +24,11 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        //TODO: Module Init
+        //TODO: Module Inititiation
+    }
+    
+        	
+
+	   
     }
 }
