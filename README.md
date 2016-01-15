@@ -5,8 +5,6 @@ This is titles README
 
 
 
-TRINTEETRINTEETRINTEE
-LOVE IT OR HATE IT
-AHHHHHHHHH!!!
+→_→
 
-Hi. Medieval Total War
+Some hint for those who are suffering having millions of errors about bad imports:
