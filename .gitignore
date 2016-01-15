@@ -1,8 +1,10 @@
+!gradle/wrapper/gradle-wrapper.jar
 *.pydevproject
 .metadata
 bin/
 tmp/
 .gradle/
+run/
 *.tmp
 *.bak
 *.swp
@@ -48,6 +50,7 @@ local.properties
 
 # Package Files #
 *.jar
+!gradle/wrappegradle-wrapper.jar
 *.war
 *.ear
 

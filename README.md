@@ -1,11 +1,2 @@
-This is titles README
-
-Something
-=======
-
-
-
-
-
-
+﻿Some hint for those who are suffering having millions of errors about bad imports:
 
