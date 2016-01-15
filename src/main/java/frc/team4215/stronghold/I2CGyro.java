@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4215.robot;
+package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
@@ -11,8 +11,8 @@ public class I2CGyro {
 	
 	public  I2CGyro() {
 		gyro.write(0x6B, 0x03); // Power
-	   	gyro.write(0x1A, 0x18); // Basic Config
-	   	gyro.write(0x1B, 0x00); // Gyro Config
+	   	gyro.write(0x1A, 0x18); // Basic Configuration
+	   	gyro.write(0x1B, 0x00); // Gyroscope Configuration
 	}
 	
 	public void Init() {
