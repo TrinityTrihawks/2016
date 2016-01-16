@@ -6,6 +6,11 @@ public class UI {
 	Joystick leftStick;
 	Joystick rightStick;
 
+	UI(Joystick leftStick_,Joystick rightStick_){
+		leftStick = leftStick_;
+		rightStick = rightStick_;
+	}
+	
 	double[] getInputs(){
 		double[] inputs = {
 		leftStick.getRawAxis(1),
