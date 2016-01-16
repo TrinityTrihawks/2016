@@ -16,7 +16,7 @@ public class RobotModule extends IterativeModule {
     DriveTrain chassis;
     
     Joystick  leftStick;
-    Joystick rightstick;
+    Joystick rightStick;
     
     UI driveStation;
     
@@ -39,12 +39,18 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
+        
         left = Registrar.talon(0);
         right = Registrar.talon(1);
         left2 = Registrar.talon(2);
         right2 = Registrar.talon(3);
         
-        chassis = new DriveTrain(left,right,left2,right2);//TODO: Module Init
+        chassis = new DriveTrain(left,right,left2,right2);
+        
+        leftStick = new Joystick(1);
+        rightStick = new Joystick(0);
+        
+        driveStation = new UI(leftStick,rightStick);
     }
     
     @Override
