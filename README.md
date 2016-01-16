@@ -1,10 +1,2 @@
-This is titles README
+﻿Some hint for those who are suffering having millions of errors about bad imports:
 
-
-
-
-
-
-→_→
-
-Some hint for those who are suffering having millions of errors about bad imports:
