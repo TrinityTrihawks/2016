@@ -1,6 +1,8 @@
 package frc.team4215.stronghold;
 
+import edu.wpi.first.wpilibj.Ultrasonic;
 import jaci.openrio.toast.lib.log.Logger;
+import 
 import jaci.openrio.toast.lib.module.IterativeModule;
 
 public class RobotModule extends IterativeModule {
@@ -20,10 +22,18 @@ public class RobotModule extends IterativeModule {
     public String getModuleVersion() {
         return ModuleVersion;
     }
-
+    Ultrasonic ultra = new Ultrasonic(1,1);
+    
+    public double getRange(){
+		double range = ultra.getRangeInches();
+		return range;}
+   
     @Override
+    
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        //TODO: Module Init
+        double range = getRange();
+        System.out.println("Range is " + range);
+       
     }
 }
