@@ -3,4 +3,4 @@
 
 ﻿Uses ToastAPI
 
-install with[Hotplate](https://github.com/Open-RIO/HotPlate)
+install with [Hotplate](https://github.com/Open-RIO/HotPlate)
