@@ -22,6 +22,13 @@ public class DriveTrain {
 		rightMotor2 = rightMotor_2;
 	}
 
+	/**
+	 * Set Drive train speed 
+	 * Inputs from -1 to  1
+	 * 
+	 * @param leftSpeed
+	 * @param rightSpeed
+	 */
 	public void drive(double leftSpeed, double rightSpeed){
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);

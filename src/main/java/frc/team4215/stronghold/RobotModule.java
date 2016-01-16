@@ -6,7 +6,13 @@ import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
-
+	
+	Talon left;
+    Talon right;
+    Talon left2;
+    Talon right2;
+    
+    DriveTrain chassis;
     public static Logger logger;
     private static String ModuleName = 
         "stronghold";
@@ -26,8 +32,16 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        Talon left = Registrar.talon(0);
-        Talon right = Registrar.talon(1);
-        DriveTrain chassis = new DriveTrain(left,right);//TODO: Module Init
+        left = Registrar.talon(0);
+        right = Registrar.talon(1);
+        left2 = Registrar.talon(2);
+        right2 = Registrar.talon(3);
+        
+        chassis = new DriveTrain(left,right,left2,right2);//TODO: Module Init
+    }
+    
+    @Override
+    public void teleopInit(){
+    	
     }
 }
