@@ -1,5 +1,6 @@
 package frc.team4215.stronghold;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
@@ -13,6 +14,12 @@ public class RobotModule extends IterativeModule {
     Talon right2;
     
     DriveTrain chassis;
+    
+    Joystick  leftStick;
+    Joystick rightstick;
+    
+    UI driveStation;
+    
     public static Logger logger;
     private static String ModuleName = 
         "stronghold";
@@ -42,6 +49,6 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void teleopInit(){
-    	
+    	double[] inputs =
     }
 }
