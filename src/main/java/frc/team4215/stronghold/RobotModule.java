@@ -27,15 +27,4 @@ public class RobotModule extends IterativeModule {
         //TODO: Module Inititiation
     }
     
-<<<<<<< HEAD
-        	
-
-	   
-    }
-
-=======
-    public robotPeriodic(){
-    	
-    }
 }
->>>>>>> refs/remotes/origin/master
