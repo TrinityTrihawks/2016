@@ -48,7 +48,8 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
-    public void teleopInit(){
-    	double[] inputs =
+    public void teleopPeriodic(){
+    	double[] inputs = driveStation.getInputs();
+    	chassis.drive(inputs[0], inputs[1]);
     }
 }
