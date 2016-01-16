@@ -59,7 +59,4 @@ public class RobotModule extends IterativeModule {
     	
     }
     
-    public robotPeriodic(){
-    	
-    }
 }
