@@ -1,7 +1,9 @@
 package frc.team4215.stronghold;
 
+import edu.wpi.first.wpilibj.Talon;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
 
@@ -24,6 +26,8 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        //TODO: Module Init
+        Talon left = Registrar.talon(0);
+        Talon right = Registrar.talon(1);
+        DriveTrain chassis = new DriveTrain(left,right);//TODO: Module Init
     }
 }
