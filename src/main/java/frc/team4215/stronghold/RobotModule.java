@@ -53,7 +53,4 @@ public class RobotModule extends IterativeModule {
     	chassis.drive(inputs[0], inputs[1]);
     }
     
-    public robotPeriodic(){
-    	
-    }
 }
