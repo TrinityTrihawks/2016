@@ -1,4 +1,4 @@
-package org.usfirst.frc.team228.robot;
+package frc.team4215.stronghold;
 
 
 import java.nio.ByteBuffer;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Robot extends SampleRobot {
+public class I2CGyro2 extends SampleRobot {
    // RobotDrive Drive;
    // Joystick stick;
     I2C I2CBus;
@@ -25,7 +25,7 @@ public class Robot extends SampleRobot {
  //   FieldCentricController FCC();
     
     
-    public Robot() {
+    public I2CGyro2() {
     	
         I2CBus = new I2C(I2C.Port.kOnboard, 0x1E);
        // Drive = new RobotDrive(0, 1);
