@@ -114,15 +114,18 @@ public class UltraSonic extends SensorBase {
 	 *  minimum voltage.
 	 */
 	public double getRangeCM() {
-		double range = 0;
-		////////////////// DON'T HAVE TIME PUTTING THINGS HERE ////////////
+		/*
+		 *  This function is different from the original
+		 *  function GetRangeInCM in
+		 *  AnalogUltrasonic.java. Calling getRange
+		 *  directly.
+		 */
+		double range = this.getRangeINCH();
+		// Then all the if-else checking are done.
+		if(-1d != range && -2d != range)
+			range *= this.INCH2CM_CONV;
 		
 		return range;
 	}
-	
-	
-	
-	
-	
 	
 }
