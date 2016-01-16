@@ -52,4 +52,8 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     }
+    
+    public robotPeriodic(){
+    	
+    }
 }
