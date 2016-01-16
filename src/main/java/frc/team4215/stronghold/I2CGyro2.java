@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class I2CGyro2 extends SampleRobot {
+public class I2CGyro2 {
    // RobotDrive Drive;
    // Joystick stick;
     I2C I2CBus;
