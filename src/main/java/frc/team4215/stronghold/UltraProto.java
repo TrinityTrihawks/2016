@@ -10,7 +10,7 @@ import jaci.openrio.toast.lib.module.IterativeModule;
  */
 public class UltraProto extends IterativeModule {
 	
-	Ultrasonic ultra = new Ultrasonic(1,1);
+	UltraSonic ultra = new UltraSonic(1);
 	int  inputchannel;
 	// creates an object and assigns ultra to be an ultrasonic sensor which uses Output1 for echopulse and Input1 for triggerpulse
 	public void robotInit(){
