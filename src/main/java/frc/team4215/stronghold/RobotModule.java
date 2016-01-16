@@ -44,4 +44,8 @@ public class RobotModule extends IterativeModule {
     public void teleopInit(){
     	
     }
+    
+    public robotPeriodic(){
+    	
+    }
 }
