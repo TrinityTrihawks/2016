@@ -13,7 +13,7 @@ public class UI {
 	
 	double[] getInputs(){
 		double[] inputs = {
-		leftStick.getRawAxis(1),
+		leftStick.getRawAxis(0),
 		rightStick.getRawAxis(1)
 		};
 		return inputs;
