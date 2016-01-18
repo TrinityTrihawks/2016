@@ -57,8 +57,7 @@ public class I2CGyro2 {
     		
     	
     	
-        while (operatorControl()) {
-        	
+    
         	
     	    
             
@@ -83,7 +82,7 @@ public class I2CGyro2 {
            
            Timer.delay(0.065);		// wait for a motor update time
         }
-    }
+    
 
     private boolean isEnabled() {
 		// TODO Auto-generated method stub
