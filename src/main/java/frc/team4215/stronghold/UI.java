@@ -1,31 +1,33 @@
 package frc.team4215.stronghold;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.Joystick;
 
 public class UI {
-	Joystick[] driveSticks = new Joystick[2];
+	ArrayList<Joystick> driveSticks = new ArrayList<Joystick>();
 	Joystick thirdstick;
 
 	public UI(Joystick leftStick_,Joystick rightStick_, Joystick thirdstick_){
-		driveSticks[0] = leftStick_;
-		driveSticks[1] = rightStick_;
+		driveSticks.add(leftStick_);
+		driveSticks.add(rightStick_);
 		thirdstick = thirdstick_;
 	}
 	
 	public UI(Joystick driveStick_, Joystick thirdstick_){
-		driveSticks[0] = driveStick_;
+		driveSticks.add(driveStick_);
 		thirdstick = thirdstick_;
 	}
 	
 	double[] getInputs(){
 		double[] inputs = new double[2];
-		if(driveSticks.length == 1){
-			inputs[0] = driveSticks[0].getRawAxis(1);
-			inputs[1] = driveSticks[0].getRawAxis(5);
+		if(driveSticks.size() == 1){
+			inputs[0] = driveSticks.get(0).getRawAxis(1);
+			inputs[1] = driveSticks.get(0).getRawAxis(3);
 		}
-		else{
-			inputs[0] = driveSticks[0].getRawAxis(1);
-			inputs[1] = driveSticks[1].getRawAxis(1);
+		else if(driveSticks.size() == 2){
+			inputs[0] = driveSticks.get(0).getRawAxis(1);
+			inputs[1] = driveSticks.get(1).getRawAxis(1);
 		}
 		return inputs;
 	}
