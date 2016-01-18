@@ -52,7 +52,7 @@ public class RobotModule extends IterativeModule {
         rightStick = new Joystick(0);
         thirdstick = new Joystick(2);
         
-        driveStation = new UI(leftStick,rightStick, thirdstick);
+        driveStation = new UI(rightStick, thirdstick);
     }
     
     @Override
