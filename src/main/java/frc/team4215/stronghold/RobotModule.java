@@ -17,6 +17,7 @@ public class RobotModule extends IterativeModule {
     
     Joystick  leftStick;
     Joystick rightStick;
+    Joystick thirdstick;
     
     UI driveStation;
     
@@ -46,11 +47,12 @@ public class RobotModule extends IterativeModule {
         right2 = Registrar.talon(3);
         
         chassis = new DriveTrain(left,left2, right,right2);
-        
+      
         leftStick = new Joystick(1);
         rightStick = new Joystick(0);
+        thirdstick = new Joystick(2);
         
-        driveStation = new UI(leftStick,rightStick);
+        driveStation = new UI(leftStick,rightStick, thirdstick);
     }
     
     @Override
