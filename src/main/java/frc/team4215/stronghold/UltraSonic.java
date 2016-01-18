@@ -1,7 +1,8 @@
+package frc.team4215.stronghold;
+
 /**
  * @author James Yu
  */
-package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SensorBase;
@@ -32,7 +33,8 @@ import edu.wpi.first.wpilibj.SensorBase;
  * </dl>
  *
  * @author James Yu
- * @version 2016.0.5 <!--Year.WeekNum.DayNum-->
+ * @version 2016.1.2 <!-- Year.WeekNum.DayNum from the Kickoff Saturday; Started
+ *          from 2016.0.0 -->
  */
 
 public class UltraSonic extends SensorBase {
@@ -42,7 +44,7 @@ public class UltraSonic extends SensorBase {
      * &emsp;&emsp;The conversion ratio from Inches to centimeters.
      */
 
-    private final double INCH2CM_CONV = 2.54d;
+    private final double INCH2CM = 2.54d;
 
     /**
      * <strong>Private</strong><br/>
@@ -200,9 +202,8 @@ public class UltraSonic extends SensorBase {
         double range = this.getRangeInch();
         // Then all the if-else checking are done in the gRI method.
         if (-1d != range && -2d != range)
-            range *= this.INCH2CM_CONV;
+            range *= this.INCH2CM;
 
         return range;
     }
-
 }
