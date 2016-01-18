@@ -57,7 +57,7 @@ public class I2CGyro2 {
     		
     	
     	
-        while (isOperatorControl() && isEnabled()) {
+        while (operatorControl()) {
         	
         	
     	    
@@ -85,7 +85,12 @@ public class I2CGyro2 {
         }
     }
 
-    /**
+    private boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
      * Runs during test mode
      */
     public void test() {
