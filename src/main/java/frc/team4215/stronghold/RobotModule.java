@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import jaci.openrio.toast.lib.log.Logger;
 import 
-import jaci.openrio.toast.lib.module.IterativeModule;
+jaci.openrio.toast.lib.module.IterativeModule;
 
 public class RobotModule extends IterativeModule {
 
@@ -33,10 +33,10 @@ public class RobotModule extends IterativeModule {
 	double avrange;
     
     public double getRange(){
-		double range = anInput.getVoltage();
+    	double range = anInput.getVoltage();
 		//takes the analog voltage as a double
 		return ((range / voltRange)*distanceRange);
-		// converts voltage range into a percentage, then multiplies it by the overall distance to make it more understandable
+		// converts voltage range into ab  percentage, then multiplies it by the overall distance to make it more understandable
     }
     
     public double getAverageRange(){
@@ -53,8 +53,8 @@ public class RobotModule extends IterativeModule {
         double range = getRange();
         String str_range = String.valueOf(range);
         String str_avrange = String.valueOf(avrange);
-        logger.info("range is..." + range);
-        logger.info("average range is..." + avrange);
+        logger.info("range is..." + str_range);
+        logger.info("average range is..." + str_avrange);
        
     }
 }
