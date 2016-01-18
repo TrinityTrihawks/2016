@@ -1,7 +1,8 @@
+package frc.team4215.stronghold;
+
 /**
  * @author James Yu
  */
-package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SensorBase;
@@ -11,10 +12,15 @@ import edu.wpi.first.wpilibj.SensorBase;
  * Using the file AnalogUltrasonic.java from \2015 as the prototype. <br/>
  * <dl>
  * <dt><strong>Properties:</strong></dt>
- * <dd>{@link UltraSonic#INCH2CM_CONV}</dd>
- * <dd>{@link UltraSonic#isUsingUnit}</dd>
- * <dd>{@link UltraSonic#minVoltageInch}</dd>
- * <dd>{@link UltraSonic#voltageRangeInch}</dd>
+ * <dd><strong>Private:</strong></dd>
+ * <dd><strong>final</strong> double {@link UltraSonic#INCH2CM_CONV}</dd>
+ * <dd>boolean {@link UltraSonic#isUsingUnit}</dd>
+ * <dd>double {@link UltraSonic#minVoltageInch}</dd>
+ * <dd>double {@link UltraSonic#voltageRangeInch}</dd>
+ * <dd>double {@link UltraSonic#minDistanceInch}</dd>
+ * <dd>double {@link UltraSonic#distanceRangeInch}</dd>
+ * <dd><strong>Public:</strong></dd>
+ * <dd>{@link AnalogInput} {@link UltraSonic#channel}</dd>
  * <dt><strong>Methods:</strong></dt>
  * <dd><strong>Constructors:</strong></dd>
  * <dd>{@link UltraSonic#UltraSonic(int)}</dd>
@@ -27,7 +33,8 @@ import edu.wpi.first.wpilibj.SensorBase;
  * </dl>
  *
  * @author James Yu
- * @version 2016.0.5 <!--Year.WeekNum.DayNum-->
+ * @version 2016.1.2 <!-- Year.WeekNum.DayNum from the Kickoff Saturday; Started
+ *          from 2016.0.0 -->
  */
 
 public class UltraSonic extends SensorBase {
@@ -37,7 +44,7 @@ public class UltraSonic extends SensorBase {
      * &emsp;&emsp;The conversion ratio from Inches to centimeters.
      */
 
-    private final double INCH2CM_CONV = 2.54d;
+    private final double INCH2CM = 2.54d;
 
     /**
      * <strong>Private</strong><br/>
@@ -88,7 +95,7 @@ public class UltraSonic extends SensorBase {
     /**
      * Public constructor with 1 parameter. Copied from 2015.
      *
-     * @author James Yu
+     * @author 2015
      * @param channel_
      *            is the parameter passed into {@code new AnalogInput}.
      */
@@ -106,7 +113,7 @@ public class UltraSonic extends SensorBase {
     /**
      * Public constructor with 6 parameters. Copied from 2015.
      *
-     * @author James Yu
+     * @author 2015
      * @param channel_
      *            is the parameter passed into {@code new AnalogInput}.
      * @param isUnit_
@@ -130,17 +137,16 @@ public class UltraSonic extends SensorBase {
             this.isUsingUnit = true;
             this.minVoltageInch = minVoltage_;
             this.voltageRangeInch = maxDistance_ - minDistance_;
-        } else
-            // QUESTION:
-            // Is there anything to be done if usingUnit_ is false?
-            // Asked by James
-            ;
+        }
+        // QUESTION:
+        // Is there anything to be done if usingUnit_ is false?
+        // Asked by James
     }
 
     /**
-     * A function to get the Voltage.
+     * A function to get the Voltage. Copied from 2015.
      *
-     * @author James Yu
+     * @author 2015
      * @return Voltage in double.
      */
 
@@ -151,7 +157,7 @@ public class UltraSonic extends SensorBase {
     /**
      * A function to get the Range in Inches. Copied from 2015.
      *
-     * @author James Yu
+     * @author 2015
      * @return <spam style="color:#f00">{@literal -1.0}</spam> if units are not
      *         being used;<br/>
      *         <spam style="color:#f00">{@literal -2.0}</spam> if the voltage is
@@ -185,7 +191,7 @@ public class UltraSonic extends SensorBase {
      *         <spam style="color:#f00">{@literal -2.0}</spam> if the voltage is
      *         below the minimum voltage.<br/>
      *         <spam style="color:#f0f">Positive values</spam> are what we want.
-     * @see UltraSonic#getRangeINCH()
+     * @see UltraSonic#getRangeInch()
      */
 
     public double getRangeCM() {
@@ -196,9 +202,8 @@ public class UltraSonic extends SensorBase {
         double range = this.getRangeInch();
         // Then all the if-else checking are done in the gRI method.
         if (-1d != range && -2d != range)
-            range *= this.INCH2CM_CONV;
+            range *= this.INCH2CM;
 
         return range;
     }
-
 }
