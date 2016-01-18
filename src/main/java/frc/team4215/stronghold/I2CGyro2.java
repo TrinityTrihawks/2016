@@ -84,7 +84,8 @@ public class I2CGyro2 {
         }
     
 
-    private boolean isEnabled() {
+    @SuppressWarnings("unused")
+	private boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return false;
 	}
