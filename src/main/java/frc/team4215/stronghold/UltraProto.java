@@ -16,7 +16,6 @@ public class UltraProto extends IterativeModule {
 	// creates an object and assigns variable 'ultra' to be the UltraSonic sensor which uses Output1 for echo-pulse and Input1 for trigger-pulse
 	AnalogInput anInput = new AnalogInput(1);
 	AnalogOutput anOutput = new AnalogOutput(1);
-
 	public void robotInit(){
 		ultra.setAutomaticMode(true);
 	//enables Automatic mode
