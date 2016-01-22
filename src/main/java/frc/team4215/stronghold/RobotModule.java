@@ -63,6 +63,7 @@ public class RobotModule extends IterativeModule {
         driveStation = new UI(leftStick,rightStick);
         
         ult = new UltraSonic(1);
+        logger.info("Sensing ");
     }
     
     @Override
