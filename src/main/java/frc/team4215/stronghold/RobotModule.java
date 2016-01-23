@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
@@ -23,6 +24,12 @@ public class RobotModule extends IterativeModule {
     
     Joystick  leftStick;
     Joystick rightStick;
+    Victor leftMotor;
+	Victor rightMotor;
+	Victor rightMotor2;
+	Victor leftMotor2;
+	Victor intake;
+	Victor arm;
     
     UI driveStation;
     
@@ -60,7 +67,7 @@ public class RobotModule extends IterativeModule {
         leftStick = new Joystick(1);
         rightStick = new Joystick(0);
         
-        driveStation = new UI(leftStick,rightStick);
+        driveStation = new UI(leftStick,rightStick,leftStick, leftMotor,rightMotor,leftMotor2,rightMotor2,intake,arm);
         
         ult = new UltraSonic(1);
         logger.info("Sensing ");
