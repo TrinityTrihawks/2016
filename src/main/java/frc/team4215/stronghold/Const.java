@@ -50,7 +50,8 @@ public final class Const {
         }
 
         public final class Axis {
-            public final static int PlayStationCtrlLeft_UD = 1, PlayStationCtrlRight_UD = 5, GameCubeCtrl_UD = 1;
+            public final static int PlayStationCtrlLeft_UD = 1, PlayStationCtrlRight_UD = 5, GameCubeCtrl_UD = 1,
+                    GameCubeCtrl_LR = 0;
         }
 
         public final class Button {
