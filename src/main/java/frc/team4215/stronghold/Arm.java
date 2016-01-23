@@ -33,7 +33,7 @@ public class Arm {
      */
     public Arm() {
         this.GameCube = new Joystick(Const.JoyStick.GameCube);
-        this.ArmMotor = new Victor(Const.Motor.Intake);
+        this.ArmMotor = new Victor(Const.Motor.Num.Intake);
     }
 
     /**
