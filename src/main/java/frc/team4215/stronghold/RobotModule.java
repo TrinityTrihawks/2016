@@ -10,67 +10,64 @@ import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
-	
-	Talon left;
+
+    Talon left;
     Talon right;
     Talon left2;
     Talon right2;
-    
-    Ultrasonic ultra = new Ultrasonic(1,1);
-    
-    
+
+    Ultrasonic ultra = new Ultrasonic(1, 1);
+
     DriveTrain chassis;
-    
-    Joystick  leftStick;
+
+    Joystick leftStick;
     Joystick rightStick;
-    
+
     UI driveStation;
-    
+
     UltraSonic ult;
-    
+
     public static Logger logger;
-    private static String ModuleName = 
-        "stronghold";
-    private static String ModuleVersion = 
-        "0.0.1";
+    private static final String moduleName = "stronghold";
+    private static final String moduleVersion = "0.0.1";
 
     @Override
     public String getModuleName() {
-        return ModuleName;
+        return moduleName;
     }
 
     @Override
     public String getModuleVersion() {
-        return ModuleVersion;
+        return moduleVersion;
     }
 
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
 
-        left = Registrar.talon(0);
-        right = Registrar.talon(1);
-        left2 = Registrar.talon(2);
-        right2 = Registrar.talon(3);
-        
-        chassis = new DriveTrain(left,right,left2,right2);//TODO: Module Init
-        
-        chassis = new DriveTrain(left,right,left2,right2);
-        
-        leftStick = new Joystick(1);
-        rightStick = new Joystick(0);
-        
-        driveStation = new UI(leftStick,rightStick);
-        
-        ult = new UltraSonic(1);
+        this.left = Registrar.talon(0);
+        this.right = Registrar.talon(1);
+        this.left2 = Registrar.talon(2);
+        this.right2 = Registrar.talon(3);
+
+        this.chassis = new DriveTrain(this.left, this.right, this.left2, this.right2);
+        // TODO: Module Init
+
+        this.chassis = new DriveTrain(this.left, this.right, this.left2, this.right2);
+
+        this.leftStick = new Joystick(1);
+        this.rightStick = new Joystick(0);
+
+        this.driveStation = new UI(this.leftStick, this.rightStick);
+
+        this.ult = new UltraSonic(1);
         logger.info("Sensing ");
     }
-    
+
     @Override
-    public void teleopPeriodic(){
-    	double[] inputs = driveStation.getInputs();
-    	chassis.drive(inputs[0], inputs[1]);
-    	logger.info("Sensing " + ult.getRangeInch());
+    public void teleopPeriodic() {
+        double[] inputs = this.driveStation.getInputs();
+        this.chassis.drive(inputs[0], inputs[1]);
+        logger.info("Sensing " + this.ult.getRangeInch());
     }
-} 
-   
+}
