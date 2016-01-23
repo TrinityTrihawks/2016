@@ -32,7 +32,7 @@ public class Arm {
      * Default constructor.
      */
     public Arm() {
-        this.GameCube = new Joystick(Const.JoyStick.GameCube);
+        this.GameCube = new Joystick(Const.JoyStick.Num.GameCube);
         this.ArmMotor = new Victor(Const.Motor.Num.Intake);
     }
 

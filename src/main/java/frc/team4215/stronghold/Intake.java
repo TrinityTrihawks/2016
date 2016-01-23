@@ -8,7 +8,7 @@ public class Intake {
     private Victor Intake;
 
     public Intake() {
-        this.GameCube = new Joystick(Const.JoyStick.GameCube);
+        this.GameCube = new Joystick(Const.JoyStick.Num.GameCube);
         this.Intake = new Victor(Const.Motor.Num.Intake);
     }
 
