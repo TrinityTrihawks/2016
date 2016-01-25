@@ -1,6 +1,6 @@
 package frc.team4215.stronghold;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * This is used to control the drive-train
@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.Talon;
  *
  */
 public class DriveTrain {
-	Talon leftMotor;
-	Talon rightMotor;
-	Talon rightMotor2;
-	Talon leftMotor2;
+	Victor leftMotor;
+	Victor rightMotor;
+	Victor rightMotor2;
+	Victor leftMotor2;
 	
-	DriveTrain(Talon leftMotor_, Talon leftMotor_2, 
-			Talon rightMotor_, Talon rightMotor_2){
+	DriveTrain(Victor leftMotor_, Victor leftMotor_2, 
+			Victor rightMotor_, Victor rightMotor_2){
 		leftMotor = leftMotor_;
 		rightMotor = rightMotor_;
 		leftMotor2 = leftMotor_2;
