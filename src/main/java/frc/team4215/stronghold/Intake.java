@@ -20,35 +20,42 @@ import edu.wpi.first.wpilibj.Victor;
  * @author James Yu
  */
 public class Intake {
-
+    
     /**
      * The Joystick used to control arms and the intake.
      */
-    private Joystick GameCube;
-
+    private Joystick gameCube;
+    
     /**
      * The Motor, Victor, for controling the intake.
      */
-    private Victor Intake;
-
+    private Victor intake;
+    
     /**
      * Default constructor.
      */
     public Intake() {
-        this.GameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.Intake = new Victor(Const.Motor.Num.Intake);
+        this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
+        this.intake = new Victor(Const.Motor.Num.Intake);
     }
-
+    
     /**
      * Run on this
      */
     public void Run() {
-
-        if (this.GameCube.getRawButton(Const.JoyStick.Button.GameCube_A))
-            this.Intake.set(Const.Motor.Run.Forward);
-        else if (this.GameCube.getRawButton(Const.JoyStick.Button.GameCube_B))
-            this.Intake.set(Const.Motor.Run.Backward);
+        
+        if (this.gameCube.getRawButton(Const.JoyStick.Button.GameCube_A))
+            this.intake.set(Const.Motor.Run.Forward);
+        else if (this.gameCube.getRawButton(Const.JoyStick.Button.GameCube_B))
+            this.intake.set(Const.Motor.Run.Backward);
         else
-            this.Intake.set(Const.Motor.Run.Stop);
+            this.intake.set(Const.Motor.Run.Stop);
+    }
+    
+    /**
+     * For use of Autonomous
+     */
+    public void Autonomous() {
+    
     }
 }
