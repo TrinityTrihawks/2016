@@ -39,66 +39,83 @@ public class Autonomous {
          */
         public static final class Shared {
             // You must test these.
-            static final double lowerAndLifterLastTime = 10;
+            static final double armMoveMaxTime = 2;
+            // play around with this value
             
             static final double armDown = -1, armUp = 1, armStop = 0;
         }
         
         /**
-         * Const for Auto_*, if any.
+         * Const for autoLowBar, if any.
          * 
          * @author Josh
          */
-        public static final class Const_LowBar {
+        public static final class ConstLowBar {
         }
         
         /**
-         * Const for Auto_*, if any.
+         * Const for autoSpyBotLowGoal, if any.
          * 
          * @author Joey
          */
-        private static final class Const_SpyBot_LowGoal {
+        private static final class ConstSpyBotLowGoal {
         }
         
         /**
-         * Const for Auto_*, if any.
+         * Const for autoChevalDeFrise, if any.
          * 
          * @author Tony
          */
-        private static final class Const_Cheval_de_Frise {
+        private static final class ConstChevalDeFrise {
         }
         
         /**
-         * Const for Auto_*, if any.
+         * Const for autoPortcullis, if any.
          * 
          * @author James
          */
-        public static final class Const_Portcullis {
+        public static final class ConstPortcullis {
         }
     }
     
     /**
-     * Yet to be tested. Shared Method: Arm Lowering
+     * to lower arm. Need more info.
      * 
      * @author James
      */
-    private void ArmLowerBottom() {
+    private void armLowerBottom() {
         this.armMotor.set(Constant.Shared.armDown);
-        Autonomous.delay(Constant.Shared.lowerAndLifterLastTime);
-        this.armMotor.set(Constant.Shared.armUp);
+        Autonomous.delay(Constant.Shared.armMoveMaxTime);
+        this.armMotor.set(Constant.Shared.armStop);
     }
     
-    // Not sure how to delay
+    /**
+     * to delay for some time. Need more info.
+     * 
+     * @param delayTime
+     *            delay time in seconds
+     */
     private static void delay(double delayTime) {
     }
     
     /**
-     * Yet to be tested. Shared Method for Arm Lifting
+     * to lift arm. Need more info
      * 
      * @author James
      */
-    private void ArmLifterTop() {
-        final double setValue = 1;
+    private void armLifterTop() {
+        this.armMotor.set(Constant.Shared.armUp);
+        Autonomous.delay(Constant.Shared.armMoveMaxTime);
+        this.armMotor.set(Constant.Shared.armStop);
+    }
+    
+    /**
+     * to drive straight. Need more info.
+     * 
+     * @author James
+     */
+    private void driveStraight() {
+    
     }
     
     /**
@@ -106,7 +123,7 @@ public class Autonomous {
      * 
      * @author Josh
      */
-    public void Auto_LowBar() {
+    public void autoLowBar() {
     }
     
     /**
@@ -114,7 +131,7 @@ public class Autonomous {
      * 
      * @author Joey
      */
-    public void Auto_SpyBot_LowGoal() {
+    public void autoSpyBotLowGoal() {
     }
     
     /**
@@ -122,7 +139,7 @@ public class Autonomous {
      * 
      * @author Tony
      */
-    public void Auto_Cheval_de_Frise() {
+    public void autoChevalDeFrise() {
     }
     
     /**
@@ -130,7 +147,15 @@ public class Autonomous {
      * 
      * @author James
      */
-    public void Auto_Portcullis() {
+    public void autoPortcullis() {
+        // 1. arm down
+        // 2. drive to portcullis
+        // 3. life portcullis (arm up)
+        // 4. drive through
+        this.armLowerBottom();
+        this.driveStraight();
+        this.armLifterTop();
+        
     }
     
 }
