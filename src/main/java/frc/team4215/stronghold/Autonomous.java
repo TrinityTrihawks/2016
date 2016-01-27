@@ -12,22 +12,69 @@ import edu.wpi.first.wpilibj.Victor;
  *         James
  */
 public class Autonomous {
-    
     private Victor frontLeft, frontRight, backLeft, backRight, armMotor, intake;
     
-    public Autonomous(Victor frontLeft_, Victor frontRight_, Victor backLeft_,
-            Victor backRight_) {
+    public Autonomous(Victor frontLeft_,
+            Victor frontRight_,
+            Victor backLeft_,
+            Victor backRight_,
+            Victor armMotor_,
+            Victor intake_) {
         this.frontLeft = frontLeft_;
         this.frontRight = frontRight_;
         this.backLeft = backLeft_;
         this.backRight = backRight_;
     }
     
-    private static final class Const {
+    /**
+     * All constants.
+     * 
+     * @author James
+     */
+    private static final class Constant {
+        /**
+         * Const for all Auto_*.
+         * 
+         * @author James
+         */
+        public static final class Shared {
+            // You must test these.
+            static final double lowerAndLifterLastTime = 10;
+            
+            static final double armDown = -1, armUp = 1, armStop = 0;
+        }
         
-        static final double setValue = -1;
+        /**
+         * Const for Auto_*, if any.
+         * 
+         * @author Josh
+         */
+        public static final class Const_LowBar {
+        }
         
-        static final double lastTime = 10;
+        /**
+         * Const for Auto_*, if any.
+         * 
+         * @author Joey
+         */
+        private static final class Const_SpyBot_LowGoal {
+        }
+        
+        /**
+         * Const for Auto_*, if any.
+         * 
+         * @author Tony
+         */
+        private static final class Const_Cheval_de_Frise {
+        }
+        
+        /**
+         * Const for Auto_*, if any.
+         * 
+         * @author James
+         */
+        public static final class Const_Portcullis {
+        }
     }
     
     /**
@@ -36,10 +83,14 @@ public class Autonomous {
      * @author James
      */
     private void ArmLowerButton() {
-        
-        final double setValue = -1; // unsure if this is right
-        final double lastTime = 10; // You must test this.
-        this.armMotor.set(setValue);
+        this.armMotor.set(Constant.Shared.armDown);
+        // Somehow keep track of the time
+        Autonomous.delay(Constant.Shared.lowerAndLifterLastTime);
+        this.armMotor.set(Constant.Shared.armUp);
+    }
+    
+    // Not sure how to delay
+    private static void delay(double delayTime) {
     }
     
     /**
@@ -48,16 +99,7 @@ public class Autonomous {
      * @author James
      */
     private void ArmLifterTop() {
-        
         final double setValue = 1;
-    }
-    
-    /**
-     * Const for Auto_*, if any.
-     * 
-     * @author Josh
-     */
-    private static final class Const_LowBar {
     }
     
     /**
@@ -66,15 +108,6 @@ public class Autonomous {
      * @author Josh
      */
     public void Auto_LowBar() {
-    
-    }
-    
-    /**
-     * Const for Auto_*, if any.
-     * 
-     * @author Joey
-     */
-    private static final class Const_SpyBot_LowGoal {
     }
     
     /**
@@ -83,16 +116,6 @@ public class Autonomous {
      * @author Joey
      */
     public void Auto_SpyBot_LowGoal() {
-    
-    }
-    
-    /**
-     * Const for Auto_*, if any.
-     * 
-     * @author Tony
-     */
-    private static final class Const_Cheval_de_Frise {
-    
     }
     
     /**
@@ -101,24 +124,14 @@ public class Autonomous {
      * @author Tony
      */
     public void Auto_Cheval_de_Frise() {
-    
-    }
-    
-    /**
-     * Const for Auto_*, if any.
-     * 
-     * @author James Yu
-     */
-    public static final class Const_Portcullis {
-    
     }
     
     /**
      * Autonomous function No.4
      * 
-     * @author James Yu
+     * @author James
      */
     public void Auto_Portcullis() {
-    
     }
+    
 }
