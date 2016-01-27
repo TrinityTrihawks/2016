@@ -82,9 +82,8 @@ public class Autonomous {
      * 
      * @author James
      */
-    private void ArmLowerButton() {
+    private void ArmLowerBottom() {
         this.armMotor.set(Constant.Shared.armDown);
-        // Somehow keep track of the time
         Autonomous.delay(Constant.Shared.lowerAndLifterLastTime);
         this.armMotor.set(Constant.Shared.armUp);
     }
@@ -94,7 +93,7 @@ public class Autonomous {
     }
     
     /**
-     * Yet to be tested. Shared Method: Arm Lifting
+     * Yet to be tested. Shared Method for Arm Lifting
      * 
      * @author James
      */
