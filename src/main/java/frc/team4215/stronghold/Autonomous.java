@@ -19,11 +19,24 @@ public class Autonomous {
             Victor backLeft_,
             Victor backRight_,
             Victor armMotor_,
-            Victor intake_) {
-        this.frontLeft = frontLeft_;
-        this.frontRight = frontRight_;
-        this.backLeft = backLeft_;
-        this.backRight = backRight_;
+            Victor intake_)
+                    throws RobotException {
+        this(new Victor[] { frontLeft_, frontRight_, backLeft_, backRight_,
+                armMotor_, intake_ });
+    }
+    
+    public Autonomous(Victor[] sixVictors)
+            throws RobotException {
+        if (sixVictors.length < 6)
+            throw new RobotException("Victor array's length is less than 6");
+        // Point to the other constructor.
+        Victor[] a = sixVictors; // a nickname
+        this.frontLeft = a[0];
+        this.frontRight = a[1];
+        this.backLeft = a[2];
+        this.backRight = a[3];
+        this.armMotor = a[4];
+        this.intake = a[5];
     }
     
     /**
@@ -79,10 +92,6 @@ public class Autonomous {
         }
     }
     
-    private interface Interface {
-        public void setVictorArray(Victor[] vict, double setValue);
-    }
-    
     /**
      * to lower arm. Need more info.
      * 
@@ -123,22 +132,17 @@ public class Autonomous {
      * @author James
      */
     private void driveStraight(double driveTime) {
-        // init using interface, so that I don't repeat commands
-        // Otherwise i would be using the Victor.set(double) eight times and it
-        // will look so ugly.
-        Interface inter = new Interface() {
-            @Override
-            public void setVictorArray(Victor[] vict, double setValue) {
-                for (Victor v : vict)
-                    v.set(setValue);
-            }
-        };
         // getting the victor[] array.
         Victor[] vicList = new Victor[] { this.frontLeft, this.frontRight,
                 this.backLeft, this.backRight };
         // command starts
-        inter.setVictorArray(vicList, Const.Motor.Run.Forward);
+        Autonomous.setVictorArray(vicList, Const.Motor.Run.Forward);
         Autonomous.delay(driveTime);
+    }
+    
+    private static void setVictorArray(Victor[] vicList, double setValue) {
+        for (Victor v : vicList)
+            v.set(setValue);
     }
     
     /**
