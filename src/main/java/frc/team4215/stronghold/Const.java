@@ -52,11 +52,10 @@ public final class Const {
         }
         
         public final class Axis {
-            public final static double PlayStationCtrlLeft_UD = 1d,
-                    PlayStationCtrlRight_UD = 5d;
+            public final static int PlayStationCtrlLeft_UD = 1,
+                    PlayStationCtrlRight_UD = 5;
                     
-            public final static double GameCubeCtrl_UD = 1d,
-                    GameCubeCtrl_LR = 0d;
+            public final static int GameCubeCtrl_UD = 1, GameCubeCtrl_LR = 0;
         }
         
         public final class Button {
