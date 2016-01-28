@@ -96,6 +96,7 @@ public class Autonomous {
      *            delay time in seconds
      */
     private static void delay(double delayTime) {
+        edu.wpi.first.wpilibj.Timer delayTimer;
     }
     
     /**
