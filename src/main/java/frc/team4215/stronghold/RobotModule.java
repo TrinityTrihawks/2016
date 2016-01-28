@@ -2,7 +2,10 @@ package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
@@ -16,21 +19,21 @@ public class RobotModule extends IterativeModule {
     
     Ultrasonic ultra = new Ultrasonic(1,1);
     
-    public double getRange(){
-		double range = ultra.getRangeInches();
-		return range;
-		}
-    
-    double range = getRange();
-    
-    String range_info = String.valueOf(range);
     
     DriveTrain chassis;
     
     Joystick  leftStick;
     Joystick rightStick;
+    Victor leftMotor;
+	Victor rightMotor;
+	Victor rightMotor2;
+	Victor leftMotor2;
+	Victor intake;
+	Victor arm;
     
     UI driveStation;
+    
+    UltraSonic ult;
     
     public static Logger logger;
     private static String ModuleName = 
@@ -52,8 +55,6 @@ public class RobotModule extends IterativeModule {
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
 
-        logger.info(range_info);
-
         left = Registrar.talon(0);
         right = Registrar.talon(1);
         left2 = Registrar.talon(2);
@@ -66,13 +67,17 @@ public class RobotModule extends IterativeModule {
         leftStick = new Joystick(1);
         rightStick = new Joystick(0);
         
-        driveStation = new UI(leftStick,rightStick);
+        driveStation = new UI(leftStick,rightStick,leftStick, leftMotor,rightMotor,leftMotor2,rightMotor2,intake,arm);
+        
+        ult = new UltraSonic(1);
+        logger.info("Sensing ");
     }
     
     @Override
     public void teleopPeriodic(){
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
+    	logger.info("Sensing " + ult.getRangeInch());
     }
-    
-}
+} 
+   
