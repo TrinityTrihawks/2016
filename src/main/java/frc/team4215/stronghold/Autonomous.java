@@ -78,6 +78,10 @@ public class Autonomous {
         }
     }
     
+    private interface Interface {
+        public void setVictorArray(Victor[] vict, double setValue);
+    }
+    
     /**
      * to lower arm. Need more info.
      * 
@@ -116,7 +120,15 @@ public class Autonomous {
      * @author James
      */
     private void driveStraight() {
-    
+        Interface inter = new Interface() {
+            @Override
+            public void setVictorArray(Victor[] vict, double setValue) {
+            
+            }
+        };
+        Victor[] vicList = new Victor[] { this.frontLeft, this.frontRight,
+                this.backLeft, this.backRight };
+        inter.setVictorArray(vicList, Const.Motor.Run.Forward);
     }
     
     /**

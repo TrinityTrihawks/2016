@@ -31,8 +31,8 @@ public class Robot extends SampleRobot {
         this.cZ = 0;
         this.dataBuffer = new byte[6];
         this.compBuffer = ByteBuffer.wrap(this.dataBuffer);
-        // You wanna have all the initialization together in the constructor. -
-        // James
+        // You wanna have all the initialization together in the constructor.
+        // - James
         this.I2CBus = new I2C(I2C.Port.kOnboard, 0x1E);
         // Drive = new RobotDrive(0, 1);
         // Drive.setExpiration(0.1);
