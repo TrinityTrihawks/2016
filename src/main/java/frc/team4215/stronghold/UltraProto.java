@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import jaci.openrio.toast.lib.module.IterativeModule;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 /**
  * Prototype that measures distance as an analog voltage with UltraSonic sensor, then converts voltage into understandable units.
@@ -14,8 +15,8 @@ public class UltraProto extends IterativeModule {
 	
 	//AnalogChannel ultra = new Ultrasonic(1,1);
 	// creates an object and assigns variable 'ultra' to be the UltraSonic sensor which uses Output1 for echo-pulse and Input1 for trigger-pulse
-	AnalogInput anInput = new AnalogInput(1);
-	AnalogOutput anOutput = new AnalogOutput(1);
+	AnalogInput anInput = Registrar.analogInput(0);
+	AnalogOutput anOutput = Registrar.analogOutput(0);
 	//public void robotInit(){
 		//ultra.setAutomaticMode(true);
 	//enables Automatic mode
