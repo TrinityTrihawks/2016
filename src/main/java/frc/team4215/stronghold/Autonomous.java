@@ -75,6 +75,7 @@ public class Autonomous {
          * @author James
          */
         public static final class ConstPortcullis {
+            public static final double driveDelay = 5d;
         }
     }
     
@@ -100,7 +101,9 @@ public class Autonomous {
      *            delay time in seconds
      */
     private static void delay(double delayTime) {
-        edu.wpi.first.wpilibj.Timer delayTimer;
+        // Just realized there is a delay thing in Timer. But I'd just stick to
+        // using Autonomous.delay.
+        edu.wpi.first.wpilibj.Timer.delay(delayTime);
     }
     
     /**
@@ -119,16 +122,23 @@ public class Autonomous {
      * 
      * @author James
      */
-    private void driveStraight() {
+    private void driveStraight(double driveTime) {
+        // init using interface, so that I don't repeat commands
+        // Otherwise i would be using the Victor.set(double) eight times and it
+        // will look so ugly.
         Interface inter = new Interface() {
             @Override
             public void setVictorArray(Victor[] vict, double setValue) {
-            
+                for (Victor v : vict)
+                    v.set(setValue);
             }
         };
+        // getting the victor[] array.
         Victor[] vicList = new Victor[] { this.frontLeft, this.frontRight,
                 this.backLeft, this.backRight };
+        // command starts
         inter.setVictorArray(vicList, Const.Motor.Run.Forward);
+        Autonomous.delay(driveTime);
     }
     
     /**
@@ -166,9 +176,9 @@ public class Autonomous {
         // 3. life portcullis (arm up)
         // 4. drive through
         this.armLowerBottom();
-        this.driveStraight();
+        this.driveStraight(Constant.ConstPortcullis.driveDelay);
         this.armLifterTop();
-        
+        // then I don't know. Someone tell me how this works on thursday.
     }
     
 }
