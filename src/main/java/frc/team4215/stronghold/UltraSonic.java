@@ -6,6 +6,7 @@ package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SensorBase;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 /**
  * UltraSonic class, extends {@link SensorBase}.<br/>
@@ -131,7 +132,7 @@ public class UltraSonic extends SensorBase {
 
     public UltraSonic(int channel_, boolean isUsingUnit_, double minVoltage_, double maxVoltage_, double minDistance_,
             double maxDistance_) {
-        this.channel = new AnalogInput(channel_);
+        this.channel =  Registrar.analogInput(channel_);
         // Only use unit-specific vars if using units
         if (isUsingUnit_) {
             this.isUsingUnit = true;

@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.AnalogOutput;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.log.Logger;
-import 
-jaci.openrio.toast.lib.module.IterativeModule;
+import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
@@ -24,8 +24,16 @@ public class RobotModule extends IterativeModule {
     
     Joystick  leftStick;
     Joystick rightStick;
+    Victor leftMotor;
+	Victor rightMotor;
+	Victor rightMotor2;
+	Victor leftMotor2;
+	Victor intake;
+	Victor arm;
     
     UI driveStation;
+    
+    UltraSonic ult;
     
     public static Logger logger;
     private static String ModuleName = 
@@ -59,20 +67,17 @@ public class RobotModule extends IterativeModule {
         leftStick = new Joystick(1);
         rightStick = new Joystick(0);
         
-        driveStation = new UI(leftStick,rightStick);
+        driveStation = new UI(leftStick,rightStick,leftStick, leftMotor,rightMotor,leftMotor2,rightMotor2,intake,arm);
+        
+        ult = new UltraSonic(1);
+        logger.info("Sensing ");
     }
     
     @Override
     public void teleopPeriodic(){
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
-    Ultrasonic ultra = new Ultrasonic(1,1);
-    AnalogInput anInput = new AnalogInput(1);
-	AnalogOutput anOutput = new AnalogOutput(1);
-    double voltRange = 5.0;
-	double distanceRange;
-	double range;
-	double avrange;
+    	logger.info("Sensing " + ult.getRangeInch());
     }
 } 
    

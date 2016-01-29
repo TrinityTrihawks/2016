@@ -1,0 +1,20 @@
+Autonomous #1: Low bar
+1. put arm down
+2. drive into low-bar
+3. stop
+
+Auto #2: spy-bot/low goal
+1. arm down
+2. drive to goal
+3. reverse intake
+
+Auto #3: Cheval de Frise
+1. drive to cheval
+2. arm down
+3. drive over
+
+Auto #4: Portcollis
+1. arm down
+2. drive to portcullis
+3. life portcullis (arm up)
+4. drive through
