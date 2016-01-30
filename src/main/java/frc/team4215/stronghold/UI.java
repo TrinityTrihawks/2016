@@ -3,7 +3,6 @@ package frc.team4215.stronghold;
 import java.util.ArrayList;
 import java.util.List;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -11,17 +10,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4215.stronghold.Autonomous;
 
 public class UI {
-
 	Command autoCom;
-	Sendable autoChoose = new SendableChooser();
+	SendableChooser autoChoose = new SendableChooser();
+	private static final String LOWBAR = "Low Bar";
+	private static final String SPYBOT = "SpyBot";
+	private static final String CHIVALDEFRISE = "Chival de Frise";
+	private static final String PORTCULLIS = "Portcullis";
+	private static final String CHOOSEAUTOMODE = "Choose Autonomous Mode";
+	private Autonomous auto;
 	public void makeModes(){
-		this.autoChoose.addDefault("LowBar", new autoLowBar());
-		this.autoChoose.addObject("Portcullis", new autoPortcullis());
-		this.autoChoose.addObject("ChevalDeFrise", new autoChevalDeFrise());
-		this.autoChoose.addObject("SpyBotLowGoal", new autoSpyBotLowGoal());
-		SmartDashboard.putData("Choose Autonomous Mode", autoChoose);
+		this.autoChoose.addObject(LOWBAR, new Integer(1));
+		this.autoChoose.addObject(SPYBOT, new Integer(2));
+		this.autoChoose.addObject(CHIVALDEFRISE, new Integer(3));
+		this.autoChoose.addObject(PORTCULLIS, new Integer(4));
+		
+		SmartDashboard.putData(CHOOSEAUTOMODE, autoChoose);
+		// DOES THE SD NEED TO PROMPT A QUESTION BOX?
+		
+		Integer num = (Integer) autoChoose.getSelected();
+		this.choose(num);
 	}
-	
 	
 	Joystick[] driveSticks = new Joystick[2];
 	Joystick thirdstick;
@@ -38,7 +46,16 @@ public class UI {
 		arm = arm_;
 	}
 	
+public void choose(int num) {
+	auto.chooseAuto(num);
+}
+public void choose(Integer num) {
+	this.choose(num.intValue());
+}
+
 	
+	
+
 	
 	double[] getInputs(){
 		double[] inputs = new double[2];
@@ -101,5 +118,4 @@ public class UI {
         this.leftStick = left;
         this.rightStick = right;
     }
-
 }

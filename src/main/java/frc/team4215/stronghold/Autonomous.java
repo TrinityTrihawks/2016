@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Autonomous {
     private Victor frontLeft, frontRight, backLeft, backRight, armMotor, intake;
+    private Interface choiceAuto;
     
     public Autonomous(Victor frontLeft_,
             Victor frontRight_,
@@ -39,6 +40,17 @@ public class Autonomous {
         this.intake = a[5];
     }
     
+    public void chooseAuto(int num){
+    	if (num == 1) choiceAuto = ()->this.autoLowBar();
+    	else if (num == 2) choiceAuto = ()->this.autoSpyBotLowGoal();
+    	else if (num == 3) choiceAuto = ()->this.autoChevalDeFrise();
+    	else if (num == 4) choiceAuto = ()->this.autoPortcullis();
+    	else;
+    }
+    
+    public void autoChoice() {
+    	this.choiceAuto.runAuto();
+    }
     /**
      * All constants.
      * 
@@ -90,6 +102,10 @@ public class Autonomous {
         public static final class ConstPortcullis {
             public static final double driveDelay = 5d;
         }
+    }
+    
+    public interface Interface {
+    	public void runAuto();
     }
     
     /**
