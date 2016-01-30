@@ -75,7 +75,7 @@ public class Autonomous {
          * 
          * @author Josh
          */
-        public static final class ConstLowBar {
+        private static final class ConstLowBar {
         }
         
         /**
