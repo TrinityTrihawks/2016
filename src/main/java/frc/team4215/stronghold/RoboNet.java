@@ -5,33 +5,38 @@ import java.io.IOException;
 import java.net.*;
 
 /**
+ * I'm still trying to find out what can be done with
+ * networking and what to do
+ *
  * @author James
  */
 public class RoboNet {
 
-    /*
-     * I'm still trying to find out what can be done with networking and what to
-     * do
-     */
     ServerSocket serverSocket;
     Socket socket;
-    int errorCode;
-    String errorMessage;
+    boolean hasError;
     public static final int port = 4215;
+    private static final int serverTimeOutMilSec = 30000;
     
     public RoboNet() {
-        // Error Mode init
-        this.errorCode = 0;
-        this.errorMessage = null;
+        this.roboNetInit();
+    }
+
+    private void roboNetInit() {
+        this.hasError = false;
         try {
-            this.serverSocket = new ServerSocket();
-            this.socket = new Socket();
-        } catch (IOException e) {
-            this.errorMessage = e.getMessage();
+            this.serverSocket =
+                    new ServerSocket(RoboNet.port, 1);
+            this.socket = this.serverSocket.accept();
+            this.serverSocket.setSoTimeout(
+                    RoboNet.serverTimeOutMilSec);
+        } catch (Throwable e) {
+            this.hasError = true;
         }
     }
     
-    public void connect() {
-    
+    private static void sendData(Socket socket,
+            byte[] data) {
+            
     }
 }
