@@ -41,7 +41,7 @@ public class DriveTrain {
 		
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);
-		
+		 // Again for the  right side
 		if(rightSpeed == 0)
 			rightSpeed = 0;
 		else
