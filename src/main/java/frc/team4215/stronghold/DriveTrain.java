@@ -30,8 +30,23 @@ public class DriveTrain {
 	 * @param rightSpeed
 	 */
 	public void drive(double leftSpeed, double rightSpeed){
+		/* The Victors don't respond to a voltage of less then 4%
+		 * either direction so I provided some scaling.
+		 */
+		
+		if(Math.abs(leftSpeed) <= .04)
+			leftSpeed = 0;
+		else
+			leftSpeed = Math.signum(leftSpeed)*((Math.abs(leftSpeed) * .96) + .04);
+		
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);
+		
+		if(rightSpeed <= .04)
+			rightSpeed = 0;
+		else
+			rightSpeed = Math.signum(rightSpeed)*((Math.abs(rightSpeed) * .96) + .04);
+		
 		rightMotor.set(rightSpeed);
 		rightMotor2.set(rightSpeed);
 		}
