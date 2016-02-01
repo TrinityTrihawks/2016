@@ -34,7 +34,7 @@ public class DriveTrain {
 		 * either direction so I provided some scaling.
 		 */
 		
-		if(Math.abs(leftSpeed) <= .04)
+		if(Math.abs(leftSpeed) == 0)
 			leftSpeed = 0;
 		else
 			leftSpeed = Math.signum(leftSpeed)*((Math.abs(leftSpeed) * .96) + .04);
@@ -42,7 +42,7 @@ public class DriveTrain {
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);
 		
-		if(rightSpeed <= .04)
+		if(rightSpeed == 0)
 			rightSpeed = 0;
 		else
 			rightSpeed = Math.signum(rightSpeed)*((Math.abs(rightSpeed) * .96) + .04);
