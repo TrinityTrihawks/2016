@@ -1,12 +1,13 @@
 
 package frc.team4215.stronghold;
 
-import java.io.IOException;
-import java.net.*;
+import java.io.*;
+import java.net.DatagramSocket;
+import java.net.DatagramPacket;
 
 /**
  * I'm still trying to find out what can be done with
- * networking and what to do
+ * networking and what to do with it
  *
  * @author James
  */
