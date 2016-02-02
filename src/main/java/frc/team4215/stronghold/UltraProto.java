@@ -14,7 +14,7 @@ public class UltraProto extends IterativeModule {
 	int  inputchannel;
 	// creates an object and assigns ultra to be an ultrasonic sensor which uses Output1 for echopulse and Input1 for triggerpulse
 	public void robotInit(){
-		ultra.setAutomaticMode(true);
+		
 	//enables Automatic mode
 	}
 	
