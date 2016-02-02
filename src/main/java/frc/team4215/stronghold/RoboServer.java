@@ -22,11 +22,9 @@ public class RoboServer {
             this("RoboServer");
         }
 
-        public RoboThread(String name)
-                throws SocketException {
+        public RoboThread(String name) throws SocketException {
             super(name);
-            this.socket =
-                    new DatagramSocket(RoboServer.PORT);
+            this.socket = new DatagramSocket(RoboServer.PORT);
 
         }
 
@@ -37,11 +35,11 @@ public class RoboServer {
                     byte[] buf = new byte[0x100];
                     // receive request
                     DatagramPacket packet =
-                            new DatagramPacket(buf,
-                                    buf.length);
+                            new DatagramPacket(buf, buf.length);
                     this.socket.receive(packet);
                 } while (false);
             } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         
