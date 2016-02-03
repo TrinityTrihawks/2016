@@ -2,6 +2,7 @@
 *.pydevproject
 .metadata
 bin/
+build/
 tmp/
 .gradle/
 run/
