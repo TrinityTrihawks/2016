@@ -10,10 +10,6 @@ public class RoboServer {
     public static final int PORT = 4215;
     private static RoboThread roboThread;
 
-    public static void main(String[] args) {
-    
-    }
-
     private class RoboThread extends Thread {
 
         public DatagramSocket socket;
