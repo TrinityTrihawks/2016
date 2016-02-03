@@ -27,7 +27,7 @@ public class RobotModule extends IterativeModule {
     private static String ModuleName = 
         "stronghold";
     private static String ModuleVersion = 
-        "0.0.1";
+        "0.0.2";
 
     @Override
     public String getModuleName() {
@@ -56,6 +56,8 @@ public class RobotModule extends IterativeModule {
         
         driveStation = new UI(rightStick, thirdstick);
         ult = new UltraSonic(1);
+        I2CGyro.initGyro();
+        I2CGyro.pingerStart();
     }
     
     @Override
