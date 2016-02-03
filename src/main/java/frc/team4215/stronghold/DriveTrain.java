@@ -1,6 +1,6 @@
 package frc.team4215.stronghold;
 
-import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
 
 /**
  * This is used to control the drive-train
@@ -9,13 +9,13 @@ import edu.wpi.first.wpilibj.Talon;
  *
  */
 public class DriveTrain {
-	Talon leftMotor;
-	Talon rightMotor;
-	Talon rightMotor2;
-	Talon leftMotor2;
+	Victor leftMotor;
+	Victor rightMotor;
+	Victor rightMotor2;
+	Victor leftMotor2;
 	
-	DriveTrain(Talon leftMotor_, Talon leftMotor_2, 
-			Talon rightMotor_, Talon rightMotor_2){
+	DriveTrain(Victor leftMotor_, Victor leftMotor_2, 
+			Victor rightMotor_, Victor rightMotor_2){
 		leftMotor = leftMotor_;
 		rightMotor = rightMotor_;
 		leftMotor2 = leftMotor_2;
@@ -30,8 +30,23 @@ public class DriveTrain {
 	 * @param rightSpeed
 	 */
 	public void drive(double leftSpeed, double rightSpeed){
+		/* The Victors don't respond to a voltage of less then 4%
+		 * either direction so I provided some scaling.
+		 */
+		
+		if(Math.abs(leftSpeed) == 0)
+			leftSpeed = 0;
+		else
+			leftSpeed = Math.signum(leftSpeed)*((Math.abs(leftSpeed) * .96) + .04);
+		
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);
+		 // Again for the  right side
+		if(rightSpeed == 0)
+			rightSpeed = 0;
+		else
+			rightSpeed = Math.signum(rightSpeed)*((Math.abs(rightSpeed) * .96) + .04);
+		
 		rightMotor.set(rightSpeed);
 		rightMotor2.set(rightSpeed);
 		}

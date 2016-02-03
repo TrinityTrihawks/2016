@@ -7,14 +7,13 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class UI {
-
-	Joystick[] driveSticks = new Joystick[2];
-	Joystick thirdstick;
-
+	ArrayList<Joystick> driveSticks = new ArrayList<Joystick>();
+	Joystick thirdStick;
+	
 	public UI(Joystick leftStick_,Joystick rightStick_, Joystick thirdstick_, Victor leftmotor_, Victor rightmotor_,Victor rightmotor2_,Victor leftmotor2_,Victor intake_,Victor arm_){
-		driveSticks[0] = leftStick_;
-		driveSticks[1] = rightStick_;
-		thirdstick = thirdstick_;
+		driveSticks.add(leftStick_);
+		driveSticks.add(rightStick_);
+		thirdStick = thirdstick_;
 		frontLeftMotor = leftmotor_;
 		frontRightMotor = rightmotor_;
 		backLeftMotor = leftmotor2_;
@@ -27,13 +26,13 @@ public class UI {
 	
 	double[] getInputs(){
 		double[] inputs = new double[2];
-		if(driveSticks.length == 1){
-			inputs[0] = driveSticks[0].getRawAxis(1);
-			inputs[1] = driveSticks[0].getRawAxis(5);
+		if(driveSticks.size() == 1){
+			inputs[0] = driveSticks.get(0).getRawAxis(1);
+			inputs[1] = driveSticks.get(0).getRawAxis(5);
 		}
 		else{
-			inputs[0] = driveSticks[0].getRawAxis(1);
-			inputs[1] = driveSticks[1].getRawAxis(1);
+			inputs[0] = driveSticks.get(0).getRawAxis(1);
+			inputs[1] = driveSticks.get(1).getRawAxis(1);
 		}
 		return inputs;
 	}
