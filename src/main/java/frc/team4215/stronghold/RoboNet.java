@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 
 /**
- * I'm still trying to find out what can be done with networking and
- * what to do with it
+ * Data sending. You only need to use the static function
+ * {@link RoboNet#sendData(String)} to send data.
  *
  * @author James
+ * @version 2016.3.5 <!--Yr.Wk.Dy-->
  */
 public class RoboNet {
     
@@ -18,7 +19,7 @@ public class RoboNet {
     private DatagramPacket currentDP;
     private boolean hasError;
 
-    public RoboNet() {
+    private RoboNet() {
         this.roboNetInit();
     }
     
@@ -31,12 +32,33 @@ public class RoboNet {
             this.hasError = true;
         }
     }
-    
+
+    /**
+     * The public entrance of sending data to raspberrypi.
+     *
+     * @author James
+     * @param dataString
+     *            The String data.
+     * @throws IOException
+     *             Exception for InetAddress.getByName(String) and
+     *             DatagramSocket.send(DatagramPacket).
+     * @throws RobotException
+     *             Exception occuring when unknown errors happen
+     */
     public static void sendData(String dataString)
             throws IOException, RobotException {
         new RoboNet().send(dataString);
     }
     
+    /**
+     * The private entrance of sending data to raspberrypi.
+     *
+     * @param dataString
+     *            The String data.
+     * @throws IOException
+     * @throws RobotException
+     * @see RoboNet#sendData(String)
+     */
     private void send(String dataString)
             throws IOException, RobotException {
         if (this.hasError) throw new RobotException(
