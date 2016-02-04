@@ -3,7 +3,6 @@ package frc.team4215.stronghold;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 
@@ -14,16 +13,15 @@ import java.net.DatagramPacket;
  * @author James
  */
 public class RoboNet {
-
-    DatagramSocket datagramSocket;
-    DatagramPacket currentDP;
-    boolean hasError;
-    private static final int serverTimeOutMilSec = 30000;
     
+    private DatagramSocket datagramSocket;
+    private DatagramPacket currentDP;
+    private boolean hasError;
+
     public RoboNet() {
         this.roboNetInit();
     }
-
+    
     private void roboNetInit() {
         this.hasError = false;
         try {
@@ -34,12 +32,21 @@ public class RoboNet {
         }
     }
     
-    private void sendData(String dataString) throws IOException {
+    public static void sendData(String dataString)
+            throws IOException, RobotException {
+        new RoboNet().send(dataString);
+    }
+    
+    private void send(String dataString)
+            throws IOException, RobotException {
+        if (this.hasError) throw new RobotException(
+                "There is some unknown error before running this function.");
         byte[] buffer = dataString.getBytes();
         InetAddress receiver =
                 InetAddress.getByName(Const.Net.Num.RASPBERRY);
         this.currentDP = new DatagramPacket(buffer, buffer.length,
                 receiver, Const.Net.Num.PORT);
         this.datagramSocket.send(this.currentDP);
+
     }
 }
