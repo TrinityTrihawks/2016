@@ -1,21 +1,19 @@
 
 package frc.team4215.stronghold;
 
-import java.io.*;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.DatagramPacket;
 
 /**
- * I'm still trying to find out what can be done with
- * networking and what to do with it
+ * I'm still trying to find out what can be done with networking and
+ * what to do with it
  *
  * @author James
  */
 public class RoboNet {
 
-    ServerSocket serverSocket;
+    DatagramSocket datagramSocket;
+    DatagramPacket datagramPacket;
     Socket socket;
     boolean hasError;
     public static final int port = 4215;
@@ -28,18 +26,16 @@ public class RoboNet {
     private void roboNetInit() {
         this.hasError = false;
         try {
-            this.serverSocket =
-                    new ServerSocket(RoboNet.port, 1);
+            this.serverSocket = new ServerSocket(RoboNet.port, 1);
             this.socket = this.serverSocket.accept();
-            this.serverSocket.setSoTimeout(
-                    RoboNet.serverTimeOutMilSec);
+            this.serverSocket
+                    .setSoTimeout(RoboNet.serverTimeOutMilSec);
         } catch (Throwable e) {
             this.hasError = true;
         }
     }
     
-    private static void sendData(Socket socket,
-            byte[] data) {
-            
+    private static void sendData(Socket socket, byte[] data) {
+        socket.getOutputStream();
     }
 }
