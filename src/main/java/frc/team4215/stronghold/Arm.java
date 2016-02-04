@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Victor;
  * @author James Yu
  */
 public class Arm {
+
     /**
      * The Joystick used to control arms and the intake.
      */
@@ -33,14 +34,15 @@ public class Arm {
      */
     public Arm() {
         this.GameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.ArmMotor = new Victor(Const.Motor.Num.Intake);
+        this.ArmMotor = new Victor(Const.Motor.Num.Arm);
     }
 
     /**
      * Run on this
      */
     public void Run() {
-        this.ArmMotor.set(this.GameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        this.ArmMotor.set(this.GameCube
+                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
     }
 }
