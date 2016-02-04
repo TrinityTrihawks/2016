@@ -80,6 +80,8 @@ public final class Const {
         public final class Num {
             
             public final static int PORT = 4215;
+            public final static String RASPBERRY =
+                    "raspberrypi.local";
         }
     }
 }

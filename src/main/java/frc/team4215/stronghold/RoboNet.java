@@ -2,6 +2,9 @@
 package frc.team4215.stronghold;
 
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.io.IOException;
 import java.net.DatagramPacket;
 
 /**
@@ -13,10 +16,8 @@ import java.net.DatagramPacket;
 public class RoboNet {
 
     DatagramSocket datagramSocket;
-    DatagramPacket datagramPacket;
-    Socket socket;
+    DatagramPacket currentDP;
     boolean hasError;
-    public static final int port = 4215;
     private static final int serverTimeOutMilSec = 30000;
     
     public RoboNet() {
@@ -26,16 +27,19 @@ public class RoboNet {
     private void roboNetInit() {
         this.hasError = false;
         try {
-            this.serverSocket = new ServerSocket(RoboNet.port, 1);
-            this.socket = this.serverSocket.accept();
-            this.serverSocket
-                    .setSoTimeout(RoboNet.serverTimeOutMilSec);
+            this.datagramSocket =
+                    new DatagramSocket(Const.Net.Num.PORT);
         } catch (Throwable e) {
             this.hasError = true;
         }
     }
     
-    private static void sendData(Socket socket, byte[] data) {
-        socket.getOutputStream();
+    private void sendData(String dataString) throws IOException {
+        byte[] buffer = dataString.getBytes();
+        InetAddress receiver =
+                InetAddress.getByName(Const.Net.Num.RASPBERRY);
+        this.currentDP = new DatagramPacket(buffer, buffer.length,
+                receiver, Const.Net.Num.PORT);
+        this.datagramSocket.send(this.currentDP);
     }
 }
