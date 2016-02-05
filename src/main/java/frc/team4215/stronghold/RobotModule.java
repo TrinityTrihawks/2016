@@ -55,7 +55,7 @@ public class RobotModule extends IterativeModule {
         thirdstick = new Joystick(2);
         
         driveStation = new UI(rightStick, thirdstick);
-        ult = new UltraSonic(1);
+        ult = new UltraSonic(3);
     }
     
     @Override
