@@ -3,6 +3,7 @@ package frc.team4215.stronghold;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SensorBase;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 /**
  * UltraSonic class.
@@ -28,7 +29,7 @@ public class UltraSonic extends SensorBase {
      * {@code new AnalogInput}.
      */
 	public UltraSonic(int channel_) {
-		this.channel = new AnalogInput(channel_);
+		this.channel = Registrar.analogInput(channel_);
 		// Default Values
 		this.usingUnit = true;
 		this.minVoltageINCH = .01;
