@@ -37,7 +37,7 @@ public class DriveTrain {
 		if(Math.abs(leftSpeed) == 0)
 			leftSpeed = 0;
 		else
-			leftSpeed = -Math.signum(leftSpeed)*((Math.abs(leftSpeed) * .96) + .04);
+			leftSpeed = -Math.signum(leftSpeed)*((Math.abs(leftSpeed) * .96) + .03);
 		
 		leftMotor.set(leftSpeed);
 		leftMotor2.set(leftSpeed);
