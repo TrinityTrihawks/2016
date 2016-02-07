@@ -23,7 +23,7 @@ public class UI {
 		double[] inputs = new double[2];
 		if(driveSticks.size() == 1){
 			inputs[0] = driveSticks.get(0).getRawAxis(1);
-			inputs[1] = driveSticks.get(0).getRawAxis(3);
+			inputs[1] = driveSticks.get(0).getRawAxis(5);
 		}
 		else if(driveSticks.size() == 2){
 			inputs[0] = driveSticks.get(0).getRawAxis(1);
