@@ -50,12 +50,12 @@ public class RobotModule extends IterativeModule {
         
         chassis = new DriveTrain(left,left2, right,right2);
       
-        leftStick = new Joystick(1);
-        rightStick = new Joystick(0);
+        // leftStick = new Joystick(1);
+        rightStick = new Joystick(1);
         thirdstick = new Joystick(2);
         
         driveStation = new UI(rightStick, thirdstick);
-        ult = new UltraSonic(1);
+        ult = new UltraSonic(3);
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
     }
@@ -69,6 +69,8 @@ public class RobotModule extends IterativeModule {
     public void teleopPeriodic(){
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
+    	double[] angles = I2CGyro.getAngles();
+    	logger.info(angles[0] + " ," + angles[1] + " ," + angles[2]);
     }
     
     @Override
