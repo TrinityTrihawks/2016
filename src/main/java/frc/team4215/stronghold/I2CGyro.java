@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.internal.HardwareTimer;
 public class I2CGyro {
    
     static I2C gyro;
+    static boolean gyroExiest;
     
     static HardwareTimer hardTimer = new HardwareTimer();
     static Timer.Interface timer;
@@ -31,13 +32,14 @@ public class I2CGyro {
        gyro = new I2C(I2C.Port.kOnboard, 0x6B);
        
        // Checking if this gyro actually exists;
-       gyro.read(WHO_AM_I, 1, ID);
        
-       if(ID[0] == 212){
+       boolean worked = gyro.read(WHO_AM_I, 1, ID);
+       ID[0] = (byte) ((byte) 0x00FF & ID[0]);
+       if(ID[0] == 0xD4){
     	   RobotModule.logger.info("Gyro active!");
        }
        else{
-    	   RobotModule.logger.error("Gyro not operating, please check wiring!");   
+    	   RobotModule.logger.error("Gyro not operating, please check wiring! " + Integer.toBinaryString(ID[0]) + " " + worked);   
        }
        
        /*
@@ -68,6 +70,9 @@ public class I2CGyro {
     }
     
      public static void pingGyro(){
+    	if(!gyroExiest){
+    		return;
+    	}
     	double time = timer.get();
     	gyro.read(OUT_REG, dataBuffer.length, dataBuffer);
     	
@@ -78,11 +83,18 @@ public class I2CGyro {
     	 * second being the right half.
     	 */
     	double cX, cY, cZ;
-    	cX = ((dataBuffer[1] << 8 | 0xFF & dataBuffer[0])*time) % 360;
-    	cY = ((dataBuffer[3] << 8 | 0xFF & dataBuffer[2])*time) % 360;
-    	cZ = ((dataBuffer[5] << 8 | 0xFF & dataBuffer[4])*time) % 360;
+    	cX = ((dataBuffer[1] << 8 | 0xFF & dataBuffer[0]));
+    	cY = ((dataBuffer[3] << 8 | 0xFF & dataBuffer[2]));
+    	cZ = ((dataBuffer[5] << 8 | 0xFF & dataBuffer[4]));
     	
-    	angles = new double[] {cX, cY, cZ};
+    	if(cX > 32767);
+    		cX -= 65536;
+    	if(cY > 32767)
+    		cY -= 65536;
+    	if(cZ > 32767)
+    		cZ -= 65536;
+    	
+    	angles = new double[] {cX*time + angles[0], cY*time + angles[1], cZ*time + angles[2]};
     }
     
      public static void pingerStart(){
@@ -95,7 +107,12 @@ public class I2CGyro {
     	threadPing = new Thread(pinger);
     	threadPing.start();
     }
-     
+    public static void calibrate(){
+    	for(int i = 0; i < 100; i++){
+    		pingGyro();
+    		
+    	}
+    }
     public static double[] getAngles(){
     	return angles;
     }
