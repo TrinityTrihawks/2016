@@ -22,7 +22,7 @@ public class RobotModule extends IterativeModule {
     
     DriveTrain chassis;
     
-    Joystick  leftStick;
+    Joystick leftStick;
     Joystick rightStick;
     Victor leftMotor;
 	Victor rightMotor;
@@ -64,8 +64,14 @@ public class RobotModule extends IterativeModule {
         
         chassis = new DriveTrain(left,right,left2,right2);
         
-        leftStick = new Joystick(1);
-        rightStick = new Joystick(0);
+        leftStick = new Joystick(0);
+        rightStick = new Joystick(1);
+        
+//        public void drivingMethod(){
+//        	joystick.getRawAxis(5)	
+        
+//        	double Axis1 = leftStick.getRawAxis(1);
+//        	double Axis5 = rightStick.getRawAxis(5);
         
         driveStation = new UI(leftStick,rightStick,leftStick, leftMotor,rightMotor,leftMotor2,rightMotor2,intake,arm);
         
