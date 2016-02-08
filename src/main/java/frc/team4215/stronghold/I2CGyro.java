@@ -29,12 +29,19 @@ public class I2CGyro {
     public static void initGyro() {
     	
     	// Instantiating the gyro Object
-       gyro = new I2C(I2C.Port.kOnboard, 0x6B);
+       gyro = new I2C(I2C.Port.kOnboard, 0x1D);
        
        // Checking if this gyro actually exists;
        
+       gyro.write(CTRL_REG,   0x0F); 
+       gyro.write(CTRL_REG+1, 0x00);
+       gyro.write(CTRL_REG+2, 0x88);
+       gyro.write(CTRL_REG+3, 0x00);
+       gyro.write(CTRL_REG+4, 0x00);
+       
        boolean worked = gyro.read(WHO_AM_I, 1, ID);
        ID[0] = normalize(ID[0]);
+       
        if(ID[0] == 0xD4){
     	   RobotModule.logger.info("Gyro active!");
        }
@@ -50,12 +57,6 @@ public class I2CGyro {
         * *so and so*
         */
        
-       gyro.write(CTRL_REG,   0x0F); 
-       gyro.write(CTRL_REG+1, 0x00);
-       gyro.write(CTRL_REG+2, 0x88);
-       gyro.write(CTRL_REG+3, 0x88);
-       gyro.write(CTRL_REG+4, 0x00);
-       gyro.write(CTRL_REG+5, 0x00);
        
        
        /*
