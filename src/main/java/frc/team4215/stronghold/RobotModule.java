@@ -70,7 +70,9 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     	double[] angles = I2CGyro.getAngles();
-    	logger.info(angles[0] + " ," + angles[1] + " ," + angles[2]);
+    	logger.info(Integer.toBinaryString((int) angles[0]) + " ," 
+    				+ Integer.toBinaryString((int) angles[0]) + " ," 
+    				+ Integer.toBinaryString((int) angles[0]));
     }
     
     @Override
