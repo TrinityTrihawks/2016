@@ -71,9 +71,7 @@ public class I2CGyro {
     }
     
      public static void pingGyro(){
-    	if(!gyroExiest){
-    		return;
-    	}
+    	
     	double time = timer.get();
     	gyro.read(OUT_REG, dataBuffer.length, dataBuffer);
     	
