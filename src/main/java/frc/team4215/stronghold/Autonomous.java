@@ -1,7 +1,7 @@
-
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The class for Autonomous.
@@ -51,6 +51,57 @@ public class Autonomous {
         this.choiceAuto.runAuto();
     }
     
+    /*working variables*/
+    unsigned long lastTime;
+    double Input, Output, Setpoint;
+    double errSum, lastErr;
+    double kp, ki, kd;
+    
+    /**
+     * PID controller
+     * @author Jack Rausch
+     */
+    public double errorCompute()
+    {
+       /*How long since we last calculated*/
+       unsigned long now = millis();
+       double timeChange = (double)(now - lastTime);
+      
+       /*Compute all the working error variables*/
+       double error = Setpoint - Input;
+       errSum += (error * timeChange);
+       double dErr = (error - lastErr) / timeChange;
+      
+       /*Compute PID Output*/
+       Output = kp * error + ki * errSum + kd * dErr;
+      
+       /*Remember some variables for next time*/
+       lastErr = error;
+       lastTime = now;
+       
+       return Output;
+    }
+      
+    void SetTunings(double Kp, double Ki, double Kd)
+    {
+       kp = Kp;
+       ki = Ki;
+       kd = Kd;
+    }
+    
+    /**
+     * Method called to set the Setpoint so the PID controller has the capability to calculate errors and correct them.
+     * @param double
+     * @author Jack Rausch
+     */
+    public void static setSetpoint( double defSetpoint){
+    	Timer timer = new Timer();
+    	timer.start();
+    	double Setpoint = defSetpoint;
+    	
+    	}
+    
+    
     /**
      * All constants.
      *
@@ -59,7 +110,7 @@ public class Autonomous {
     private static final class Constant {
         
         /**
-         * Constant shared.
+         * Const shared.
          *
          * @author James
          */
@@ -73,7 +124,7 @@ public class Autonomous {
         }
         
         /**
-         * Constant for autoLowBar.
+         * Const for autoLowBar.
          *
          * @author James
          */
@@ -83,7 +134,7 @@ public class Autonomous {
         }
         
         /**
-         * Constant for autoSpyBotLowGoal.
+         * Const for autoSpyBotLowGoal.
          *
          * @author James
          */
@@ -93,7 +144,7 @@ public class Autonomous {
         }
         
         /**
-         * Constant for autoChevalDeFrise.
+         * Const for autoChevalDeFrise.
          *
          * @author James
          */
@@ -104,7 +155,7 @@ public class Autonomous {
         }
         
         /**
-         * Constant for autoPortcullis.
+         * Const for autoPortcullis.
          *
          * @author James
          */
@@ -184,6 +235,11 @@ public class Autonomous {
      *            Seconds of driving
      */
     private void driveStraight(double driveTime) {
+        // getting the victor[] array.
+        Victor[] vicList = new Victor[] { this.frontLeft,
+                this.frontRight, this.backLeft, this.backRight };
+        // command starts
+        Autonomous.setVictorArray(vicList, Const.Motor.Run.Forward);
         DriveTrain dT = new DriveTrain(this.frontLeft, this.backLeft,
                 this.frontRight, this.backRight);
         // command starts
@@ -192,6 +248,13 @@ public class Autonomous {
         dT.drive(Const.Motor.Run.Stop);
     }
     
+    private static void setVictorArray(Victor[] vicList,
+            double setValue) {
+        for (Victor v : vicList)
+            v.set(setValue);
+    }
+
+
     /**
      * throw ball out. Yet tested.
      *
@@ -248,6 +311,8 @@ public class Autonomous {
         this.driveStraight(
                 Constant.ConstPortcullis.driveThroughDelay);
     }
+    
+}
 
     /**
      * Should be equivalent to a method called getAccel of another
@@ -259,6 +324,19 @@ public class Autonomous {
     private static double[] I2CAccelerometer_getAccel() {
         double[] accel = new double[3];
         return accel; // placeholder
+    }
+    /**
+     * Calculates distance traveled based on information from the accelerometer.
+     * 
+     * @author Joey
+     * @return
+     */
+    private static double[] I2CDistanceTraveled() {
+    	while (true) {
+    		double[] acceleration = I2CAccelerometer_getAccel();
+    		double[] vtx = acceleration[0]*dt;
+    		double[] xt = v*dt;
+    	}
     }
 
     /**
