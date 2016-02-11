@@ -100,22 +100,25 @@ public class Autonomous {
     	double Setpoint = defSetpoint;
     	}
      
+     /**
+      * Timer method integrating the Timer class from wpilibj. USE THIS TIMER UNIVERSALLY!!!!!
+      * @author Jack Rausch
+      */
      public static void startTimer(){
     	 javax.management.timer.Timer timer = new Timer();
     	 timer.start();
      }
      
+     /**
+      * Called to retrieve the Time from previously defined method "startTimer"
+      * @author Jack Rausch
+      */
      public static double getTime(){
     	 double currentTime = timer.get();
     	 return currentTime;
      }
 
-
-    public static void setSetpoint(double defSetpoint) {
-        Timer timer = new Timer();
-        timer.start();
-        double Setpoint = defSetpoint;
-        
+    
     }
 
     /**
