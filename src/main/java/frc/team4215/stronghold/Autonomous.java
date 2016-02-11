@@ -93,7 +93,8 @@ public class Autonomous {
      * Method called to set the Setpoint so the PID controller has the
      * capability to calculate errors and correct them.
      *
-     * @param double
+     * @param defSetpoint
+     *            double value
      * @author Jack Rausch
      */
     public static void setSetpoint(double defSetpoint) {
