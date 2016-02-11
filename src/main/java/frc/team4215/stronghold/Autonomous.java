@@ -96,12 +96,8 @@ public class Autonomous {
      * @param double
      * @author Jack Rausch
      */
-<<<<<<< HEAD
+
     public static void setSetpoint(double defSetpoint){
-=======
-    
-    public void static setSetpoint( double defSetpoint){
->>>>>>> origin/Autonomous
     	Timer timer = new Timer();
     	timer.start();
     	double Setpoint = defSetpoint;
