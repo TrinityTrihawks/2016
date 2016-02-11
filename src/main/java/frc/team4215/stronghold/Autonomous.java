@@ -337,7 +337,9 @@ public class Autonomous {
             double[] acceleration =
                     Autonomous.I2CAccelerometer_getAccel();
             double[] vtx = acceleration[0] * dt;
-            double[] xt = v * dt;
+            double[] vty = acceleration[1] * dt;
+            double[] xt = vtx * dt;
+            double[] yt = vty * dt;
         }
     }
 
