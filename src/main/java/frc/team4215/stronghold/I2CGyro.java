@@ -73,7 +73,7 @@ public class I2CGyro {
      public static void pingGyro(){
     	
     	double time = timer.get();
-    	gyro.read(OUT_REG, dataBuffer.length, dataBuffer);
+    	gyro.read(OUT_REG, 1, dataBuffer);
     	
     	/*
     	 * The velocities are stored in registers 0x28-0x2D.
@@ -81,6 +81,7 @@ public class I2CGyro {
     	 * first byte being the left half of the number and the
     	 * second being the right half.
     	 */
+    	
     	for(int i = 0; i < dataBuffer.length; i++){
     		dataBuffer[i] = normalize(dataBuffer[i]);
     	}
@@ -89,15 +90,15 @@ public class I2CGyro {
     	cX = ((dataBuffer[1] << 8 | 0xFF & dataBuffer[0]));
     	cY = ((dataBuffer[3] << 8 | 0xFF & dataBuffer[2]));
     	cZ = ((dataBuffer[5] << 8 | 0xFF & dataBuffer[4]));
-    	
+    	/*
     	if(cX > 32767);
     		cX -= 65536;
     	if(cY > 32767)
     		cY -= 65536;
     	if(cZ > 32767)
     		cZ -= 65536;
-    	
-    	angles = new double[] {cX*time + angles[0], cY*time + angles[1], cZ*time + angles[2]};
+    	*/
+    	angles = new double[] {dataBuffer[0], 0, 0};
     }
     
      public static void pingerStart(){
