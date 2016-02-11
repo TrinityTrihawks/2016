@@ -162,9 +162,26 @@ public class Autonomous {
     }
 
     /**
-     * to drive straight. Need more info.
+     * To drive straight some distance.
      *
      * @author James
+     * @param driveDistance
+     *            Meters of driving
+     * @param PLACEHOLDER
+     *            This is just a placeholder and does not do anything.
+     *            You can just use empty string "" for this.
+     */
+    private void driveStraight(double driveDistance,
+            Object PLACEHOLDER) {
+        PLACEHOLDER = "";
+    }
+
+    /**
+     * Place Holder. To drive straight. Need more info.
+     *
+     * @author James
+     * @param driveTime
+     *            Seconds of driving
      */
     private void driveStraight(double driveTime) {
         DriveTrain dT = new DriveTrain(this.frontLeft, this.backLeft,
