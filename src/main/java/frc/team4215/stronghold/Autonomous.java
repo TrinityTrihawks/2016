@@ -97,7 +97,6 @@ public class Autonomous {
      *            double value
      * @author Jack Rausch
      */
-<<<<<<< HEAD
      public static void setSetpoint( double defSetpoint){
     	double Setpoint = defSetpoint;
     	}
@@ -120,14 +119,12 @@ public class Autonomous {
     	 return currentTime;
      }
 
-    
-=======
+
     public static void setSetpoint(double defSetpoint) {
         Timer timer = new Timer();
         timer.start();
         double Setpoint = defSetpoint;
-        
->>>>>>> origin/Autonomous
+
     }
 
     /**
