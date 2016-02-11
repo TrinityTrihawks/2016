@@ -59,7 +59,7 @@ public class Autonomous {
     private static final class Constant {
 
         /**
-         * Const shared.
+         * Constant shared.
          *
          * @author James
          */
@@ -73,7 +73,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoLowBar.
+         * Constant for autoLowBar.
          *
          * @author James
          */
@@ -83,7 +83,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoSpyBotLowGoal.
+         * Constant for autoSpyBotLowGoal.
          *
          * @author James
          */
@@ -93,7 +93,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoChevalDeFrise.
+         * Constant for autoChevalDeFrise.
          *
          * @author James
          */
@@ -104,7 +104,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoPortcullis.
+         * Constant for autoPortcullis.
          *
          * @author James
          */
@@ -232,7 +232,7 @@ public class Autonomous {
     }
     
     /**
-     * Should be equivilent to a method called getAccel of another
+     * Should be equivalent to a method called getAccel of another
      * class I2CAccelerometer which isn't here yet.
      *
      * @author James
@@ -244,7 +244,7 @@ public class Autonomous {
     }
     
     /**
-     * Should be equivilent to a method called getAngles of another
+     * Should be equivalent to a method called getAngles of another
      * class I2CGyro which isn't here yet.
      *
      * @author James
