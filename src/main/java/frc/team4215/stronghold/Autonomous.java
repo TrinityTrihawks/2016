@@ -243,7 +243,7 @@ public class Autonomous {
         double[] accel = new double[3];
         return accel; // placeholder
     }
-<<<<<<< HEAD
+
     /**
      * Calculates distance traveled based on information from the accelerometer.
      * 
@@ -257,9 +257,7 @@ public class Autonomous {
     		xt = v*dt;
     	}
     }
-=======
 
->>>>>>> origin/Autonomous
     /**
      * Should be equivalent to a method called getAngles of another
      * class I2CGyro which isn't here yet.
