@@ -89,7 +89,12 @@ public class Autonomous {
        kd = Kd;
     }
     
-    public void setSetpoint( double defSetpoint){
+    /**
+     * Method called to set the Setpoint so the PID controller has the capability to calculate errors and correct them.
+     * @param double
+     * @author Jack Rausch
+     */
+    public void static setSetpoint( double defSetpoint){
     	Timer timer = new Timer();
     	timer.start();
     	double Setpoint = defSetpoint;
