@@ -64,7 +64,7 @@ public class Autonomous {
      */
     public double errorCompute() {
         /* How long since we last calculated */
-        long now = millis();
+        long now = getTime();
         double timeChange = now - this.lastTime;
         
         /* Compute all the working error variables */
@@ -96,13 +96,19 @@ public class Autonomous {
      * @param double
      * @author Jack Rausch
      */
-    
-    public void static setSetpoint( double defSetpoint){
-    	Timer timer = new Timer();
-    	timer.start();
+     public static void setSetpoint( double defSetpoint){
     	double Setpoint = defSetpoint;
-
     	}
+     
+     public static void startTimer(){
+    	 javax.management.timer.Timer timer = new Timer();
+    	 timer.start();
+     }
+     
+     public static double getTime(){
+    	 double currentTime = timer.get();
+    	 return currentTime;
+     }
     
     /**
      * All constants.

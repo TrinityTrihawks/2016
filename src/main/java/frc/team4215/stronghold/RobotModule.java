@@ -81,4 +81,9 @@ public class RobotModule extends IterativeModule {
     public void autonomousPeriodic(){
     	
     }
+    
+    public void autonomousInit(){
+    	startTimer();
+    	
+    }
 }
