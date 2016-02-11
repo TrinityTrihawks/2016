@@ -242,7 +242,19 @@ public class Autonomous {
         double[] accel = new double[3];
         return accel; // placeholder
     }
-    
+    /**
+     * Calculates distance traveled based on information from the accelerometer.
+     * 
+     * @author Joey
+     * @return
+     */
+    private static double[] I2CDistanceTraveled() {
+    	while (true) {
+    		double[] acceleration = I2CAccelerometer_getAccel();
+    		double[] vtx = acceleration[0]*dt;
+    		xt = v*dt;
+    	}
+    }
     /**
      * Should be equivalent to a method called getAngles of another
      * class I2CGyro which isn't here yet.
