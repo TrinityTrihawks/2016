@@ -52,10 +52,10 @@ public class Autonomous {
     }
     
     /* working variables */
-    long lastTime;
-    double Input, Output, Setpoint;
-    double errSum, lastErr;
-    double kp, ki, kd;
+    private long lastTime;
+    private double Input, Output, Setpoint;
+    private double errSum, lastErr;
+    private double kp, ki, kd;
     
     /**
      * PID controller
@@ -93,9 +93,11 @@ public class Autonomous {
      * Method called to set the Setpoint so the PID controller has the
      * capability to calculate errors and correct them.
      *
-     * @param double
+     * @param defSetpoint
+     *            double value
      * @author Jack Rausch
      */
+<<<<<<< HEAD
      public static void setSetpoint( double defSetpoint){
     	double Setpoint = defSetpoint;
     	}
@@ -119,6 +121,13 @@ public class Autonomous {
      }
 
     
+=======
+    public static void setSetpoint(double defSetpoint) {
+        Timer timer = new Timer();
+        timer.start();
+        double Setpoint = defSetpoint;
+        
+>>>>>>> origin/Autonomous
     }
 
     /**
@@ -354,7 +363,9 @@ public class Autonomous {
             double[] acceleration =
                     Autonomous.I2CAccelerometer_getAccel();
             double[] vtx = acceleration[0] * dt;
-            double[] xt = v * dt;
+            double[] vty = acceleration[1] * dt;
+            double[] xt = vtx * dt;
+            double[] yt = vty * dt;
         }
     }
 
