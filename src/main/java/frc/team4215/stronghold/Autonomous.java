@@ -254,7 +254,7 @@ public class Autonomous {
     	while (true) {
     		double[] acceleration = I2CAccelerometer_getAccel();
     		double[] vtx = acceleration[0]*dt;
-    		xt = v*dt;
+    		double[] xt = v*dt;
     	}
     }
 
