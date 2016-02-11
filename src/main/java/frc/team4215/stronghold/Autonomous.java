@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.Timer;
  * @author James
  */
 public class Autonomous {
+	private static Thread threadPing;
+	
 
     private Victor frontLeft, frontRight, backLeft, backRight,
             armMotor, intake;
@@ -353,14 +355,28 @@ public class Autonomous {
      * @return
      */
     private static double[] I2CDistanceTraveled() {
-        while (true) {
-            double[] acceleration =
-                    Autonomous.I2CAccelerometer_getAccel();
-            double[] vtx = acceleration[0] * dt;
-            double[] vty = acceleration[1] * dt;
-            double[] xt = vtx * dt;
-            double[] yt = vty * dt;
-        }
+    	double[] acceleration =
+    			Autonomous.I2CAccelerometer_getAccel();
+    	double dt = Timer();
+
+    	for (int i=0;i<1500;i++){
+
+    		double[] vtx = acceleration[0] * dt;
+    		double[] vty = acceleration[1] * dt;
+    		double[] xt = vtx * dt;
+    		double[] yt = vty * dt;
+    		delay(.01);
+    	}
+    }
+    
+    public static void pingerStart() {
+    	Runnable pinger = () -> {
+    		while (true)
+    			I2CAccelerometer_getAccel();
+    	};
+    	
+    	threadPing = new Thread(pinger);
+    	threadPing.start();
     }
 
     /**
