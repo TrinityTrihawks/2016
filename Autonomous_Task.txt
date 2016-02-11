@@ -16,5 +16,5 @@ Auto #3: Cheval de Frise
 Auto #4: Portcollis
 1. arm down
 2. drive to portcullis
-3. life portcullis (arm up)
+3. lift portcullis (arm up)
 4. drive through
