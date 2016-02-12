@@ -12,14 +12,36 @@ public class I2CAccel {
 			  CTRL_REG = 0x20,
 			  OUT_REG = 0x28;
 	static byte[] bufferData = new byte[6];
+	static int[] data = new int[6];
+	static Thread pingerThread;
 	
-	public void initAccel(){
+	static public void initAccel(){
 		accel = new I2C(I2C.Port.kOnboard, 0x1D);
 		
 	}
 	
-	public void pingAccel(){
+	static public void pingAccel(){
 		accel.read(OUT_REG,6,bufferData);
 		
+		for(int i = 0; i < bufferData.length;i++){
+			String tmp = Integer.toBinaryString(bufferData[i]);
+			tmp = tmp.substring(23);
+			data[i] = Integer.valueOf(tmp, 2);
+		}
+	}
+	
+	static public void pingerStart(){
+		Runnable pinger = ()  -> {
+			while(true)
+				pingAccel();
+		};
+		
+		pingerThread = new Thread(pinger);
+		pingerThread.start();
+		
+	}
+	
+	static public int[] getAccel(){
+		return data;
 	}
 }
