@@ -368,8 +368,6 @@ public class Autonomous {
         Autonomous.threadPing = new Thread(pinger);
         Autonomous.threadPing.start();
 
-        Autonomous.threadPing = new Thread(pinger);
-        Autonomous.threadPing.start();
     }
 
     /**
