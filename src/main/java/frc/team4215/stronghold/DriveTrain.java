@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.Victor;
 /**
  * This is used to control the drive-train
  *
- * @author waweros
+ * @author Waweru
  */
 public class DriveTrain {
     
