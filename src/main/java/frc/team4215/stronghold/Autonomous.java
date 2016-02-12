@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Autonomous {
 	private static Thread threadPing;
+	private static double velocity;
+	private static double position;
+	private static double autoTime = 15;		//Autonomous is 15 seconds long.
+	private static double samplingRate = 100;	//Sample rate of 100 times per second.
 	
 
     private Victor frontLeft, frontRight, backLeft, backRight,
@@ -355,24 +359,24 @@ public class Autonomous {
      * @return
      */
     private static double[] I2CDistanceTraveled() {
-    	double[] acceleration =
-    			Autonomous.I2CAccelerometer_getAccel();
-    	double dt = Timer();
+    	
+    	Timer time = new Timer();
+    	time.
 
-    	for (int i=0;i<1500;i++){
-
-    		double[] vtx = acceleration[0] * dt;
-    		double[] vty = acceleration[1] * dt;
-    		double[] xt = vtx * dt;
-    		double[] yt = vty * dt;
-    		delay(.01);
+    	for (int count=0;count<(autoTime*samplingRate);count++){
+    		double[] acceleration =
+        			Autonomous.I2CAccelerometer_getAccel();
+    		
+    		double velocity = acceleration[0]*time;
+    		double distance = .5*velocity*time;
+    		delay(1/samplingRate);
     	}
     }
     
     public static void pingerStart() {
     	Runnable pinger = () -> {
     		while (true)
-    			I2CAccelerometer_getAccel();
+    			I2CDistanceTraveled();
     	};
     	
     	threadPing = new Thread(pinger);
