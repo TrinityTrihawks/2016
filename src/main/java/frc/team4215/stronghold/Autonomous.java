@@ -134,7 +134,7 @@ public class Autonomous {
     private static final class Constant {
 
         /**
-         * Const shared.
+         * Constant shared.
          *
          * @author James
          */
@@ -148,7 +148,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoLowBar.
+         * Constant for autoLowBar.
          *
          * @author James
          */
@@ -158,7 +158,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoSpyBotLowGoal.
+         * Constant for autoSpyBotLowGoal.
          *
          * @author James
          */
@@ -168,7 +168,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoChevalDeFrise.
+         * Constant for autoChevalDeFrise.
          *
          * @author James
          */
@@ -179,7 +179,7 @@ public class Autonomous {
         }
 
         /**
-         * Const for autoPortcullis.
+         * Constant for autoPortcullis.
          *
          * @author James
          */
