@@ -96,9 +96,12 @@ public class Autonomous {
     /** 
      * PID Controller Implementation for Accelerometer
      * 
+     * Waweru and I have decided that the derivative part for the
+     * controller is unnecessary. Derivative function taken out.
+     * 
      * @author Joey
      */
-    public double accelerometerPID(double Kp, double Ki, double Kd){
+    public double accelerometerPID(double Kp, double Ki){
     	// Time since last calculation
     	double now = getTime();
         double timeChange = now - lastTime;
