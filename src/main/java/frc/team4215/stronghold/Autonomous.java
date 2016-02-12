@@ -357,21 +357,21 @@ public class Autonomous {
      * @author Joey
      * @return
      */
-    private static double I2CDistanceTraveled() {
+    private static void I2CDistanceTraveled() {
     	
     	Timer time = new Timer();
-
+    	
+    	time.start();
     	for (int count=0;count<(autoTime*samplingRate);count++){
-    		time.start();
     		delay(1/samplingRate);
     		time.stop();
     		double[] acceleration =
         			Autonomous.I2CAccelerometer_getAccel();
     		
     		position += .5*acceleration[0]*time.get();
-
+    		time.reset();
+    		time.start();
     	}
-    	return position;
     }
     
     public static void pingerStart() {
