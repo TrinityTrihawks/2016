@@ -3,6 +3,7 @@ package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 /**
  * <dl>
@@ -25,27 +26,31 @@ public class Arm {
      * The Joystick used to control arms and the intake.
      */
     private Joystick gameCube;
-    
+
     /**
      * The Motor, Victor, for controling the arm.
      */
     private Victor armMotor;
-    
+
     /**
      * Default constructor.
      */
     public Arm() {
         this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.armMotor = new Victor(Const.Motor.Num.Intake);
+        this.armMotor = Registrar.victor(Const.Motor.Num.Arm);
     }
     
     /**
      * Run on this
      */
     public void Run() {
-        
-        this.armMotor.set(
-                this.gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+
+        this.armMotor.set(this.gameCube
+                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
+    }
+    
+    public void set(double setValue) {
+        this.armMotor.set(setValue);
     }
 }
