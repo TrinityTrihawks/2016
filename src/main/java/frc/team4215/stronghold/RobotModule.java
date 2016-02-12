@@ -42,6 +42,7 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
+        
         /*
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
@@ -58,6 +59,9 @@ public class RobotModule extends IterativeModule {
         ult = new UltraSonic(3);
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
+        I2CAccel.initAccel();
+        I2CAccel.pingerStart();
+        
     }
     
     @Override
@@ -71,11 +75,11 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     	*/
-    	double[] angles = I2CGyro.getAngles();
+    	int[] accels = I2CAccel.getAccel();
     	
-    	logger.info(Integer.toHexString(((int) angles[0])) + " ," 
-    				+ Integer.toHexString((int) angles[0]) + " ," 
-    				+ Integer.toHexString((int) angles[0]));
+    	logger.info(Integer.toHexString(((int) accels[0])) + " ," 
+    				+ Integer.toHexString((int) accels[0]) + " ," 
+    				+ Integer.toHexString((int) accels[0]));
     }
     
     @Override
