@@ -30,14 +30,18 @@ public class Arm {
     /**
      * The Motor, Victor, for controling the arm.
      */
-    private Victor armMotor;
+    private Victor armMotor1;
+    private Victor armMotor2;
 
     /**
      * Default constructor.
+     * -- Waweru
+     * Turns out the arm has 2 motors
      */
     public Arm() {
         this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.armMotor = Registrar.victor(Const.Motor.Num.Arm);
+        this.armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
+        this.armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
     }
     
     /**
@@ -45,12 +49,15 @@ public class Arm {
      */
     public void Run() {
 
-        this.armMotor.set(this.gameCube
+        this.armMotor1.set(this.gameCube
+                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        this.armMotor2.set(this.gameCube
                 .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
     }
     
     public void set(double setValue) {
-        this.armMotor.set(setValue);
+        this.armMotor1.set(setValue);
+        this.armMotor2.set(setValue);
     }
 }
