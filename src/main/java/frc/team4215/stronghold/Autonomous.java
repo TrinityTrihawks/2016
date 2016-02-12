@@ -12,10 +12,12 @@ public class Autonomous {
 
     private static Thread threadPing;
     private static double position;
-    private static double autoTime = 15; // Autonomous is 15 seconds
-                                         // long.
-    private static double samplingRate = 20; // Sample rate of 100
-                                             // times per second.
+    private static final double AUTOTIME = 15; // Autonomous is 15
+                                               // seconds
+    // long.
+    private static final double SAMPLINGRATE = 20; // Sample rate of
+                                                   // 100
+    // times per second.
 
     private javax.management.timer.Timer timer;
     
@@ -343,9 +345,9 @@ public class Autonomous {
         Timer time = new Timer();
         
         time.start();
-        for (int count = 0; count < (Autonomous.autoTime
-                * Autonomous.samplingRate); count++) {
-            Autonomous.delay(1 / Autonomous.samplingRate);
+        for (int count = 0; count < (Autonomous.AUTOTIME
+                * Autonomous.SAMPLINGRATE); count++) {
+            Autonomous.delay(1 / Autonomous.SAMPLINGRATE);
             time.stop();
             double[] acceleration =
                     Autonomous.I2CAccelerometer_getAccel();
