@@ -42,12 +42,12 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        
+        /*
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
-        
+        */
         chassis = new DriveTrain(left,left2, right,right2);
       
         // leftStick = new Joystick(1);
@@ -67,9 +67,12 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void teleopPeriodic(){
+    	/*
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
+    	*/
     	double[] angles = I2CGyro.getAngles();
+    	
     	logger.info(Integer.toHexString(((int) angles[0])) + " ," 
     				+ Integer.toHexString((int) angles[0]) + " ," 
     				+ Integer.toHexString((int) angles[0]));

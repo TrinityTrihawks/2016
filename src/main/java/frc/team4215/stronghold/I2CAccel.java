@@ -18,7 +18,7 @@ public class I2CAccel {
 		
 	}
 	
-	public vvoid pingAccel(){
+	public void pingAccel(){
 		accel.read(OUT_REG,6,bufferData);
 		
 	}
