@@ -122,7 +122,7 @@ public class Autonomous {
      * @author Jack Rausch
      */
     public double getTime() {
-        double currentTime = this.timer.get();
+        double currentTime = 0 ;//this.timer.get();
         return currentTime;
     }
 
