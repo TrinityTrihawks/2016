@@ -94,14 +94,14 @@ public class Autonomous {
     }
 
     /** 
-     * PID Controller Implementation for Accelerometer
+     * PID controller implementation for accelerometer
      * 
      * Waweru and I have decided that the derivative part for the
      * controller is unnecessary. Derivative function taken out.
      * 
      * @author Joey
      */
-    public double accelerometerPID(double Kp, double Ki){
+    public double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
     	double now = getTime();
         double timeChange = now - lastTime;
@@ -111,12 +111,37 @@ public class Autonomous {
         errSum += (error * timeChange);
         
         //Sum errors
-        Output = kp * error + ki * errSum;
+        double accelerometerOutput = accelerometerKp * error + accelerometerKi * errSum;
         
         //Reset time variable
         lastTime = now;
         
-        return Output;
+        return accelerometerOutput;
+    }
+    
+    /**
+     * PID controller implementation for gyroscope
+     * 
+     * @param gyroKp
+     * @param gyroKi
+     * @author Joey
+     */
+    public double gyroPID(double gyroKp, double gyroKi){
+    	// Time since last calculation
+    	double now = getTime();
+        double timeChange = now - lastTime;
+        
+        //Calculate error variables
+        double error = Setpoint - Input;
+        errSum += (error * timeChange);
+        
+        //Sum errors
+        double gyroOutput = gyroKp * error + gyroKi * errSum;
+        
+        //Reset time variable
+        lastTime = now;
+        
+        return gyroOutput;
     }
     
     /**
