@@ -25,7 +25,15 @@ public class I2CAccel {
 		
 		for(int i = 0; i < bufferData.length;i++){
 			String tmp = Integer.toBinaryString(bufferData[i]);
-			tmp = tmp.substring(23);
+			
+			if(tmp.length() == 32){
+				tmp = tmp.substring(23);
+				RobotModule.logger.error("It's  doing it again!!");
+			}
+			else if(tmp.length() != 32 && tmp.length() > 8){
+				RobotModule.logger.error("It's got " + tmp.length() + " bits!!!");
+			}
+			
 			data[i] = Integer.valueOf(tmp, 2);
 		}
 	}
