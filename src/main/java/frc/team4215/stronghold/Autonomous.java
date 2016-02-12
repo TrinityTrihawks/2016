@@ -67,20 +67,20 @@ public class Autonomous {
      * @author Jack Rausch
      */
     public double errorCompute() {
-        /* How long since we last calculated */
+        // How long since we last calculated
         double now = this.getTime();
         double timeChange = now - this.lastTime;
 
-        /* Compute all the working error variables */
+        // Compute all the working error variables
         double error = this.Setpoint - this.Input;
         this.errSum += (error * timeChange);
         double dErr = (error - this.lastErr) / timeChange;
 
-        /* Compute PID Output */
+        // Compute PID Output
         this.Output = this.kp * error + this.ki * this.errSum
                 + this.kd * dErr;
 
-        /* Remember some variables for next time */
+        // Remember some variables for next time
         this.lastErr = error;
         this.lastTime = now;
 
@@ -93,6 +93,29 @@ public class Autonomous {
         this.kd = Kd;
     }
 
+    /** 
+     * PID Controller Implementation for Accelerometer
+     * 
+     * @author Joey
+     */
+    public double accelerometerPID(double Kp, double Ki, double Kd){
+    	// Time since last calculation
+    	double now = getTime();
+        double timeChange = now - lastTime;
+        
+        //Calculate error variables
+        double error = Setpoint - Input;
+        errSum += (error * timeChange);
+        
+        //Sum errors
+        Output = kp * error + ki * errSum;
+        
+        //Reset time variable
+        lastTime = now;
+        
+        return Output;
+    }
+    
     /**
      * Method called to set the Setpoint so the PID controller has the
      * capability to calculate errors and correct them.
