@@ -41,9 +41,9 @@ public final class Const {
         
         public final class Num {
             
-            public final static int FrontLeft = 0, BackLeft = 1,
-                    BackRight = 2, FrontRight = 3, Arm = 4,
-                    Intake = 5;
+            public final static int FrontLeft = 3, BackLeft = 1,
+                    BackRight = 2, FrontRight = 0, Arm1 = 4,
+                    Intake = 5, Arm2 = 6;
         }
 
         public final class Run {
