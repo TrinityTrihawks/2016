@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class Autonomous {
     
     private static Thread threadPing;
-    private static double position;
+    private static double distanceTraveled;
     static Timer time = new Timer();
     /**
      * Seconds of Autonomous period
@@ -396,7 +396,7 @@ public class Autonomous {
             double time2 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
 
-            position += .5 * acceleration[0] * (time2 - time1);
+            distanceTraveled += .5 * acceleration[0] * (time2 - time1);
         }
     }
     
