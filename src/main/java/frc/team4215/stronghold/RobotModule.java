@@ -81,7 +81,7 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit() {
-        //Autonomous.startTimer();
+        Autonomous.startTimer();
 
     }
 }

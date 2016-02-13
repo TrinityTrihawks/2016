@@ -12,8 +12,7 @@ public class Autonomous {
     
     private static Thread threadPing;
     private static double position;
-    static Timer accelerometerTime = new Timer();
-    Timer gyroTime = new Timer();
+    static Timer time = new Timer();
     /**
      * Seconds of Autonomous period
      */
@@ -70,7 +69,7 @@ public class Autonomous {
      */
     public double errorCompute() {
         // How long since we last calculated
-        double now = getTime();
+        double now = time.get();
         double timeChange = now - lastTime;
 
         // Compute all the working error variables
@@ -105,7 +104,7 @@ public class Autonomous {
      */
     public double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
-    	double now = getTime();
+    	double now = time.get();
         double timeChange = now - lastTime;
         
         //Calculate error variables
@@ -130,7 +129,7 @@ public class Autonomous {
      */
     public double gyroPID(double gyroKp, double gyroKi){
     	// Time since last calculation
-    	double now = getTime();
+    	double now = time.get();
         double timeChange = now - lastTime;
         
         //Calculate error variables
@@ -166,20 +165,10 @@ public class Autonomous {
      *
      * @author Jack Rausch
      */
-    public void startTimer() {
-        timer.start();
+    public static void startTimer() {
+        time.start();
     }
 
-    /**
-     * Called to retrieve the Time from previously defined method
-     * "startTimer"
-     *
-     * @author Jack Rausch
-     */
-    public double getTime() {
-        double currentTime = 0 ;//timer.get();
-        return currentTime;
-    }
 
     /**
      * All constants.
@@ -398,17 +387,14 @@ public class Autonomous {
      */
     private static void I2CDistanceTraveled() {
 
-        accelerometerTime.start();
+        double time1 = time.get();
         for (int count = 0; count < (Autonomous.AUTOTIME
                 * Autonomous.SAMPLINGRATE); count++) {
-            Autonomous.delay(1 / Autonomous.SAMPLINGRATE);
-            accelerometerTime.stop();
-            double[] acceleration =
-                    Autonomous.I2CAccelerometer_getAccel();
+        	delay(1 / Autonomous.SAMPLINGRATE);
+            double time2 = time.get();
+            double[] acceleration = I2CAccelerometer_getAccel();
 
-            Autonomous.position += .5 * acceleration[0] * accelerometerTime.get();
-            accelerometerTime.reset();
-            accelerometerTime.start();
+            position += .5 * acceleration[0] * (time2 - time1);
         }
     }
     
