@@ -67,26 +67,28 @@ public class Autonomous {
      *
      * @author Jack Rausch
      */
-    public double errorCompute() {
-        // How long since we last calculated
-        double now = time.get();
-        double timeChange = now - lastTime;
+/*    public double errorCompute() {
+    	// How long since we last calculated
+    	double now = time.get();
+    	double timeChange = now - lastTime;
 
-        // Compute all the working error variables
-        double error = Setpoint - Input;
-        errSum += (error * timeChange);
-        double dErr = (error - lastErr) / timeChange;
+    	// Compute all the working error variables
+    	double error = Setpoint - Input;
+    	errSum += (error * timeChange);
+    	double dErr = (error - lastErr) / timeChange;
 
-        // Compute PID Output
-        Output = kp * error + ki * errSum
-                + kd * dErr;
+    	// Compute PID Output
+    	Output = kp * error + ki * errSum
+    			+ kd * dErr;
 
-        // Remember some variables for next time
-        lastErr = error;
-        lastTime = now;
+    	// Remember some variables for next time
+    	lastErr = error;
+    	lastTime = now;
 
-        return Output;
+    	return Output;
     }
+    //DO NOT DELETE THIS CODE!!!!!!!
+    */
 
     void SetTunings(double Kp, double Ki, double Kd) {
         kp = Kp;
