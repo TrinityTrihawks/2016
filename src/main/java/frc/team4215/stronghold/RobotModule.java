@@ -9,19 +9,13 @@ import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
 
-	
-	Victor left;
-    Victor right;
-    Victor left2;
-    Victor right2;
+    private Victor left, right, left2, right2;
     
     private DriveTrain chassis;
+    private Arm arm;
     
-    Joystick  leftStick;
-    Joystick rightStick;
-    Joystick thirdstick;
+    private Joystick leftStick, rightStick, thirdStick;
 
-    
     private UI driveStation;
     
     UltraSonic ult;
@@ -35,55 +29,59 @@ public class RobotModule extends IterativeModule {
     @Override
     public String getModuleName() {
         
-        return ModuleName;
+        return RobotModule.ModuleName;
     }
     
     @Override
     public String getModuleVersion() {
         
-        return ModuleVersion;
+        return RobotModule.ModuleVersion;
     }
     
     @Override
     public void robotInit() {
         
-        logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
+        RobotModule.logger =
+                new Logger("stronghold", Logger.ATTR_DEFAULT);
+
+        this.left = Registrar.victor(3);
+        this.left2 = Registrar.victor(1);
+        this.right = Registrar.victor(2);
+        this.right2 = Registrar.victor(0);
         
-        left = Registrar.victor(0);
-        left2 = Registrar.victor(1);
-        right = Registrar.victor(2);
-        right2 = Registrar.victor(3);
+        this.chassis = new DriveTrain(this.left, this.left2,
+                this.right, this.right2);
+
+        this.leftStick = new Joystick(1);
+        this.rightStick = new Joystick(0);
+        this.thirdStick = new Joystick(2);
         
-        chassis = new DriveTrain(left,left2, right,right2);
-      
-        leftStick = new Joystick(1);
-        rightStick = new Joystick(0);
-        thirdstick = new Joystick(2);
-        
-        driveStation = new UI(rightStick, thirdstick);
-        ult = new UltraSonic(1);
+        this.driveStation = new UI(this.rightStick);
+        this.ult = new UltraSonic(3);
+        arm = new Arm();
     }
     
     @Override
-    public void teleopInit(){
-    	
-    }
-    
-    @Override
-    public void teleopPeriodic(){
-    	double[] inputs = driveStation.getInputs();
-    	chassis.drive(inputs[0], inputs[1]);
-    	logger.info("Hello");
+    public void teleopInit() {
 
     }
     
     @Override
-    public void autonomousPeriodic(){
-    	
+    public void teleopPeriodic() {
+        double[] inputs = this.driveStation.getInputs();
+        this.chassis.drive(inputs[0], inputs[1]);
+        arm.Run();
+
     }
     
-    public void autonomousInit(){
-    	startTimer();
-    	
+    @Override
+    public void autonomousPeriodic() {
+
+    }
+    
+    @Override
+    public void autonomousInit() {
+        //Autonomous.startTimer();
+
     }
 }

@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team4215.stronghold.Autonomous;
 
 public class UI {
-    
+
     Command autoCom;
     SendableChooser autoChoose = new SendableChooser();
     private static final String LOWBAR = "Low Bar";
@@ -21,29 +21,29 @@ public class UI {
     private static final String CHOOSEAUTOMODE =
             "Choose Autonomous Mode";
     private Autonomous auto;
-    
+
     public void makeModes() {
         this.autoChoose.addObject(UI.LOWBAR, new Integer(1));
         this.autoChoose.addObject(UI.SPYBOT, new Integer(2));
         this.autoChoose.addObject(UI.CHIVALDEFRISE, new Integer(3));
         this.autoChoose.addObject(UI.PORTCULLIS, new Integer(4));
-        
+
         SmartDashboard.putData(UI.CHOOSEAUTOMODE, this.autoChoose);
         // DOES THE SD NEED TO PROMPT A QUESTION BOX?
-        
+
         Integer num = (Integer) this.autoChoose.getSelected();
         this.choose(num);
     }
-    
-    Joystick[] driveSticks = new Joystick[2];
+
+    ArrayList<Joystick> driveSticks = new  ArrayList<Joystick>();
     Joystick thirdstick;
-    
+
     public UI(Joystick leftStick_, Joystick rightStick_,
             Joystick thirdstick_, Victor leftmotor_,
             Victor rightmotor_, Victor rightmotor2_,
             Victor leftmotor2_, Victor intake_, Victor arm_) {
-        this.driveSticks[0] = leftStick_;
-        this.driveSticks[1] = rightStick_;
+        driveSticks.add(leftStick_);
+        driveSticks.add(rightStick_);
         this.thirdstick = thirdstick_;
         this.frontLeftMotor = leftmotor_;
         this.frontRightMotor = rightmotor_;
@@ -53,6 +53,20 @@ public class UI {
         this.arm = arm_;
     }
     
+    public UI(Joystick leftStick_,
+            Joystick thirdstick_, Victor leftmotor_,
+            Victor rightmotor_, Victor rightmotor2_,
+            Victor leftmotor2_, Victor intake_, Victor arm_) {
+        driveSticks.add(leftStick_);
+        this.thirdstick = thirdstick_;
+        this.frontLeftMotor = leftmotor_;
+        this.frontRightMotor = rightmotor_;
+        this.backLeftMotor = leftmotor2_;
+        this.backRightMotor = rightmotor2_;
+        this.intake = intake_;
+        this.arm = arm_;
+    }
+
     public void choose(int num) {
         this.auto.chooseAuto(num);
     }
@@ -60,27 +74,27 @@ public class UI {
     public void choose(Integer num) {
         this.choose(num.intValue());
     }
-    
+
     double[] getInputs() {
         double[] inputs = new double[2];
-        if (this.driveSticks.length == 1) {
-            inputs[0] = this.driveSticks[0].getRawAxis(1);
-            inputs[1] = this.driveSticks[0].getRawAxis(5);
+        if (this.driveSticks.size() == 1) {
+            inputs[0] = this.driveSticks.get(0).getRawAxis(1);
+            inputs[1] = this.driveSticks.get(0).getRawAxis(5);
         } else {
-            inputs[0] = this.driveSticks[0].getRawAxis(1);
-            inputs[1] = this.driveSticks[1].getRawAxis(1);
+            inputs[0] = this.driveSticks.get(0).getRawAxis(1);
+            inputs[1] = this.driveSticks.get(1).getRawAxis(1);
         }
         return inputs;
     }
-    
+
     public Joystick leftStick, rightStick;
     public String dashStr1, dashStr2, dashStr3, dashStr4, dashStr5;
     public Victor frontLeftMotor, backLeftMotor, backRightMotor,
             frontRightMotor, intake, arm;
-            
+
     public List<String> myVolts = new ArrayList<>();
     public List<Double> atVolts = new ArrayList<>();
-    
+
     public List<String> getVoltages() {
         String lMotor1 = String.valueOf(this.frontLeftMotor.get());
         String lMotor2 = String.valueOf(this.backLeftMotor.get());
@@ -92,16 +106,16 @@ public class UI {
         this.myVolts.add(rMotor2);
         return this.myVolts;
     }
-    
+
     public List<Double> getAttachmentsVoltages() {
         double inMotor = this.intake.get();
         double armMotor = this.arm.get();
         this.atVolts.add(inMotor);
         this.atVolts.add(armMotor);
         return this.atVolts;
-        
+
     }
-    
+
     public void giveMotorVoltages() {
         SmartDashboard.putString("Drive Motor 1",
                 "Leftmotor1 volts: " + this.myVolts.get(0));
@@ -113,15 +127,14 @@ public class UI {
                 "Rightmotor2 volts: " + this.myVolts.get(3));
         SmartDashboard.putNumber("Intake Motor", this.atVolts.get(0));
         SmartDashboard.putNumber("Arm Motor", this.atVolts.get(1));
-        
+
     }
-    
+
     public UI() {
     }
-    
-    public UI(Joystick left, Joystick right) {
+
+    public UI(Joystick left) {
         this();
-        this.leftStick = left;
-        this.rightStick = right;
+        driveSticks.add(left);
     }
 }

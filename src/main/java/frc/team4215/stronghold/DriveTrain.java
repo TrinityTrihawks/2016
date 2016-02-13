@@ -6,15 +6,15 @@ import edu.wpi.first.wpilibj.Victor;
 /**
  * This is used to control the drive-train
  *
- * @author waweros
+ * @author Waweru
  */
 public class DriveTrain {
-
+    
     Victor leftMotor;
     Victor rightMotor;
     Victor rightMotor2;
     Victor leftMotor2;
-
+    
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
         this.leftMotor = leftMotor_;
@@ -22,7 +22,7 @@ public class DriveTrain {
         this.leftMotor2 = leftMotor_2;
         this.rightMotor2 = rightMotor_2;
     }
-
+    
     /**
      * Set Drive train speed Inputs from -1 to 1
      *
@@ -40,13 +40,13 @@ public class DriveTrain {
          */
         leftSpeed = DriveTrain.scaling(leftSpeed);
         rightSpeed = DriveTrain.scaling(rightSpeed);
-
+        
         this.leftMotor.set(leftSpeed);
         this.leftMotor2.set(leftSpeed);
         this.rightMotor.set(rightSpeed);
         this.rightMotor2.set(rightSpeed);
     }
-
+    
     /**
      * Scaling because Victor does not response to volts less than 4%
      * either direction.
@@ -70,5 +70,5 @@ public class DriveTrain {
     public void drive(double speed) {
         this.drive(speed, speed);
     }
-
+    
 }

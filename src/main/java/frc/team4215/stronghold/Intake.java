@@ -3,6 +3,7 @@ package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
+import jaci.openrio.toast.lib.registry.Registrar;
 
 /**
  * <dl>
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.Victor;
  * @author James Yu
  */
 public class Intake {
-    
+
     /**
      * The Joystick used to control arms and the intake.
      */
@@ -36,7 +37,7 @@ public class Intake {
      */
     public Intake() {
         this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.intake = new Victor(Const.Motor.Num.Intake);
+        this.intake = Registrar.victor(Const.Motor.Num.Intake);
     }
     
     /**
@@ -44,18 +45,16 @@ public class Intake {
      */
     public void Run() {
         
-        if (this.gameCube.getRawButton(Const.JoyStick.Button.GameCube_A))
+        if (this.gameCube
+                .getRawButton(Const.JoyStick.Button.GameCube_A))
             this.intake.set(Const.Motor.Run.Forward);
-        else if (this.gameCube.getRawButton(Const.JoyStick.Button.GameCube_B))
+        else if (this.gameCube
+                .getRawButton(Const.JoyStick.Button.GameCube_B))
             this.intake.set(Const.Motor.Run.Backward);
-        else
-            this.intake.set(Const.Motor.Run.Stop);
+        else this.intake.set(Const.Motor.Run.Stop);
     }
     
-    /**
-     * For use of Autonomous
-     */
-    public void Autonomous() {
-    
+    public void set(double setValue) {
+        this.intake.set(setValue);
     }
 }
