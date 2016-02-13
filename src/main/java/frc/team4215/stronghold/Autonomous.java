@@ -21,7 +21,6 @@ public class Autonomous {
      * Sample rate, times/second.
      */
     private static final double SAMPLINGRATE = 20;
-    private javax.management.timer.Timer timer;
 
     // private Victor armMotor, intake;
 
