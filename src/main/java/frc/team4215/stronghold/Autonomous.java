@@ -254,22 +254,10 @@ public class Autonomous {
      */
     private void armLowerBottom() {
         arm.set(Constant.Shared.armDown);
-        Autonomous.delay(Constant.Shared.armMoveMaxTime);
+        Timer.delay(Constant.Shared.armMoveMaxTime);
         arm.set(Constant.Shared.armStop);
     }
 
-    /**
-     * to delay for some time. Need more info.
-     *
-     * @author James
-     * @param delayTime
-     *            delay time in seconds
-     */
-    private static void delay(double delayTime) {
-        // Just realized there is a delay thing in Timer. But I'd just
-        // stick to using Autonomous.delay.
-        edu.wpi.first.wpilibj.Timer.delay(delayTime);
-    }
 
     /**
      * to lift arm. Need more info
@@ -278,7 +266,7 @@ public class Autonomous {
      */
     private void armLifterTop() {
         arm.set(Constant.Shared.armUp);
-        Autonomous.delay(Constant.Shared.armMoveMaxTime);
+        Timer.delay(Constant.Shared.armMoveMaxTime);
         arm.set(Constant.Shared.armStop);
     }
 
@@ -307,7 +295,7 @@ public class Autonomous {
     private void driveStraight(double driveTime) {
         // command starts
         dT.drive(Const.Motor.Run.Forward);
-        Autonomous.delay(driveTime);
+        Timer.delay(driveTime);
         dT.drive(Const.Motor.Run.Stop);
     }
     
@@ -318,7 +306,7 @@ public class Autonomous {
      */
     private void throwBall() {
         intake.set(Const.Motor.Run.Forward);
-        Autonomous.delay(Constant.Shared.intakeDelay);
+        Timer.delay(Constant.Shared.intakeDelay);
         intake.set(Const.Motor.Run.Stop);
     }
 
@@ -392,7 +380,7 @@ public class Autonomous {
         double time1 = time.get();
         for (int count = 0; count < (Autonomous.AUTOTIME
                 * Autonomous.SAMPLINGRATE); count++) {
-        	delay(1 / Autonomous.SAMPLINGRATE);
+        	Timer.delay(1 / Autonomous.SAMPLINGRATE);
             double time2 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
 
