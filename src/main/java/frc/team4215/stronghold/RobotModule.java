@@ -44,20 +44,20 @@ public class RobotModule extends IterativeModule {
         RobotModule.logger =
                 new Logger("stronghold", Logger.ATTR_DEFAULT);
 
-        this.left = Registrar.victor(3);
-        this.left2 = Registrar.victor(1);
-        this.right = Registrar.victor(2);
-        this.right2 = Registrar.victor(0);
+        left = Registrar.victor(3);
+        left2 = Registrar.victor(1);
+        right = Registrar.victor(2);
+        right2 = Registrar.victor(0);
         
-        this.chassis = new DriveTrain(this.left, this.left2,
-                this.right, this.right2);
+        chassis = new DriveTrain(left, left2,
+                right, right2);
 
-        this.leftStick = new Joystick(1);
-        this.rightStick = new Joystick(0);
-        this.thirdStick = new Joystick(2);
+        leftStick = new Joystick(1);
+        rightStick = new Joystick(0);
+        thirdStick = new Joystick(2);
         
-        this.driveStation = new UI(this.rightStick);
-        this.ult = new UltraSonic(3);
+        driveStation = new UI(rightStick);
+        ult = new UltraSonic(3);
         arm = new Arm();
     }
     
@@ -68,8 +68,8 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void teleopPeriodic() {
-        double[] inputs = this.driveStation.getInputs();
-        this.chassis.drive(inputs[0], inputs[1]);
+        double[] inputs = driveStation.getInputs();
+        chassis.drive(inputs[0], inputs[1]);
         arm.Run();
 
     }

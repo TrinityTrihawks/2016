@@ -33,26 +33,26 @@ public class Autonomous {
     private Interface choiceAuto;
 
     public Autonomous(DriveTrain dT_) throws RobotException {
-        this.dT = dT_;
-        this.arm = new Arm();
-        this.intake = new Intake();
+        dT = dT_;
+        arm = new Arm();
+        intake = new Intake();
     }
 
     public void chooseAuto(int num) {
-        if (num == 1) this.choiceAuto = () -> this.autoLowBar();
+        if (num == 1) choiceAuto = () -> autoLowBar();
         else if (num == 2)
-            this.choiceAuto = () -> this.autoSpyBotLowGoal();
+            choiceAuto = () -> autoSpyBotLowGoal();
         else if (num == 3)
-            this.choiceAuto = () -> this.autoChevalDeFrise();
+            choiceAuto = () -> autoChevalDeFrise();
         else if (num == 4)
-            this.choiceAuto = () -> this.autoPortcullis();
-        else this.choiceAuto = null;
+            choiceAuto = () -> autoPortcullis();
+        else choiceAuto = null;
     }
 
     public void autoChoice() throws RobotException {
-        if (null != this.choiceAuto)
+        if (null != choiceAuto)
             throw new RobotException("There is not a method chosen.");
-        this.choiceAuto.runAuto();
+        choiceAuto.runAuto();
     }
 
     /* working variables */
@@ -68,29 +68,29 @@ public class Autonomous {
      */
     public double errorCompute() {
         // How long since we last calculated
-        double now = this.getTime();
-        double timeChange = now - this.lastTime;
+        double now = getTime();
+        double timeChange = now - lastTime;
 
         // Compute all the working error variables
-        double error = this.Setpoint - this.Input;
-        this.errSum += (error * timeChange);
-        double dErr = (error - this.lastErr) / timeChange;
+        double error = Setpoint - Input;
+        errSum += (error * timeChange);
+        double dErr = (error - lastErr) / timeChange;
 
         // Compute PID Output
-        this.Output = this.kp * error + this.ki * this.errSum
-                + this.kd * dErr;
+        Output = kp * error + ki * errSum
+                + kd * dErr;
 
         // Remember some variables for next time
-        this.lastErr = error;
-        this.lastTime = now;
+        lastErr = error;
+        lastTime = now;
 
-        return this.Output;
+        return Output;
     }
 
     void SetTunings(double Kp, double Ki, double Kd) {
-        this.kp = Kp;
-        this.ki = Ki;
-        this.kd = Kd;
+        kp = Kp;
+        ki = Ki;
+        kd = Kd;
     }
 
     /** 
@@ -175,7 +175,7 @@ public class Autonomous {
      * @author Jack Rausch
      */
     public double getTime() {
-        double currentTime = 0 ;//this.timer.get();
+        double currentTime = 0 ;//timer.get();
         return currentTime;
     }
 
@@ -260,9 +260,9 @@ public class Autonomous {
      * @author James
      */
     private void armLowerBottom() {
-        this.arm.set(Constant.Shared.armDown);
+        arm.set(Constant.Shared.armDown);
         Autonomous.delay(Constant.Shared.armMoveMaxTime);
-        this.arm.set(Constant.Shared.armStop);
+        arm.set(Constant.Shared.armStop);
     }
 
     /**
@@ -284,9 +284,9 @@ public class Autonomous {
      * @author James
      */
     private void armLifterTop() {
-        this.arm.set(Constant.Shared.armUp);
+        arm.set(Constant.Shared.armUp);
         Autonomous.delay(Constant.Shared.armMoveMaxTime);
-        this.arm.set(Constant.Shared.armStop);
+        arm.set(Constant.Shared.armStop);
     }
 
     /**
@@ -297,7 +297,7 @@ public class Autonomous {
      *            Meters of driving
      * @param PLACEHOLDER
      *            This is just a placeholder and does not do anything.
-     *            You can just use empty string "" for this.
+     *            You can just use empty string "" for 
      */
     private void driveStraight(double driveDistance,
             Object PLACEHOLDER) {
@@ -313,9 +313,9 @@ public class Autonomous {
      */
     private void driveStraight(double driveTime) {
         // command starts
-        this.dT.drive(Const.Motor.Run.Forward);
+        dT.drive(Const.Motor.Run.Forward);
         Autonomous.delay(driveTime);
-        this.dT.drive(Const.Motor.Run.Stop);
+        dT.drive(Const.Motor.Run.Stop);
     }
     
     /**
@@ -324,9 +324,9 @@ public class Autonomous {
      * @author James
      */
     private void throwBall() {
-        this.intake.set(Const.Motor.Run.Forward);
+        intake.set(Const.Motor.Run.Forward);
         Autonomous.delay(Constant.Shared.intakeDelay);
-        this.intake.set(Const.Motor.Run.Stop);
+        intake.set(Const.Motor.Run.Stop);
     }
 
     /**
@@ -335,8 +335,8 @@ public class Autonomous {
      * @author James
      */
     public void autoLowBar() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstLowBar.driveThroughDelay);
+        armLowerBottom();
+        driveStraight(Constant.ConstLowBar.driveThroughDelay);
     }
 
     /**
@@ -345,9 +345,9 @@ public class Autonomous {
      * @author James
      */
     public void autoSpyBotLowGoal() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstSpyBotLowGoal.driveToDelay);
-        this.throwBall();
+        armLowerBottom();
+        driveStraight(Constant.ConstSpyBotLowGoal.driveToDelay);
+        throwBall();
     }
 
     /**
@@ -356,9 +356,9 @@ public class Autonomous {
      * @author James
      */
     public void autoChevalDeFrise() {
-        this.driveStraight(Constant.ConstChevalDeFrise.driveToDelay);
-        this.armLowerBottom();
-        this.driveStraight(
+        driveStraight(Constant.ConstChevalDeFrise.driveToDelay);
+        armLowerBottom();
+        driveStraight(
                 Constant.ConstChevalDeFrise.driveThroughDelay);
     }
 
@@ -368,10 +368,10 @@ public class Autonomous {
      * @author James
      */
     public void autoPortcullis() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstPortcullis.driveDelay);
-        this.armLifterTop();
-        this.driveStraight(
+        armLowerBottom();
+        driveStraight(Constant.ConstPortcullis.driveDelay);
+        armLifterTop();
+        driveStraight(
                 Constant.ConstPortcullis.driveThroughDelay);
     }
 

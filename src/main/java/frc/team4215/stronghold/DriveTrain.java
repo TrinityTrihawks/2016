@@ -17,10 +17,10 @@ public class DriveTrain {
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
-        this.leftMotor = leftMotor_;
-        this.rightMotor = rightMotor_;
-        this.leftMotor2 = leftMotor_2;
-        this.rightMotor2 = rightMotor_2;
+        leftMotor = leftMotor_;
+        rightMotor = rightMotor_;
+        leftMotor2 = leftMotor_2;
+        rightMotor2 = rightMotor_2;
     }
     
     /**
@@ -41,10 +41,10 @@ public class DriveTrain {
         leftSpeed = DriveTrain.scaling(leftSpeed);
         rightSpeed = DriveTrain.scaling(rightSpeed);
         
-        this.leftMotor.set(leftSpeed);
-        this.leftMotor2.set(leftSpeed);
-        this.rightMotor.set(rightSpeed);
-        this.rightMotor2.set(rightSpeed);
+        leftMotor.set(leftSpeed);
+        leftMotor2.set(leftSpeed);
+        rightMotor.set(rightSpeed);
+        rightMotor2.set(rightSpeed);
     }
     
     /**
@@ -68,7 +68,7 @@ public class DriveTrain {
      * @param speed
      */
     public void drive(double speed) {
-        this.drive(speed, speed);
+        drive(speed, speed);
     }
     
 }
