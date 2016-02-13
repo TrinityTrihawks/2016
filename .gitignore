@@ -55,5 +55,8 @@ local.properties
 *.war
 *.ear
 
+# Link directly to ...../stronghold/ for Linux
+linkToCodeDir
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

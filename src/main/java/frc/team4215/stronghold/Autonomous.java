@@ -12,7 +12,7 @@ public class Autonomous {
     
     private static Thread threadPing;
     private static double distanceTraveled;
-    static Timer time = new Timer();
+    public static Timer time = new Timer();
     /**
      * Seconds of Autonomous period
      */
@@ -58,11 +58,11 @@ public class Autonomous {
     /* working variables */
     private static double lastTime;
     private static double Input; //Output;
-	private static double Setpoint;
+    private static double Setpoint;
     private static double errSum;  //lastErr
     //private double kp, ki, kd;
 
-    /**
+    /*
      * PID controller
      *
      * @author Jack Rausch
