@@ -1,6 +1,5 @@
 package frc.team4215.stronghold;
 
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -63,7 +62,7 @@ public class Autonomous {
     //private double kp, ki, kd;
 
     /*
-     * PID controller
+     *  Example PID controller
      *
      * @author Jack Rausch
      */
@@ -280,8 +279,7 @@ public class Autonomous {
      *            This is just a placeholder and does not do anything.
      *            You can just use empty string "" for 
      */
-    private void driveStraight(double driveDistance,
-            Object PLACEHOLDER) {
+    private void driveStraight(double driveDistance, Object PLACEHOLDER) {
         PLACEHOLDER = "";
     }
 
