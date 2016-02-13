@@ -384,9 +384,8 @@ public class Autonomous {
     	final double Ki;
     	
         double time1 = time.get();
-        for (int count = 0; count < (Autonomous.AUTOTIME
-                * Autonomous.SAMPLINGRATE); count++) {
-        	Timer.delay(1 / Autonomous.SAMPLINGRATE);
+        for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
+        	Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
 
