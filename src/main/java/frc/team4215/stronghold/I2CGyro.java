@@ -10,6 +10,7 @@ public class I2CGyro {
    
     static I2C gyro;
     static boolean gyroExiest;
+    static boolean pingFlag;
     
     static HardwareTimer hardTimer = new HardwareTimer();
     static Timer.Interface timer;
@@ -104,8 +105,15 @@ public class I2CGyro {
      public static void pingerStart(){
     	// Starts a thread to continually update our status variables
     	 Runnable pinger = () -> {
-    		while(true)
-    			pingGyro();
+    		 while(pingFlag){
+ 				pingGyro();
+ 				try {
+ 					Thread.sleep(700);
+ 				} catch (InterruptedException e) {
+ 					// TODO Auto-generated catch block
+ 					e.printStackTrace();
+ 				}
+ 			}
     	};
     	
     	threadPing = new Thread(pinger);
