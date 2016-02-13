@@ -12,6 +12,8 @@ public class Autonomous {
     
     private static Thread threadPing;
     private static double position;
+    static Timer accelerometerTime = new Timer();
+    Timer gyroTime = new Timer();
     /**
      * Seconds of Autonomous period
      */
@@ -396,19 +398,17 @@ public class Autonomous {
      */
     private static void I2CDistanceTraveled() {
 
-        Timer time = new Timer();
-
-        time.start();
+        accelerometerTime.start();
         for (int count = 0; count < (Autonomous.AUTOTIME
                 * Autonomous.SAMPLINGRATE); count++) {
             Autonomous.delay(1 / Autonomous.SAMPLINGRATE);
-            time.stop();
+            accelerometerTime.stop();
             double[] acceleration =
                     Autonomous.I2CAccelerometer_getAccel();
 
-            Autonomous.position += .5 * acceleration[0] * time.get();
-            time.reset();
-            time.start();
+            Autonomous.position += .5 * acceleration[0] * accelerometerTime.get();
+            accelerometerTime.reset();
+            accelerometerTime.start();
         }
     }
     
