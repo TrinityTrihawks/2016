@@ -56,9 +56,10 @@ public class Autonomous {
     }
 
     /* working variables */
-    private double lastTime;
-    private double Input, Setpoint; //Output;
-    private double errSum;  //lastErr
+    private static double lastTime;
+    private static double Input; //Output;
+	private static double Setpoint;
+    private static double errSum;  //lastErr
     //private double kp, ki, kd;
 
     /**
@@ -103,7 +104,7 @@ public class Autonomous {
      * 
      * @author Joey
      */
-    public double accelerometerPID(double accelerometerKp, double accelerometerKi){
+    public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
     	double now = time.get();
         double timeChange = now - lastTime;
@@ -113,12 +114,12 @@ public class Autonomous {
         errSum += (error * timeChange);
         
         //Sum errors
-        double accelerometerOutput = accelerometerKp * error + accelerometerKi * errSum;
+        double accelerometerError = accelerometerKp * error + accelerometerKi * errSum;
         
         //Reset time variable
         lastTime = now;
         
-        return accelerometerOutput;
+        return accelerometerError;
     }
     
     /**
@@ -293,9 +294,12 @@ public class Autonomous {
      */
     private void driveStraight(double driveTime) {
         // command starts
-        dT.drive(Const.Motor.Run.Forward);
-        Timer.delay(driveTime);
-        dT.drive(Const.Motor.Run.Stop);
+    	final double moveDistance = 1000;
+    	while (distanceTraveled < moveDistance){
+    		dT.drive(Const.Motor.Run.Forward);
+    	}
+
+    	dT.drive(Const.Motor.Run.Stop);
     }
     
     /**
@@ -376,6 +380,9 @@ public class Autonomous {
      */
     private static void I2CDistanceTraveled() {
 
+    	final double Kp;
+    	final double Ki;
+    	
         double time1 = time.get();
         for (int count = 0; count < (Autonomous.AUTOTIME
                 * Autonomous.SAMPLINGRATE); count++) {
@@ -383,7 +390,7 @@ public class Autonomous {
             double time2 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
 
-            distanceTraveled += .5 * acceleration[0] * (time2 - time1);
+            distanceTraveled += .5 * acceleration[0] * (time2 - time1); //- accelerometerPID(Kp, Ki); //Measured in inches
         }
     }
     
