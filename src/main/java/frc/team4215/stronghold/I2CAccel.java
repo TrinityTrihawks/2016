@@ -1,5 +1,7 @@
 package frc.team4215.stronghold;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -7,49 +9,98 @@ import edu.wpi.first.wpilibj.internal.HardwareTimer;
 public class I2CAccel {
 	static I2C accel;
 	
-	
+	static boolean pingFlag;
 	final static byte WHO_AM_I = 0x0F,
-			  CTRL_REG = 0x20,
+			  CTRL_REG = 0x1F,
 			  OUT_REG = 0x28;
-	static byte[] bufferData = new byte[6];
-	static int[] data = new int[6];
+        	
+	static byte[] buffL = new byte[1], buffH = new byte[1], ID = new byte[1];
+	static byte[] buffer2 = new byte[2];
+	public static int accelX, accelY, accelZ;
 	static Thread pingerThread;
 	
 	static public void initAccel(){
 		accel = new I2C(I2C.Port.kOnboard, 0x1D);
+		// Accelerometer
+		accel.write(CTRL_REG, 0x00);
+		accel.write(CTRL_REG+1, 0x57);
+		accel.write(CTRL_REG+2, 0x00);
+		accel.write(CTRL_REG+3, 0x04);
+		accel.write(CTRL_REG+4, 0x04);
+		accel.write(CTRL_REG+5, 0x14);
+		accel.write(CTRL_REG+6, 0x00);
+		accel.write(CTRL_REG+7, 0x00);
+		accel.read(WHO_AM_I, 1, ID);
+		RobotModule.logger.info("ID :" + ID[0]);
 		
 	}
 	
 	static public void pingAccel(){
-		accel.read(OUT_REG,6,bufferData);
+		accel.read(OUT_REG,1,buffL);
+		accel.read(OUT_REG+1,1,buffH);
+		accelX = concatCorrect(buffH[0], buffL[0]);
+		//accelX = normalize(buffL[0],buffH[0]);
 		
-		for(int i = 0; i < bufferData.length;i++){
-			String tmp = Integer.toBinaryString(bufferData[i]);
-			
-			if(tmp.length() == 32){
-				tmp = tmp.substring(23);
-				RobotModule.logger.error("It's  doing it again!!");
-			}
-			else if(tmp.length() != 32 && tmp.length() > 8){
-				RobotModule.logger.error("It's got " + tmp.length() + " bits!!!");
-			}
-			
-			data[i] = Integer.valueOf(tmp, 2);
-		}
+		accel.read(OUT_REG+2,1,buffL);
+		accel.read(OUT_REG+3,1,buffH);
+		accelY = concatCorrect(buffH[0], buffL[0]);
+		//accelY = normalize(buffL[0],buffH[0]);
+		
+		accel.read(OUT_REG+4,1,buffL);
+		accel.read(OUT_REG+5,1,buffH);
+		accelZ = concatCorrect(buffH[0], buffL[0]);
+		//accelZ = normalize(buffL[0],buffH[0]);
+		/*
+		ByteBuffer rawData = ByteBuffer.wrap(bufferData);
+		rawData.order(ByteOrder.BIG_ENDIAN);
+		
+		accelX = (int) rawData.getShort();
+		accelY = (int) rawData.getShort();
+		accelZ = (int) rawData.getShort();
+		*/
+		 
+		
 	}
-	
+
+	static public int concatCorrect(byte h, byte l){
+		int high = Byte.toUnsignedInt(h);
+		int low = Byte.toUnsignedInt(l);
+        String concat = Integer.toHexString(high) + Integer.toHexString(low);
+        int preCheck = Integer.valueOf(concat,16);
+        return (preCheck > 32767) ? preCheck - 65536: preCheck;
+
+	}
+
+	static public int normalize(byte h, byte l){
+		
+		int high = Byte.toUnsignedInt(h);
+		int low = Byte.toUnsignedInt(l);
+		
+		int val = (high << 8) | low;
+		
+		return (val > 32767) ? val - 65536: val;
+	}
 	static public void pingerStart(){
 		Runnable pinger = ()  -> {
-			while(true)
+			while(pingFlag){
 				pingAccel();
+				try {
+					Thread.sleep(700);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		};
 		
 		pingerThread = new Thread(pinger);
+		pingFlag = true;
 		pingerThread.start();
 		
 	}
 	
-	static public int[] getAccel(){
-		return data;
+	static public void pingerStop(){
+		pingFlag = false;
 	}
+	
 }
