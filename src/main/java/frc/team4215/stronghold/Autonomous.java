@@ -58,9 +58,9 @@ public class Autonomous {
 
     /* working variables */
     private double lastTime;
-    private double Input, Output, Setpoint;
-    private double errSum, lastErr;
-    private double kp, ki, kd;
+    private double Input, Setpoint; //Output;
+    private double errSum;  //lastErr
+    //private double kp, ki, kd;
 
     /**
      * PID controller
@@ -391,11 +391,11 @@ public class Autonomous {
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
-                Autonomous.I2CAccelerometer_getAccel();
+                I2CAccelerometer_getAccel();
         };
 
-        Autonomous.threadPing = new Thread(pinger);
-        Autonomous.threadPing.start();
+        threadPing = new Thread(pinger);
+        threadPing.start();
 
     }
 
