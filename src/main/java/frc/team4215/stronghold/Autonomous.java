@@ -390,7 +390,7 @@ public class Autonomous {
             double time2 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
 
-            distanceTraveled += .5 * acceleration[0] * (time2 - time1); //- accelerometerPID(Kp, Ki); //Measured in inches
+            distanceTraveled += .5 * acceleration[0] * ((time2 - time1)*(time2 - time1)); //- accelerometerPID(Kp, Ki); //Measured in inches
         }
     }
     
