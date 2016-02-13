@@ -12,6 +12,7 @@ public class RobotModule extends IterativeModule {
     private Victor left, right, left2, right2;
     
     private DriveTrain chassis;
+    private Arm arm;
     
     private Joystick leftStick, rightStick, thirdStick;
 
@@ -43,10 +44,10 @@ public class RobotModule extends IterativeModule {
         RobotModule.logger =
                 new Logger("stronghold", Logger.ATTR_DEFAULT);
 
-        this.left = Registrar.victor(0);
+        this.left = Registrar.victor(3);
         this.left2 = Registrar.victor(1);
         this.right = Registrar.victor(2);
-        this.right2 = Registrar.victor(3);
+        this.right2 = Registrar.victor(0);
         
         this.chassis = new DriveTrain(this.left, this.left2,
                 this.right, this.right2);
@@ -55,8 +56,9 @@ public class RobotModule extends IterativeModule {
         this.rightStick = new Joystick(0);
         this.thirdStick = new Joystick(2);
         
-        this.driveStation = new UI(this.rightStick, this.thirdStick);
-        this.ult = new UltraSonic(1);
+        this.driveStation = new UI(this.rightStick);
+        this.ult = new UltraSonic(3);
+        arm = new Arm();
     }
     
     @Override
@@ -68,7 +70,7 @@ public class RobotModule extends IterativeModule {
     public void teleopPeriodic() {
         double[] inputs = this.driveStation.getInputs();
         this.chassis.drive(inputs[0], inputs[1]);
-        RobotModule.logger.info("Hello");
+        arm.Run();
 
     }
     
@@ -79,7 +81,7 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit() {
-        Autonomous.startTimer();
+        //Autonomous.startTimer();
 
     }
 }
