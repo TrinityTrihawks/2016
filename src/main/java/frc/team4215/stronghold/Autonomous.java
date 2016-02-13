@@ -87,14 +87,14 @@ public class Autonomous {
 
     	return Output;
     }
-    //DO NOT DELETE THIS CODE!!!!!!!
-    */
 
     void SetTunings(double Kp, double Ki, double Kd) {
         kp = Kp;
         ki = Ki;
         kd = Kd;
     }
+    // DO NOT DELETE THIS CODE EVER!!!!!
+    */
 
     /** 
      * PID controller implementation for accelerometer
