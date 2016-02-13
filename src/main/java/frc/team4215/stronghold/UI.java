@@ -35,15 +35,29 @@ public class UI {
         this.choose(num);
     }
 
-    Joystick[] driveSticks = new Joystick[2];
+    ArrayList<Joystick> driveSticks = new  ArrayList<Joystick>();
     Joystick thirdstick;
 
     public UI(Joystick leftStick_, Joystick rightStick_,
             Joystick thirdstick_, Victor leftmotor_,
             Victor rightmotor_, Victor rightmotor2_,
             Victor leftmotor2_, Victor intake_, Victor arm_) {
-        this.driveSticks[0] = leftStick_;
-        this.driveSticks[1] = rightStick_;
+        driveSticks.add(leftStick_);
+        driveSticks.add(rightStick_);
+        this.thirdstick = thirdstick_;
+        this.frontLeftMotor = leftmotor_;
+        this.frontRightMotor = rightmotor_;
+        this.backLeftMotor = leftmotor2_;
+        this.backRightMotor = rightmotor2_;
+        this.intake = intake_;
+        this.arm = arm_;
+    }
+    
+    public UI(Joystick leftStick_,
+            Joystick thirdstick_, Victor leftmotor_,
+            Victor rightmotor_, Victor rightmotor2_,
+            Victor leftmotor2_, Victor intake_, Victor arm_) {
+        driveSticks.add(leftStick_);
         this.thirdstick = thirdstick_;
         this.frontLeftMotor = leftmotor_;
         this.frontRightMotor = rightmotor_;
@@ -63,12 +77,12 @@ public class UI {
 
     double[] getInputs() {
         double[] inputs = new double[2];
-        if (this.driveSticks.length == 1) {
-            inputs[0] = this.driveSticks[0].getRawAxis(1);
-            inputs[1] = this.driveSticks[0].getRawAxis(5);
+        if (this.driveSticks.size() == 1) {
+            inputs[0] = this.driveSticks.get(0).getRawAxis(1);
+            inputs[1] = this.driveSticks.get(0).getRawAxis(5);
         } else {
-            inputs[0] = this.driveSticks[0].getRawAxis(1);
-            inputs[1] = this.driveSticks[1].getRawAxis(1);
+            inputs[0] = this.driveSticks.get(0).getRawAxis(1);
+            inputs[1] = this.driveSticks.get(1).getRawAxis(1);
         }
         return inputs;
     }
@@ -119,9 +133,8 @@ public class UI {
     public UI() {
     }
 
-    public UI(Joystick left, Joystick right) {
+    public UI(Joystick left) {
         this();
-        this.leftStick = left;
-        this.rightStick = right;
+        driveSticks.add(left);
     }
 }
