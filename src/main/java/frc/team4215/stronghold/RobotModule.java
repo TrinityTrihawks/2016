@@ -57,8 +57,8 @@ public class RobotModule extends IterativeModule {
         
         driveStation = new UI(rightStick, thirdstick);
         ult = new UltraSonic(3);
-        I2CGyro.initGyro();
-        I2CGyro.pingerStart();
+        // I2CGyro.initGyro();
+        // I2CGyro.pingerStart();
         I2CAccel.initAccel();
         I2CAccel.pingerStart();
         
@@ -75,13 +75,15 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     	*/
-    	int[] accels = I2CAccel.getAccel();
-    	
-    	logger.info(Integer.toHexString(((int) accels[0])) + " ," 
-    				+ Integer.toHexString((int) accels[0]) + " ," 
-    				+ Integer.toHexString((int) accels[0]));
+    	//I2CAccel.pingAccel();
+    	logger.info(I2CAccel.accelX + " ," 
+    				+ I2CAccel.accelY + " ," 
+    				+ I2CAccel.accelZ);
     }
-    
+    @Override
+    public void disabledInit(){
+    	I2CAccel.pingerStop();
+    }
     @Override
     public void autonomousPeriodic(){
     	
