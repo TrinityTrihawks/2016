@@ -49,15 +49,13 @@ public class Arm {
      */
     public void Run() {
 
-        this.armMotor1.set(this.gameCube
-                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
-        this.armMotor2.set(this.gameCube
-                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        this.armMotor1.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
+        this.armMotor2.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
         return;
     }
     
     public void set(double setValue) {
-        this.armMotor1.set(setValue);
-        this.armMotor2.set(setValue);
+        this.armMotor1.set(Math.pow(setValue,16));
+        this.armMotor2.set(Math.pow(setValue,16));
     }
 }
