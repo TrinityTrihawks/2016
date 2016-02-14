@@ -1,6 +1,5 @@
 package frc.team4215.stronghold;
 
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -11,7 +10,8 @@ import edu.wpi.first.wpilibj.Timer;
 public class Autonomous {
     
     private static Thread threadPing;
-    private static double position;
+    private static double distanceTraveled;
+    public static Timer time = new Timer();
     /**
      * Seconds of Autonomous period
      */
@@ -20,7 +20,6 @@ public class Autonomous {
      * Sample rate, times/second.
      */
     private static final double SAMPLINGRATE = 20;
-    private javax.management.timer.Timer timer;
 
     // private Victor armMotor, intake;
 
@@ -33,65 +32,68 @@ public class Autonomous {
     private Interface choiceAuto;
 
     public Autonomous(DriveTrain dT_) throws RobotException {
-        this.dT = dT_;
-        this.arm = new Arm();
-        this.intake = new Intake();
+        dT = dT_;
+        arm = new Arm();
+        intake = new Intake();
     }
 
     public void chooseAuto(int num) {
-        if (num == 1) this.choiceAuto = () -> this.autoLowBar();
+        if (num == 1) choiceAuto = () -> autoLowBar();
         else if (num == 2)
-            this.choiceAuto = () -> this.autoSpyBotLowGoal();
+            choiceAuto = () -> autoSpyBotLowGoal();
         else if (num == 3)
-            this.choiceAuto = () -> this.autoChevalDeFrise();
+            choiceAuto = () -> autoChevalDeFrise();
         else if (num == 4)
-            this.choiceAuto = () -> this.autoPortcullis();
-        else this.choiceAuto = null;
+            choiceAuto = () -> autoPortcullis();
+        else choiceAuto = null;
     }
 
     public void autoChoice() throws RobotException {
-        if (null != this.choiceAuto)
+        if (null != choiceAuto)
             throw new RobotException("There is not a method chosen.");
-        this.choiceAuto.runAuto();
+        choiceAuto.runAuto();
     }
 
     /* working variables */
-    private double lastTime;
-    private double Input, Output, Setpoint;
-    private double errSum, lastErr;
-    private double kp, ki, kd;
+    private static double lastTime;
+    private static double Input; //Output;
+    private static double Setpoint;
+    private static double errSum;  //lastErr
+    //private double kp, ki, kd;
 
-    /**
-     * PID controller
+    /*
+     *  Example PID controller
      *
      * @author Jack Rausch
      */
-    public double errorCompute() {
-        // How long since we last calculated
-        double now = this.getTime();
-        double timeChange = now - this.lastTime;
+/*    public double errorCompute() {
+    	// How long since we last calculated
+    	double now = time.get();
+    	double timeChange = now - lastTime;
 
-        // Compute all the working error variables
-        double error = this.Setpoint - this.Input;
-        this.errSum += (error * timeChange);
-        double dErr = (error - this.lastErr) / timeChange;
+    	// Compute all the working error variables
+    	double error = Setpoint - Input;
+    	errSum += (error * timeChange);
+    	double dErr = (error - lastErr) / timeChange;
 
-        // Compute PID Output
-        this.Output = this.kp * error + this.ki * this.errSum
-                + this.kd * dErr;
+    	// Compute PID Output
+    	Output = kp * error + ki * errSum
+    			+ kd * dErr;
 
-        // Remember some variables for next time
-        this.lastErr = error;
-        this.lastTime = now;
+    	// Remember some variables for next time
+    	lastErr = error;
+    	lastTime = now;
 
-        return this.Output;
+    	return Output;
     }
 
     void SetTunings(double Kp, double Ki, double Kd) {
-        this.kp = Kp;
-        this.ki = Ki;
-        this.kd = Kd;
+        kp = Kp;
+        ki = Ki;
+        kd = Kd;
     }
+    // DO NOT DELETE THIS CODE EVER!!!!!
+    */
 
     /** 
      * PID controller implementation for accelerometer
@@ -101,9 +103,9 @@ public class Autonomous {
      * 
      * @author Joey
      */
-    public double accelerometerPID(double accelerometerKp, double accelerometerKi){
+    public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
-    	double now = getTime();
+    	double now = time.get();
         double timeChange = now - lastTime;
         
         //Calculate error variables
@@ -111,12 +113,12 @@ public class Autonomous {
         errSum += (error * timeChange);
         
         //Sum errors
-        double accelerometerOutput = accelerometerKp * error + accelerometerKi * errSum;
+        double accelerometerError = accelerometerKp * error + accelerometerKi * errSum;
         
         //Reset time variable
         lastTime = now;
         
-        return accelerometerOutput;
+        return accelerometerError;
     }
     
     /**
@@ -128,7 +130,7 @@ public class Autonomous {
      */
     public double gyroPID(double gyroKp, double gyroKi){
     	// Time since last calculation
-    	double now = getTime();
+    	double now = time.get();
         double timeChange = now - lastTime;
         
         //Calculate error variables
@@ -152,9 +154,11 @@ public class Autonomous {
      *            double value
      * @author Jack Rausch
      */
-    public void setSetpoint(double defSetpoint) {
-        this.Setpoint = defSetpoint;
-    }
+     public static void setSetpoint(double defSetpoint){
+    	double Setpoint = defSetpoint;
+    	}
+
+    
 
     /**
      * Timer method integrating the Timer class from wpilibj. USE THIS
@@ -162,20 +166,10 @@ public class Autonomous {
      *
      * @author Jack Rausch
      */
-    public void startTimer() {
-        this.timer.start();
+    public static void startTimer() {
+        time.start();
     }
 
-    /**
-     * Called to retrieve the Time from previously defined method
-     * "startTimer"
-     *
-     * @author Jack Rausch
-     */
-    public double getTime() {
-        double currentTime = 0 ;//this.timer.get();
-        return currentTime;
-    }
 
     /**
      * All constants.
@@ -258,23 +252,11 @@ public class Autonomous {
      * @author James
      */
     private void armLowerBottom() {
-        this.arm.set(Constant.Shared.armDown);
-        Autonomous.delay(Constant.Shared.armMoveMaxTime);
-        this.arm.set(Constant.Shared.armStop);
+        arm.set(Constant.Shared.armDown);
+        Timer.delay(Constant.Shared.armMoveMaxTime);
+        arm.set(Constant.Shared.armStop);
     }
 
-    /**
-     * to delay for some time. Need more info.
-     *
-     * @author James
-     * @param delayTime
-     *            delay time in seconds
-     */
-    private static void delay(double delayTime) {
-        // Just realized there is a delay thing in Timer. But I'd just
-        // stick to using Autonomous.delay.
-        edu.wpi.first.wpilibj.Timer.delay(delayTime);
-    }
 
     /**
      * to lift arm. Need more info
@@ -282,9 +264,9 @@ public class Autonomous {
      * @author James
      */
     private void armLifterTop() {
-        this.arm.set(Constant.Shared.armUp);
-        Autonomous.delay(Constant.Shared.armMoveMaxTime);
-        this.arm.set(Constant.Shared.armStop);
+        arm.set(Constant.Shared.armUp);
+        Timer.delay(Constant.Shared.armMoveMaxTime);
+        arm.set(Constant.Shared.armStop);
     }
 
     /**
@@ -295,10 +277,9 @@ public class Autonomous {
      *            Meters of driving
      * @param PLACEHOLDER
      *            This is just a placeholder and does not do anything.
-     *            You can just use empty string "" for this.
+     *            You can just use empty string "" for 
      */
-    private void driveStraight(double driveDistance,
-            Object PLACEHOLDER) {
+    private void driveStraight(double driveDistance, Object PLACEHOLDER) {
         PLACEHOLDER = "";
     }
 
@@ -311,9 +292,12 @@ public class Autonomous {
      */
     private void driveStraight(double driveTime) {
         // command starts
-        this.dT.drive(Const.Motor.Run.Forward);
-        Autonomous.delay(driveTime);
-        this.dT.drive(Const.Motor.Run.Stop);
+    	final double moveDistance = 1000;
+    	while (distanceTraveled < moveDistance){
+    		dT.drive(Const.Motor.Run.Forward);
+    	}
+
+    	dT.drive(Const.Motor.Run.Stop);
     }
     
     /**
@@ -322,9 +306,9 @@ public class Autonomous {
      * @author James
      */
     private void throwBall() {
-        this.intake.set(Const.Motor.Run.Forward);
-        Autonomous.delay(Constant.Shared.intakeDelay);
-        this.intake.set(Const.Motor.Run.Stop);
+        intake.set(Const.Motor.Run.Forward);
+        Timer.delay(Constant.Shared.intakeDelay);
+        intake.set(Const.Motor.Run.Stop);
     }
 
     /**
@@ -333,8 +317,8 @@ public class Autonomous {
      * @author James
      */
     public void autoLowBar() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstLowBar.driveThroughDelay);
+        armLowerBottom();
+        driveStraight(Constant.ConstLowBar.driveThroughDelay);
     }
 
     /**
@@ -343,9 +327,9 @@ public class Autonomous {
      * @author James
      */
     public void autoSpyBotLowGoal() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstSpyBotLowGoal.driveToDelay);
-        this.throwBall();
+        armLowerBottom();
+        driveStraight(Constant.ConstSpyBotLowGoal.driveToDelay);
+        throwBall();
     }
 
     /**
@@ -354,9 +338,9 @@ public class Autonomous {
      * @author James
      */
     public void autoChevalDeFrise() {
-        this.driveStraight(Constant.ConstChevalDeFrise.driveToDelay);
-        this.armLowerBottom();
-        this.driveStraight(
+        driveStraight(Constant.ConstChevalDeFrise.driveToDelay);
+        armLowerBottom();
+        driveStraight(
                 Constant.ConstChevalDeFrise.driveThroughDelay);
     }
 
@@ -366,10 +350,10 @@ public class Autonomous {
      * @author James
      */
     public void autoPortcullis() {
-        this.armLowerBottom();
-        this.driveStraight(Constant.ConstPortcullis.driveDelay);
-        this.armLifterTop();
-        this.driveStraight(
+        armLowerBottom();
+        driveStraight(Constant.ConstPortcullis.driveDelay);
+        armLifterTop();
+        driveStraight(
                 Constant.ConstPortcullis.driveThroughDelay);
     }
 
@@ -394,30 +378,27 @@ public class Autonomous {
      */
     private static void I2CDistanceTraveled() {
 
-        Timer time = new Timer();
+    	final double Kp;
+    	final double Ki;
+    	
+        double time1 = time.get();
+        for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
+        	Timer.delay(1 / SAMPLINGRATE);
+            double time2 = time.get();
+            double[] acceleration = I2CAccelerometer_getAccel();
 
-        time.start();
-        for (int count = 0; count < (Autonomous.AUTOTIME
-                * Autonomous.SAMPLINGRATE); count++) {
-            Autonomous.delay(1 / Autonomous.SAMPLINGRATE);
-            time.stop();
-            double[] acceleration =
-                    Autonomous.I2CAccelerometer_getAccel();
-
-            Autonomous.position += .5 * acceleration[0] * time.get();
-            time.reset();
-            time.start();
+            distanceTraveled += .5 * acceleration[0] * ((time2 - time1)*(time2 - time1)); //- accelerometerPID(Kp, Ki); //Measured in inches
         }
     }
     
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
-                Autonomous.I2CAccelerometer_getAccel();
+                I2CAccelerometer_getAccel();
         };
 
-        Autonomous.threadPing = new Thread(pinger);
-        Autonomous.threadPing.start();
+        threadPing = new Thread(pinger);
+        threadPing.start();
 
     }
 
