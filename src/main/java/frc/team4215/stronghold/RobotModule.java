@@ -56,7 +56,7 @@ public class RobotModule extends IterativeModule {
         this.rightStick = new Joystick(0);
         this.thirdStick = new Joystick(2);
         
-        this.driveStation = new UI(this.rightStick);
+        this.driveStation = new UI(rightStick,thirdStick);
         this.ult = new UltraSonic(3);
         arm = new Arm();
     }
@@ -68,10 +68,10 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void teleopPeriodic() {
-        double[] inputs = this.driveStation.getInputs();
-        this.chassis.drive(inputs[0], inputs[1]);
-        arm.Run();
-
+        double[] inputs = driveStation.getDriveInputs();
+        chassis.drive(inputs[0], inputs[1]);
+        //double[] armInput = driveStation.getArmInput();
+        //arm.set(armInput[0]);
     }
     
     @Override

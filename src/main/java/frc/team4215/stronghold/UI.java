@@ -75,7 +75,7 @@ public class UI {
         this.choose(num.intValue());
     }
 
-    double[] getInputs() {
+    double[] getDriveInputs() {
         double[] inputs = new double[2];
         if (this.driveSticks.size() == 1) {
             inputs[0] = this.driveSticks.get(0).getRawAxis(1);
@@ -85,6 +85,10 @@ public class UI {
             inputs[1] = this.driveSticks.get(1).getRawAxis(1);
         }
         return inputs;
+    }
+    
+    double[] getArmInput(){
+    	return new double[] { thirdstick.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD)};
     }
 
     public Joystick leftStick, rightStick;
@@ -133,8 +137,9 @@ public class UI {
     public UI() {
     }
 
-    public UI(Joystick left) {
+    public UI(Joystick left, Joystick thirdstick) {
         this();
         driveSticks.add(left);
+        this.thirdstick = thirdstick;
     }
 }

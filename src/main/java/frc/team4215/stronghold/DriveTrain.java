@@ -41,8 +41,8 @@ public class DriveTrain {
         leftSpeed = DriveTrain.scaling(leftSpeed);
         rightSpeed = DriveTrain.scaling(rightSpeed);
         
-        this.leftMotor.set(leftSpeed);
-        this.leftMotor2.set(leftSpeed);
+        this.leftMotor.set(-leftSpeed);
+        this.leftMotor2.set(-leftSpeed);
         this.rightMotor.set(rightSpeed);
         this.rightMotor2.set(rightSpeed);
     }
