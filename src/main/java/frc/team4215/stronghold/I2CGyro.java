@@ -42,7 +42,6 @@ public class I2CGyro {
        gyro.write(CTRL_REG+4, 0x00);
        
        boolean worked = gyro.read(WHO_AM_I, 1, ID);
-       ID[0] = normalize(ID[0]);
        
        if(ID[0] == 0xD4){
     	   RobotModule.logger.info("Gyro active!");
@@ -89,7 +88,7 @@ public class I2CGyro {
     		byte gL = dataBuffer[0];
     		gyro.read(OUT_REG+i+1, 1, dataBuffer);
     		byte gH = dataBuffer[0];
-    		angularSpeed[i] = concatCorrect(gL,gH);
+    		angularSpeed[i] = normalize(gL,gH);
     	}
     	
     	double cX, cY, cZ;
@@ -118,9 +117,15 @@ public class I2CGyro {
     	threadPing.start();
     }
      
-    public static byte normalize(byte in){
-    	return (byte) ((byte) 0x00FF & in);
-    }
+     static public int normalize(byte h, byte l){
+ 		
+ 		int high = Byte.toUnsignedInt(h);
+ 		int low = Byte.toUnsignedInt(l);
+ 		
+ 		int val = (high << 8) | low;
+ 		
+ 		return (val > 32767) ? val - 65536: val;
+ 	}
     
     static public int concatCorrect(byte h, byte l){
 		int high = Byte.toUnsignedInt(h);

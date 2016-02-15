@@ -40,7 +40,7 @@ public class I2CAccel {
 		for(int i = 0; i < 3; i++){
 			accel.read(OUT_REG+i,1,buffL);
 			accel.read(OUT_REG+i+1,1,buffH);
-			accelVal[i] = concatCorrect(buffH[0], buffL[0]);;
+			accelVal[i] = normalize(buffH[0], buffL[0]);;
 		}
 		
 		//accelZ = normalize(buffL[0],buffH[0]);
