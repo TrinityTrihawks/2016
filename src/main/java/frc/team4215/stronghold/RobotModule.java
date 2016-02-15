@@ -43,15 +43,14 @@ public class RobotModule extends IterativeModule {
     public void robotInit() {
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
         
-        /*
+        
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
-        */
+        
         chassis = new DriveTrain(left,left2, right,right2);
       
-        // leftStick = new Joystick(1);
         rightStick = new Joystick(1);
         thirdstick = new Joystick(2);
         
@@ -75,10 +74,10 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     	*/
-    	//I2CAccel.pingAccel();
-    	logger.info(I2CAccel.accelX + " ," 
-    				+ I2CAccel.accelY + " ," 
-    				+ I2CAccel.accelZ);
+    	int[] accel = I2CAccel.getAccel();
+    	logger.info(accel[0] + " ," 
+    				+ accel[1] + " ," 
+    				+ accel[2]);
     }
     @Override
     public void disabledInit(){
