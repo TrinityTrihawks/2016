@@ -38,8 +38,8 @@ public class DriveTrain {
          * The scaling part is moved into a new function to simplify
          * the code. - James
          */
-        leftSpeed = DriveTrain.scaling(leftSpeed);
-        rightSpeed = DriveTrain.scaling(rightSpeed);
+        leftSpeed = scaling(leftSpeed);
+        rightSpeed = scaling(rightSpeed);
         
         leftMotor.set(-leftSpeed);
         leftMotor2.set(-leftSpeed);
@@ -55,7 +55,7 @@ public class DriveTrain {
      * @return scaled speed
      */
     private static double scaling(double speed) {
-        if (Math.abs(speed) == 0) return 0d;
+        if (speed == 0) return 0d;
         else return Math.signum(speed)
                 * ((Math.abs(speed) * .96) + .04);
     }
