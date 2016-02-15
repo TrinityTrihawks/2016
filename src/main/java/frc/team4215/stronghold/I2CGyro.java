@@ -20,9 +20,10 @@ public class I2CGyro {
     				  OUT_REG = 0x28;
     
     private static double[] angles;
-    
+    private static double offsetX,offsetY, offsetZ;
+    private static int numOfCalibPings = 100;
     static byte[] ID = new byte[1],
-    			  dataBuffer = new byte[6];
+    			  dataBuffer = new byte[1];
     
     static private Thread threadPing;
     
@@ -73,8 +74,8 @@ public class I2CGyro {
     
      public static void pingGyro(){
     	
-    	double time = timer.get();
-    	gyro.read(OUT_REG, 1, dataBuffer);
+    	double deltat = timer.get();
+    	int[] angularSpeed = new int[3]; 
     	
     	/*
     	 * The velocities are stored in registers 0x28-0x2D.
@@ -83,23 +84,20 @@ public class I2CGyro {
     	 * second being the right half.
     	 */
     	
-    	for(int i = 0; i < dataBuffer.length; i++){
-    		dataBuffer[i] = normalize(dataBuffer[i]);
+    	for(int i = 0; i < angularSpeed.length; i++){
+    		gyro.read(OUT_REG+i, 1, dataBuffer);
+    		byte gL = dataBuffer[0];
+    		gyro.read(OUT_REG+i+1, 1, dataBuffer);
+    		byte gH = dataBuffer[0];
+    		angularSpeed[i] = concatCorrect(gL,gH);
     	}
     	
     	double cX, cY, cZ;
-    	cX = ((dataBuffer[1] << 8 | 0xFF & dataBuffer[0]));
-    	cY = ((dataBuffer[3] << 8 | 0xFF & dataBuffer[2]));
-    	cZ = ((dataBuffer[5] << 8 | 0xFF & dataBuffer[4]));
-    	/*
-    	if(cX > 32767);
-    		cX -= 65536;
-    	if(cY > 32767)
-    		cY -= 65536;
-    	if(cZ > 32767)
-    		cZ -= 65536;
-    	*/
-    	angles = new double[] {dataBuffer[0], 0, 0};
+    	cX = angles[0] + (angularSpeed[0] - offsetX)*deltat;
+    	cY = angles[1] + (angularSpeed[1] - offsetY)*deltat;
+    	cZ = angles[2] + (angularSpeed[2] - offsetZ)*deltat;
+    	
+    	angles = new double[] {cX % 360, cY  % 360, cZ % 360};
     }
     
      public static void pingerStart(){
@@ -124,12 +122,34 @@ public class I2CGyro {
     	return (byte) ((byte) 0x00FF & in);
     }
     
+    static public int concatCorrect(byte h, byte l){
+		int high = Byte.toUnsignedInt(h);
+		int low = Byte.toUnsignedInt(l);
+        String concat = Integer.toHexString(high) + Integer.toHexString(low);
+        int preCheck = Integer.valueOf(concat,16);
+        return (preCheck > 32767) ? preCheck - 65536: preCheck;
+
+	}
+    
     public static void calibrate(){
-    	for(int i = 0; i < 100; i++){
+    	
+    	double totalSumX = 0;
+    	double totalSumY = 0;
+    	double totalSumZ = 0;
+    	
+    	for(int i = 0; i < numOfCalibPings; i++){
     		pingGyro();
-    		
+    		totalSumX += angles[0];
+    		totalSumY += angles[1];
+    		totalSumZ += angles[2];
     	}
+    	
+    	offsetX = totalSumX/numOfCalibPings;
+    	offsetY = totalSumY/numOfCalibPings;
+    	offsetZ = totalSumZ/numOfCalibPings;
+    	
     }
+    
     public static double[] getAngles(){
     	return angles;
     }

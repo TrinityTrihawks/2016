@@ -16,7 +16,8 @@ public class I2CAccel {
         	
 	static byte[] buffL = new byte[1], buffH = new byte[1], ID = new byte[1];
 	static byte[] buffer2 = new byte[2];
-	public static int accelX, accelY, accelZ;
+	private static int offsetX, offsetY, offsetZ;
+	private static int[] accelVal = new int[3];
 	static Thread pingerThread;
 	
 	static public void initAccel(){
@@ -31,24 +32,17 @@ public class I2CAccel {
 		accel.write(CTRL_REG+6, 0x00);
 		accel.write(CTRL_REG+7, 0x00);
 		accel.read(WHO_AM_I, 1, ID);
-		RobotModule.logger.info("ID :" + ID[0]);
 		
 	}
 	
 	static public void pingAccel(){
-		accel.read(OUT_REG,1,buffL);
-		accel.read(OUT_REG+1,1,buffH);
-		accelX = concatCorrect(buffH[0], buffL[0]);
-		//accelX = normalize(buffL[0],buffH[0]);
 		
-		accel.read(OUT_REG+2,1,buffL);
-		accel.read(OUT_REG+3,1,buffH);
-		accelY = concatCorrect(buffH[0], buffL[0]);
-		//accelY = normalize(buffL[0],buffH[0]);
+		for(int i = 0; i < 3; i++){
+			accel.read(OUT_REG+i,1,buffL);
+			accel.read(OUT_REG+i+1,1,buffH);
+			accelVal[i] = concatCorrect(buffH[0], buffL[0]);;
+		}
 		
-		accel.read(OUT_REG+4,1,buffL);
-		accel.read(OUT_REG+5,1,buffH);
-		accelZ = concatCorrect(buffH[0], buffL[0]);
 		//accelZ = normalize(buffL[0],buffH[0]);
 		/*
 		ByteBuffer rawData = ByteBuffer.wrap(bufferData);
@@ -80,6 +74,7 @@ public class I2CAccel {
 		
 		return (val > 32767) ? val - 65536: val;
 	}
+	
 	static public void pingerStart(){
 		Runnable pinger = ()  -> {
 			while(pingFlag){
@@ -97,6 +92,9 @@ public class I2CAccel {
 		pingFlag = true;
 		pingerThread.start();
 		
+	}
+	public static int[] getAccel(){
+		return accelVal;
 	}
 	
 	static public void pingerStop(){
