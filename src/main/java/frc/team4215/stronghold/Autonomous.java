@@ -378,16 +378,23 @@ public class Autonomous {
      */
     private static void I2CDistanceTraveled() {
 
-    	final double Kp;
-    	final double Ki;
+    	final double accelerometerKp;
+    	final double accelerometerKi;
     	
         double time1 = time.get();
         for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
         	Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
+            double timeChange = time2 - time1;
             double[] acceleration = I2CAccelerometer_getAccel();
+            
+            double error = Setpoint - Input;
+            errSum += (error * timeChange);
+            
+            //Sum errors
+            double accelerometerError = (accelerometerKp * error) + (accelerometerKi * errSum);
 
-            distanceTraveled += .5 * acceleration[0] * ((time2 - time1)*(time2 - time1)); //- accelerometerPID(Kp, Ki); //Measured in inches
+            distanceTraveled += .5 * acceleration[0] * ((timeChange)*(timeChange)); //- accelerometerPID(Kp, Ki); //Measured in inches
         }
     }
     
