@@ -1,7 +1,10 @@
+
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
+import jaci.openrio.toast.lib.registry.Registrar;
+
 
 /**
  * <dl>
@@ -19,28 +22,43 @@ import edu.wpi.first.wpilibj.Victor;
  * @author James Yu
  */
 public class Arm {
+    
     /**
      * The Joystick used to control arms and the intake.
      */
-    private Joystick GameCube;
+    private Joystick gameCube;
+
     /**
      * The Motor, Victor, for controling the arm.
      */
-    private Victor ArmMotor;
+    private Victor armMotor1;
+    private Victor armMotor2;
 
     /**
      * Default constructor.
+     * -- Waweru
+     * Turns out the arm has 2 motors
      */
     public Arm() {
-        this.GameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.ArmMotor = new Victor(Const.Motor.Num.Intake);
+        this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
+        this.armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
+        this.armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
     }
-
+    
     /**
      * Run on this
      */
     public void Run() {
-        this.ArmMotor.set(this.GameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+
+
+        this.armMotor1.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
+        this.armMotor2.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
         return;
     }
+    
+    public void set(double setValue) {
+        this.armMotor1.set(Math.pow(setValue,16));
+        this.armMotor2.set(Math.pow(setValue,16));
+    }
+
 }

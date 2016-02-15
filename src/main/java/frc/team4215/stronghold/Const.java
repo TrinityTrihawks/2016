@@ -1,3 +1,4 @@
+
 package frc.team4215.stronghold;
 
 /**
@@ -23,6 +24,10 @@ package frc.team4215.stronghold;
  *     <b>class</b> <spam style="color:#00f">Axis</spam>
  *       <spam style="color:#3d8">PlayStationCtrlLeft_UD</spam> = 1
  *       <spam style="color:#3d8">PlayStationCtrlRight_UD</spam> = 5
+<<<<<<< HEAD
+=======
+ *       <spam style="color:#3d8">GameCubeCtrl_LR</spam> = 0
+>>>>>>> Autonomous
  *       <spam style="color:#3d8">GameCubeCtrl_UD</spam> = 1
  *     <b>class</b> <spam style="color:#00f">Button</spam>
  *       <spam style="color:#3d8">GameCube_Y</spam> = 1
@@ -34,28 +39,46 @@ package frc.team4215.stronghold;
  * @author James Yu
  */
 public final class Const {
+
+    
     public final class Motor {
+        
         public final class Num {
-            public final static int FrontLeft = 0, BackLeft = 1, BackRight = 2, FrontRight = 3, Arm = 4, Intake = 5;
+            
+            public final static int FrontLeft = 3, BackLeft = 1,
+                    BackRight = 2, FrontRight = 0, Arm1 = 4,
+                    Intake = 5, Arm2 = 6;
         }
 
         public final class Run {
-            public final static int Forward = 1, Backward = -1, Stop = 0;
+            
+            public final static double Forward = 1d, Backward = -1d,
+                    Stop = 0d;
+
         }
     }
 
     public final class JoyStick {
+        
         public final class Num {
+            
+
             public final static int PlayStation = 1, GameCube = 2;
         }
 
         public final class Axis {
-            public final static int PlayStationCtrlLeft_UD = 1, PlayStationCtrlRight_UD = 5, GameCubeCtrl_UD = 1,
+            
+            public final static int PlayStationCtrlLeft_UD = 1,
+                    PlayStationCtrlRight_UD = 5;
+
+            public final static int GameCubeCtrl_UD = 1,
                     GameCubeCtrl_LR = 0;
         }
 
         public final class Button {
-            public final static int GameCube_Y = 1, GameCube_X = 2, GameCube_A = 3, GameCube_B = 4;
+            
+            public final static int GameCube_Y = 1, GameCube_X = 2,
+                    GameCube_A = 3, GameCube_B = 4;
         }
     }
 }
