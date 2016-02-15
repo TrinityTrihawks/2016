@@ -50,7 +50,7 @@ public class RobotModule extends IterativeModule {
         right2 = Registrar.victor(0);
         
         chassis = new DriveTrain(left,left2, right,right2);
-      
+        
         rightStick = new Joystick(1);
         thirdstick = new Joystick(2);
         
@@ -61,10 +61,19 @@ public class RobotModule extends IterativeModule {
         I2CAccel.initAccel();
         I2CAccel.pingerStart();
         
+        //runAccel();
     }
-    
+    public void runAccel(){
+    	while(true){
+    	int[] accel = I2CAccel.getAccel();
+    	logger.info("Accel : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
+    	}
+    }
     @Override
     public void teleopInit(){
+    	
+    	int[] accel = I2CAccel.getAccel();
+    	logger.info("Accel : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
     	
     }
     
@@ -79,10 +88,12 @@ public class RobotModule extends IterativeModule {
     				+ accel[1] + " ," 
     				+ accel[2]);
     }
+    
     @Override
     public void disabledInit(){
-    	I2CAccel.pingerStop();
+    	runAccel();
     }
+    
     @Override
     public void autonomousPeriodic(){
     	

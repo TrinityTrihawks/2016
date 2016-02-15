@@ -23,25 +23,34 @@ public class I2CAccel {
 	static public void initAccel(){
 		accel = new I2C(I2C.Port.kOnboard, 0x1D);
 		// Accelerometer
-		accel.write(CTRL_REG, 0x00);
-		accel.write(CTRL_REG+1, 0x57);
-		accel.write(CTRL_REG+2, 0x00);
-		accel.write(CTRL_REG+3, 0x04);
-		accel.write(CTRL_REG+4, 0x04);
-		accel.write(CTRL_REG+5, 0x14);
-		accel.write(CTRL_REG+6, 0x00);
-		accel.write(CTRL_REG+7, 0x00);
+		byte[] reg12 = new byte[1];
+		accel.read(0x12,1,reg12);
+
+		//accel.write(CTRL_REG, 0x00);
+		accel.write(CTRL_REG+1, 0x57);     //0x20
+		//accel.write(CTRL_REG+2, 0x00);   //0x21
+		accel.write(CTRL_REG+3, 0x0);//4);  //0x22
+		accel.write(CTRL_REG+4, 0x0);//4);   //0x23
+		//accel.write(CTRL_REG+5, 0x14);    //0x24
+		accel.write(CTRL_REG+6, 0x00);    //0x25
+		accel.write(CTRL_REG+7, 0x00);    //0x26
 		accel.read(WHO_AM_I, 1, ID);
-		
 	}
 	
 	static public void pingAccel(){
 		
-		for(int i = 0; i < 3; i++){
-			accel.read(OUT_REG+i,1,buffL);
-			accel.read(OUT_REG+i+1,1,buffH);
-			accelVal[i] = concatCorrect(buffH[0], buffL[0]);;
-		}
+		accel.read(OUT_REG,1,buffL);
+		accel.read(OUT_REG+1,1,buffH);
+		accelVal[0] = concatCorrect(buffH[0], buffL[0]);
+		
+		accel.read(OUT_REG+2,1,buffL);
+		accel.read(OUT_REG+3,1,buffH);
+		accelVal[1] = concatCorrect(buffH[0], buffL[0]);
+		
+		accel.read(OUT_REG+4,1,buffL);
+		accel.read(OUT_REG+5,1,buffH);
+		accelVal[2] = concatCorrect(buffH[0], buffL[0]);
+		
 		
 		//accelZ = normalize(buffL[0],buffH[0]);
 		/*
@@ -59,10 +68,11 @@ public class I2CAccel {
 	static public int concatCorrect(byte h, byte l){
 		int high = Byte.toUnsignedInt(h);
 		int low = Byte.toUnsignedInt(l);
-        String concat = Integer.toHexString(high) + Integer.toHexString(low);
-        int preCheck = Integer.valueOf(concat,16);
-        return (preCheck > 32767) ? preCheck - 65536: preCheck;
-
+		int test = ((0xFF & high) << 8) + (0xFF & low);
+        //String concat = Integer.toHexString(high) + Integer.toHexString(low);
+        //int preCheck = Integer.valueOf(concat,16);
+        //return (preCheck > 32767) ? preCheck - 65536: preCheck;
+        return (test > 32767) ? test - 65536: test;
 	}
 
 	static public int normalize(byte h, byte l){
