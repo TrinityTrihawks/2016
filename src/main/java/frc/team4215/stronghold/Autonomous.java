@@ -12,6 +12,10 @@ public class Autonomous {
     private static Thread threadPing;
     private static double distanceTraveled;
     public static Timer time = new Timer();
+    
+    final static double accelerometerKp;
+	final static double accelerometerKi;
+	
     /**
      * Seconds of Autonomous period
      */
@@ -101,9 +105,11 @@ public class Autonomous {
      * Waweru and I have decided that the derivative part for the
      * controller is unnecessary. Derivative function taken out.
      * 
+     * I moved this code directly into the I2CDistanceTraveled section.
+     * 
      * @author Joey
      */
-    public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
+    /*public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
     	double now = time.get();
         double timeChange = now - lastTime;
@@ -119,7 +125,7 @@ public class Autonomous {
         lastTime = now;
         
         return accelerometerError;
-    }
+    }*/
     
     /**
      * PID controller implementation for gyroscope
@@ -377,15 +383,14 @@ public class Autonomous {
      * @return
      */
     private static void I2CDistanceTraveled() {
-
-    	final double accelerometerKp;
-    	final double accelerometerKi;
     	
         double time1 = time.get();
         for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
+        	
         	Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
             double timeChange = time2 - time1;
+            time1 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
             
             double error = Setpoint - Input;
@@ -394,7 +399,7 @@ public class Autonomous {
             //Sum errors
             double accelerometerError = (accelerometerKp * error) + (accelerometerKi * errSum);
 
-            distanceTraveled += .5 * acceleration[0] * ((timeChange)*(timeChange)); //- accelerometerPID(Kp, Ki); //Measured in inches
+            distanceTraveled += .5 * acceleration[0] * ((timeChange)*(timeChange))-accelerometerError; //Measured in inches
         }
     }
     
