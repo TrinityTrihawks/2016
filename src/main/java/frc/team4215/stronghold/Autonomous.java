@@ -13,11 +13,16 @@ public class Autonomous {
     private static double distanceTraveled;
     public static Timer time = new Timer();
     
-    final static double accelerometerKp;
-	final static double accelerometerKi;
+    private static double accelerometerKp;
+	private static double accelerometerKi;
+	
+	//private static double lastTime;
+	private static double Input;
+	private static double Setpoint;
+	private static double errSum;
 	
     /**
-     * Seconds of Autonomous period
+     * Length of Autonomous period, seconds
      */
     private static final double AUTOTIME = 15;
     /**
@@ -59,10 +64,10 @@ public class Autonomous {
     }
 
     /* working variables */
-    private static double lastTime;
-    private static double Input; //Output;
+/*    private static double lastTime;
+    private static double Input,Output;
     private static double Setpoint;
-    private static double errSum;  //lastErr
+    private static double errSum,lastErr;*/
     //private double kp, ki, kd;
 
     /*
@@ -134,7 +139,7 @@ public class Autonomous {
      * @param gyroKi
      * @author Joey
      */
-    public double gyroPID(double gyroKp, double gyroKi){
+    /*public double gyroPID(double gyroKp, double gyroKi){
     	// Time since last calculation
     	double now = time.get();
         double timeChange = now - lastTime;
@@ -150,7 +155,7 @@ public class Autonomous {
         lastTime = now;
         
         return gyroOutput;
-    }
+    }*/
     
     /**
      * Method called to set the Setpoint so the PID controller has the
