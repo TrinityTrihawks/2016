@@ -20,6 +20,7 @@ public class Autonomous {
 	private static double Input;
 	private static double Setpoint;
 	private static double errSum;
+	private static double lastTime;
 	
     /**
      * Length of Autonomous period, seconds
