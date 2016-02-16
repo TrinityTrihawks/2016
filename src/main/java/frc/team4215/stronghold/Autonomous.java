@@ -114,7 +114,7 @@ public class Autonomous {
      * 
      * @author Joey
      */
-    /*public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
+    public static double accelerometerPID(double accelerometerKp, double accelerometerKi){
     	// Time since last calculation
     	double now = time.get();
         double timeChange = now - lastTime;
@@ -130,7 +130,7 @@ public class Autonomous {
         lastTime = now;
         
         return accelerometerError;
-    }*/
+    }
     
     /**
      * PID controller implementation for gyroscope
@@ -139,7 +139,7 @@ public class Autonomous {
      * @param gyroKi
      * @author Joey
      */
-    /*public double gyroPID(double gyroKp, double gyroKi){
+    public double gyroPID(double gyroKp, double gyroKi){
     	// Time since last calculation
     	double now = time.get();
         double timeChange = now - lastTime;
@@ -155,7 +155,7 @@ public class Autonomous {
         lastTime = now;
         
         return gyroOutput;
-    }*/
+    }
     
     /**
      * Method called to set the Setpoint so the PID controller has the
@@ -398,13 +398,8 @@ public class Autonomous {
             time1 = time.get();
             double[] acceleration = I2CAccelerometer_getAccel();
             
-            double error = Setpoint - Input;
-            errSum += (error * timeChange);
-            
-            //Sum errors
-            double accelerometerError = (accelerometerKp * error) + (accelerometerKi * errSum);
 
-            distanceTraveled += .5 * acceleration[0] * ((timeChange)*(timeChange))-accelerometerError; //Measured in inches
+            distanceTraveled += .5 * acceleration[0] * ((timeChange)*(timeChange)); //Measured in inches
         }
     }
     
