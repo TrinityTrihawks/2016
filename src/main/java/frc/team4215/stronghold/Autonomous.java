@@ -151,10 +151,8 @@ public class Autonomous {
      *            double value
      * @author Jack Rausch
      */
-    // this function does not do anything so I make a problem to let
-    // you know
-    public static void_ setSetpoint(double defSetpoint) {
-        double Setpoint = defSetpoint;
+    public static void setSetpoint(double defSetpoint) {
+        Setpoint = defSetpoint;
     }
     
     /**
@@ -262,21 +260,6 @@ public class Autonomous {
         arm.set(Constant.Shared.armUp);
         Timer.delay(Constant.Shared.armMoveMaxTime);
         arm.set(Constant.Shared.armStop);
-    }
-    
-    /**
-     * To drive straight some distance.
-     *
-     * @author James
-     * @param driveDistance
-     *            Meters of driving
-     * @param PLACEHOLDER
-     *            This is just a placeholder and does not do anything.
-     *            You can just use empty string "" for
-     */
-    private void driveStraight(double driveDistance,
-            Object PLACEHOLDER) {
-        PLACEHOLDER = "";
     }
     
     /**
