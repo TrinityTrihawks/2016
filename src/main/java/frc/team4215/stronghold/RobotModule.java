@@ -56,25 +56,20 @@ public class RobotModule extends IterativeModule {
         
         driveStation = new UI(rightStick, thirdstick);
         ult = new UltraSonic(3);
-        // I2CGyro.initGyro();
-        // I2CGyro.pingerStart();
-        I2CAccel.initAccel();
-        I2CAccel.pingerStart();
+        I2CGyro.initGyro();
+        I2CGyro.pingerStart();
         
-        //runAccel();
     }
+    
     public void runAccel(){
     	while(true){
-    	int[] accel = I2CAccel.getAccel();
-    	logger.info("Accel : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
+    	double[] accel = I2CGyro.getAngles();
+    	if(accel[0]+accel[1]+accel[2] != 0)
+    		logger.info("Angles : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
     	}
     }
     @Override
     public void teleopInit(){
-    	
-    	int[] accel = I2CAccel.getAccel();
-    	logger.info("Accel : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
-    	
     }
     
     @Override
@@ -83,14 +78,14 @@ public class RobotModule extends IterativeModule {
     	double[] inputs = driveStation.getInputs();
     	chassis.drive(inputs[0], inputs[1]);
     	*/
-    	int[] accel = I2CAccel.getAccel();
-    	logger.info(accel[0] + " ," 
-    				+ accel[1] + " ," 
-    				+ accel[2]);
+    	double[] accel = I2CGyro.getAngles();
+    	if(accel[0]+accel[1]+accel[2] != 0)
+    		logger.info(accel[0] + " ," + accel[1] + " ," + accel[2]);
     }
     
     @Override
     public void disabledInit(){
+    	I2CGyro.calibrate();
     	runAccel();
     }
     

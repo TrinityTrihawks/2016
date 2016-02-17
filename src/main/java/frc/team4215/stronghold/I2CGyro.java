@@ -11,7 +11,10 @@ public class I2CGyro {
     static I2C gyro;
     static boolean gyroExiest;
     static boolean pingFlag;
-    
+    static double lastTime = 0;
+    static int bitMax = 0xFFFF;
+    static int range = 200;
+    static double coeff = (double) range/bitMax;
     static HardwareTimer hardTimer = new HardwareTimer();
     static Timer.Interface timer;
     
@@ -21,7 +24,7 @@ public class I2CGyro {
     
     private static double[] angles;
     private static double offsetX,offsetY, offsetZ;
-    private static int numOfCalibPings = 100;
+    private static int numOfCalibPings = 1000;
     static byte[] ID = new byte[1],
     			  dataBuffer = new byte[1];
     
@@ -35,9 +38,9 @@ public class I2CGyro {
        
        // Checking if this gyro actually exists;
        
-       gyro.write(CTRL_REG,   0x0F); 
+       gyro.write(CTRL_REG,   0x3F); 
        gyro.write(CTRL_REG+1, 0x00);
-       gyro.write(CTRL_REG+2, 0x88);
+       gyro.write(CTRL_REG+2, 0x00);
        gyro.write(CTRL_REG+3, 0x00);
        gyro.write(CTRL_REG+4, 0x00);
        
@@ -66,7 +69,6 @@ public class I2CGyro {
         *  so we need to integrate it.
         */
        timer = hardTimer.newTimer();
-       timer.start();
        
        // Resetting the tracker varibles
        angles = new double[] {0,0,0};
@@ -74,7 +76,9 @@ public class I2CGyro {
     
      public static void pingGyro(){
     	
-    	double deltat = timer.get();
+    	double newTime = timer.get();
+    	double deltat = newTime - lastTime;
+    	lastTime = newTime;
     	int[] angularSpeed = new int[3]; 
     	
     	/*
@@ -83,21 +87,39 @@ public class I2CGyro {
     	 * first byte being the left half of the number and the
     	 * second being the right half.
     	 */
-    	
-    	for(int i = 0; i < angularSpeed.length; i++){
-    		gyro.read(OUT_REG+i, 1, dataBuffer);
-    		byte gL = dataBuffer[0];
-    		gyro.read(OUT_REG+i+1, 1, dataBuffer);
-    		byte gH = dataBuffer[0];
-    		angularSpeed[i] = concatCorrect(gL,gH);
-    	}
-    	
+    	gyro.read(OUT_REG, 1, dataBuffer);
+		byte gL = dataBuffer[0];
+		gyro.read(OUT_REG+1, 1, dataBuffer);
+		byte gH = dataBuffer[0];
+		angularSpeed[0] = concatCorrect(gL,gH);
+		
+		gyro.read(OUT_REG+2, 1, dataBuffer);
+		 gL = dataBuffer[0];
+		gyro.read(OUT_REG+3, 1, dataBuffer);
+		 gH = dataBuffer[0];
+		 angularSpeed[1] = concatCorrect(gL,gH);
+		
+		gyro.read(OUT_REG+4, 1, dataBuffer);
+		gL = dataBuffer[0];
+		gyro.read(OUT_REG+5, 1, dataBuffer);
+		 gH = dataBuffer[0];
+		 angularSpeed[2] = concatCorrect(gL,gH);
+		 
     	double cX, cY, cZ;
-    	cX = angles[0] + (angularSpeed[0] - offsetX)*deltat;
-    	cY = angles[1] + (angularSpeed[1] - offsetY)*deltat;
-    	cZ = angles[2] + (angularSpeed[2] - offsetZ)*deltat;
+    	cX = angles[0] + (coeff*angularSpeed[0] - offsetX)*deltat;
+    	cY = angles[1] + (coeff*angularSpeed[1] - offsetY)*deltat;
+    	cZ = angles[2] + (coeff*angularSpeed[2] - offsetZ)*deltat;
+    	cX = cX % 360;
+    	if(cX < 0)
+    		cX += 360;
+    	cY = cY % 360;
+    	if(cY < 0)
+    		cY += 360;
+    	cZ = cZ % 360;
+    	if(cZ < 0)
+    		cZ += 360;
     	
-    	angles = new double[] {cX % 360, cY  % 360, cZ % 360};
+   	angles = new double[] {cX, cY, cZ };
     }
     
      public static void pingerStart(){
@@ -115,6 +137,9 @@ public class I2CGyro {
     	};
     	
     	threadPing = new Thread(pinger);
+    	pingFlag = true;
+    	timer.start();
+    	
     	threadPing.start();
     }
      
@@ -125,29 +150,48 @@ public class I2CGyro {
     static public int concatCorrect(byte h, byte l){
 		int high = Byte.toUnsignedInt(h);
 		int low = Byte.toUnsignedInt(l);
-        String concat = Integer.toHexString(high) + Integer.toHexString(low);
-        int preCheck = Integer.valueOf(concat,16);
-        return (preCheck > 32767) ? preCheck - 65536: preCheck;
-
+		int test = ((0xFF & high) << 8) + (0xFF & low);
+        
+        return (test > 32767) ? test - 65536: test;
 	}
     
     public static void calibrate(){
     	
+    	int[] angularSpeed = new int[3];
     	double totalSumX = 0;
     	double totalSumY = 0;
     	double totalSumZ = 0;
     	
     	for(int i = 0; i < numOfCalibPings; i++){
-    		pingGyro();
-    		totalSumX += angles[0];
-    		totalSumY += angles[1];
-    		totalSumZ += angles[2];
+    		gyro.read(OUT_REG, 1, dataBuffer);
+    		byte gL = dataBuffer[0];
+    		gyro.read(OUT_REG+1, 1, dataBuffer);
+    		byte gH = dataBuffer[0];
+    		angularSpeed[0] = concatCorrect(gL,gH);
+    		
+    		gyro.read(OUT_REG+2, 1, dataBuffer);
+    		 gL = dataBuffer[0];
+    		gyro.read(OUT_REG+3, 1, dataBuffer);
+    		 gH = dataBuffer[0];
+    		 angularSpeed[1] = concatCorrect(gL,gH);
+    		
+    		gyro.read(OUT_REG+4, 1, dataBuffer);
+    		gL = dataBuffer[0];
+    		gyro.read(OUT_REG+5, 1, dataBuffer);
+    		 gH = dataBuffer[0];
+    		 angularSpeed[2] = concatCorrect(gL,gH);
+    		 
+    		totalSumX += coeff*angularSpeed[0];
+    		totalSumY += coeff*angularSpeed[1];
+    		totalSumZ += coeff*angularSpeed[2];
     	}
     	
     	offsetX = totalSumX/numOfCalibPings;
     	offsetY = totalSumY/numOfCalibPings;
     	offsetZ = totalSumZ/numOfCalibPings;
-    	
+    	    	
+    	RobotModule.logger.info("Offset : " + offsetX +  " ," +  offsetY + " ," + offsetZ);
+    	RobotModule.logger.info("Coeffecient : " + coeff);
     }
     
     public static double[] getAngles(){

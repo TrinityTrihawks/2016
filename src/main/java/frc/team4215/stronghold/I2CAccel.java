@@ -69,9 +69,7 @@ public class I2CAccel {
 		int high = Byte.toUnsignedInt(h);
 		int low = Byte.toUnsignedInt(l);
 		int test = ((0xFF & high) << 8) + (0xFF & low);
-        //String concat = Integer.toHexString(high) + Integer.toHexString(low);
-        //int preCheck = Integer.valueOf(concat,16);
-        //return (preCheck > 32767) ? preCheck - 65536: preCheck;
+        
         return (test > 32767) ? test - 65536: test;
 	}
 
