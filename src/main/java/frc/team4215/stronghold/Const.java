@@ -53,6 +53,8 @@ public final class Const {
 
             public final static double Forward = 1d, Backward = -1d,
                     Stop = 0d;
+            public final static double WinchPartialSpeed = .3,
+                    WinchPartialTime = .25;
                     
         }
     }

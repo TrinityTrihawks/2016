@@ -44,6 +44,8 @@ public class Autonomous {
     private Arm arm;
 
     private Intake intake;
+
+    private Winch winch;
     
     private Interface choiceAuto;
     
@@ -51,6 +53,7 @@ public class Autonomous {
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
+        winch = new Winch();
     }
     
     /*
@@ -200,7 +203,7 @@ public class Autonomous {
          *
          * @author James
          */
-        private static final class ConstLowBar {
+        private static final class LowBar {
             
             public static final double driveThroughDistance = 500d;
         }
@@ -210,7 +213,7 @@ public class Autonomous {
          *
          * @author James
          */
-        private static final class ConstSpyBotLowGoal {
+        private static final class SpyBotLowGoal {
             
             public static final double driveToDistance = 500d;
         }
@@ -220,7 +223,7 @@ public class Autonomous {
          *
          * @author James
          */
-        private static final class ConstChevalDeFrise {
+        private static final class ChevalDeFrise {
             
             public static final double driveToDistance = 500d;
             public static final double driveThroughDistance = 500d;
@@ -231,10 +234,11 @@ public class Autonomous {
          *
          * @author James
          */
-        public static final class ConstPortcullis {
-            
-            public static final double driveToDistance = 500d;
-            public static final double driveThroughDistance = 500d;
+        @Deprecated
+        public static final class Portcullis {
+
+            // public static final double driveToDistance = 500d;
+            // public static final double driveThroughDistance = 500d;
         }
     }
     
@@ -300,6 +304,12 @@ public class Autonomous {
         Timer.delay(Constant.Shared.intakeDelay);
         intake.set(Const.Motor.Run.Stop);
     }
+
+    private void winchInit() {
+        winch.set(Const.Motor.Run.WinchPartialSpeed);
+        Timer.delay(Const.Motor.Run.WinchPartialTime);
+        winch.set(Const.Motor.Run.Stop);
+    }
     
     /**
      * Autonomous function No.1
@@ -307,8 +317,9 @@ public class Autonomous {
      * @author James
      */
     public void autoLowBar() {
+        winchInit();
         armLowerBottom();
-        driveStraight(Constant.ConstLowBar.driveThroughDistance);
+        driveStraight(Constant.LowBar.driveThroughDistance);
     }
     
     /**
@@ -317,8 +328,9 @@ public class Autonomous {
      * @author James
      */
     public void autoSpyBotLowGoal() {
+        winchInit();
         armLowerBottom();
-        driveStraight(Constant.ConstSpyBotLowGoal.driveToDistance);
+        driveStraight(Constant.SpyBotLowGoal.driveToDistance);
         throwBall();
     }
     
@@ -328,22 +340,24 @@ public class Autonomous {
      * @author James
      */
     public void autoChevalDeFrise() {
-        driveStraight(Constant.ConstChevalDeFrise.driveToDistance);
+        winchInit();
+        driveStraight(Constant.ChevalDeFrise.driveToDistance);
         armLowerBottom();
-        driveStraight(
-                Constant.ConstChevalDeFrise.driveThroughDistance);
+        driveStraight(Constant.ChevalDeFrise.driveThroughDistance);
     }
     
     /**
-     * Autonomous function No.4
+     * Autonomous function No.4, not used.
      *
      * @author James
      */
+    @Deprecated
     public void autoPortcullis() {
-        armLowerBottom();
-        driveStraight(Constant.ConstPortcullis.driveToDistance);
-        armLifterTop();
-        driveStraight(Constant.ConstPortcullis.driveThroughDistance);
+        throw null;
+        // armLowerBottom();
+        // driveStraight(Constant.Portcullis.driveToDistance);
+        // armLifterTop();
+        // driveStraight(Constant.Portcullis.driveThroughDistance);
     }
     
     /**
