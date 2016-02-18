@@ -61,7 +61,7 @@ public class Autonomous {
         if (num == 1) choiceAuto = () -> autoLowBar();
         else if (num == 2) choiceAuto = () -> autoSpyBotLowGoal();
         else if (num == 3) choiceAuto = () -> autoChevalDeFrise();
-        else if (num == 4) choiceAuto = () -> autoPortcullis();
+        // else if (num == 4) choiceAuto = () -> autoPortcullis();
         else choiceAuto = null;
     }
     
@@ -187,8 +187,8 @@ public class Autonomous {
             
             public static final double armMoveMaxTime = 2d;
             
-            public static final double armDown = -1, armUp = 1,
-                    armStop = 0;
+            public static final double armDown = -1d, armUp = 1d,
+                    armStop = 0d;
                     
             public static final double intakeDelay = 1d;
 
