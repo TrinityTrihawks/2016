@@ -7,16 +7,16 @@ package frc.team4215.stronghold;
  * <b>class</b> <spam style="color:#f00">Const</spam>
  *   <b>class</b> <spam style="color:#f0f">Motor</spam>
  *     <b>class</b> <spam style="color:#00f">Num</spam>
- *       <spam style="color:#3d8">FrontLeft</spam> = 0
- *       <spam style="color:#3d8">BackLeft</spam> = 1
- *       <spam style="color:#3d8">BackRight</spam> = 2
- *       <spam style="color:#3d8">FrontRight</spam> = 3
- *       <spam style="color:#3d8">Arm</spam> = 4
- *       <spam style="color:#3d8">Intake</spam> = 5
+ *       <spam style="color:#bbb">FrontLeft</spam> = 0
+ *       <spam style="color:#bbb">BackLeft</spam> = 1
+ *       <spam style="color:#bbb">BackRight</spam> = 2
+ *       <spam style="color:#0f0">FrontRight</spam> = 3
+ *       <spam style="color:#f00">Arm</spam> = 4
+ *       <spam style="color:#000">Intake</spam> = 5
  *     <b>class</b> <spam style="color:#00f">Run</spam>
- *       <spam style="color:#3d8">Forward</spam> = 1
- *       <spam style="color:#3d8">Backward</spam> = -1
- *       <spam style="color:#3d8">Stop</spam> = 0
+ *       <spam style="color:#000">Forward</spam> = 1
+ *       <spam style="color:#000">Backward</spam> = -1
+ *       <spam style="color:#000">Stop</spam> = 0
  *   <b>class</b> <spam style="color:#f0f">JoyStick</spam>
  *     <b>class</b> <spam style="color:#00f">Num</spam>
  *       <spam style="color:#3d8">PlayStation</spam> = 1
