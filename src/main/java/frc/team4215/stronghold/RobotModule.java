@@ -13,6 +13,7 @@ public class RobotModule extends IterativeModule {
 
     private DriveTrain chassis;
     private Arm arm;
+    private Winch winch;
 
     private Joystick leftStick, rightStick, thirdStick;
     
@@ -37,7 +38,10 @@ public class RobotModule extends IterativeModule {
 
         return RobotModule.ModuleVersion;
     }
-
+    
+    /**
+     * The method called during initialization.
+     */
     @Override
     public void robotInit() {
         
@@ -48,6 +52,9 @@ public class RobotModule extends IterativeModule {
         driveStation = new UI(rightStick, leftStick);
 
         ult = new UltraSonic(3);
+
+        // create winch
+        winch = new Winch();
         
     }
 
@@ -64,12 +71,14 @@ public class RobotModule extends IterativeModule {
 
     @Override
     public void autonomousInit() {
+        winch.setSafetyEnabled(false);
+
         Autonomous.startTimer();
         
     }
     
     @Override
     public void teleopInit() {
-    
+        winch.setSafetyEnabled(true);
     }
 }
