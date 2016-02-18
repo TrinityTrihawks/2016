@@ -6,7 +6,7 @@ import jaci.openrio.toast.lib.registry.Registrar;
 public class Winch {
 
     private Victor winch;
-    
+
     public Winch() {
         winch = Registrar.victor(Const.Motor.Num.Winch);
     }
