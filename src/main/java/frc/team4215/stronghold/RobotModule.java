@@ -22,9 +22,8 @@ public class RobotModule extends IterativeModule {
     
     public static Logger logger;
 
-
     private static final String ModuleName = "stronghold";
-    
+
     private static final String ModuleVersion = "0.0.1";
     
     @Override
@@ -41,12 +40,12 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void robotInit() {
-        
+
         leftStick = new Joystick(0);
         rightStick = new Joystick(1);
-        thirdStick  = new Joystick(2);
-            
-        driveStation = new UI(rightStick,leftStick);
+        thirdStick = new Joystick(2);
+
+        driveStation = new UI(rightStick, leftStick);
         
         ult = new UltraSonic(3);
 
@@ -67,5 +66,10 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit() {
         Autonomous.startTimer();
 
+    }
+
+    @Override
+    public void teleopInit() {
+    
     }
 }

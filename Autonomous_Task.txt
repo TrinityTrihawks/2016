@@ -18,3 +18,5 @@ Auto #4: Portcollis
 2. drive to portcullis
 3. lift portcullis (arm up)
 4. drive through
+
+Stop using Auto #4 - February 18
