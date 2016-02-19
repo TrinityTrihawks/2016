@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.internal.HardwareTimer;
 
 public class I2CAccel {
 	static I2C accel;
-	
+	static int maxBit = 0xFFFF;
+	static int range = 2;
+	static double coeff = (double) range/maxBit;
 	static boolean pingFlag;
 	final static byte WHO_AM_I = 0x0F,
 			  CTRL_REG = 0x1F,
@@ -17,7 +19,7 @@ public class I2CAccel {
 	static byte[] buffL = new byte[1], buffH = new byte[1], ID = new byte[1];
 	static byte[] buffer2 = new byte[2];
 	private static int offsetX, offsetY, offsetZ;
-	private static int[] accelVal = new int[3];
+	private static double[] accelVal = new double[3];
 	static Thread pingerThread;
 	
 	static public void initAccel(){
@@ -49,28 +51,16 @@ public class I2CAccel {
 		
 		accel.read(OUT_REG+4,1,buffL);
 		accel.read(OUT_REG+5,1,buffH);
-		accelVal[2] = concatCorrect(buffH[0], buffL[0]);
-		
-		
-		//accelZ = normalize(buffL[0],buffH[0]);
-		/*
-		ByteBuffer rawData = ByteBuffer.wrap(bufferData);
-		rawData.order(ByteOrder.BIG_ENDIAN);
-		
-		accelX = (int) rawData.getShort();
-		accelY = (int) rawData.getShort();
-		accelZ = (int) rawData.getShort();
-		*/
-		 
+		accelVal[2] = concatCorrect(buffH[0], buffL[0]); 
 		
 	}
 
-	static public int concatCorrect(byte h, byte l){
+	static public double concatCorrect(byte h, byte l){
 		int high = Byte.toUnsignedInt(h);
 		int low = Byte.toUnsignedInt(l);
 		int test = ((0xFF & high) << 8) + (0xFF & low);
         
-        return (test > 32767) ? test - 65536: test;
+        return coeff*((test > 32767) ? test - 65536: test);
 	}
 
 	static public int normalize(byte h, byte l){
@@ -101,7 +91,7 @@ public class I2CAccel {
 		pingerThread.start();
 		
 	}
-	public static int[] getAccel(){
+	public static double[] getAccel(){
 		return accelVal;
 	}
 	
