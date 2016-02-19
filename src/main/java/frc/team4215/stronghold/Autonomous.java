@@ -98,7 +98,8 @@ public class Autonomous {
         errSumAccel += error * timeChange;
 
         // Sum errors
-        double accelerometerError = accelerometerKp*error + accelerometerKi*errSumAccel;
+        double accelerometerError = accelerometerKp * error
+                + accelerometerKi * errSumAccel;
                 
         // Reset time variable
         lastTimeAccel = now;
@@ -116,7 +117,7 @@ public class Autonomous {
     public double gyroPID(double input) {
         // Time since last calculation
         double now = time.get();
-		double timeChange = now - lastTimeGyro;
+        double timeChange = now - lastTimeGyro;
 
         // Calculate error variables
         double error = setpointGyro - input;
@@ -130,8 +131,6 @@ public class Autonomous {
 
         return gyroOutput;
     }
-    
-    
 
     /**
      * Timer method integrating the Timer class from wpilibj. USE THIS
@@ -242,12 +241,15 @@ public class Autonomous {
     
     private void driveStraight(double moveDistance) {
         setpointGyro = 0;
-        double startTime = time.get();
-        double delayTime  = 0;
-        double maxTime = startTime + delayTime;
+        // lasting time
+        Timer newtime = new Timer();
+        newtime.start();
+        double inittime = newtime.get();
+        double lasttime = 1d; // seconds of lasting
         
-        while(Timer.getMatchTime() >= maxTime){
-        	
+        double[] angles = I2CGyro_getAngles();
+        while (newtime.get() < (inittime + lasttime)) {
+            dT.drive(1, gyroPID(angles[2]));
         }
         
         // while (distanceTraveled < moveDistance) {
@@ -353,15 +355,15 @@ public class Autonomous {
             time1 = time.get();
             double[] acceleration = I2CAccel_getAccel();
 
-            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
-                    
+            distanceTraveled +=
+                    .5 * acceleration[0] * Math.pow(timeChange, 2);
         }
     }
     
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
-            	I2CDistanceTraveled();
+                I2CDistanceTraveled();
         };
 
         threadPing = new Thread(pinger);
