@@ -14,7 +14,6 @@ public class I2CAccel {
 
     private static byte[] buffL = new byte[1], buffH = new byte[1],
             ID = new byte[1];
-    private static byte[] buffer2 = new byte[2];
     private static int offsetX, offsetY, offsetZ;
     private static double[] accelVal = new double[3];
     private static Thread pingerThread;
@@ -67,7 +66,7 @@ public class I2CAccel {
 
         int val = (high << 8) | low;
 
-        return (val > 0x1ffff) ? val - 0x10000 : val;
+        return (val > 0x1FFFF) ? val - 0x10000 : val;
     }
 
     public static void pingerStart() {
