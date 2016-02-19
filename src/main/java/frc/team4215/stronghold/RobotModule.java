@@ -13,8 +13,9 @@ public class RobotModule extends IterativeModule {
     
     private DriveTrain chassis;
     private Arm arm;
+    private Winch winch;
     
-    private Joystick leftStick, rightStick, thirdStick;
+    private Joystick leftStick, rightStick, gameCube;
 
     private UI driveStation;
     
@@ -22,9 +23,8 @@ public class RobotModule extends IterativeModule {
     
     public static Logger logger;
 
-
     private static final String ModuleName = "stronghold";
-    
+
     private static final String ModuleVersion = "0.0.1";
     
     @Override
@@ -38,22 +38,30 @@ public class RobotModule extends IterativeModule {
         
         return RobotModule.ModuleVersion;
     }
-    
+
+    /**
+     * The method called during initialization.
+     */
     @Override
     public void robotInit() {
         
-        leftStick = new Joystick(0);
-        rightStick = new Joystick(1);
-        thirdStick  = new Joystick(2);
-            
-        driveStation = new UI(rightStick,leftStick);
+        // leftStick = new Joystick(0);
+        rightStick = new Joystick(Const.JoyStick.Num.PlayStation);
+        gameCube = new Joystick(Const.JoyStick.Num.GameCube);
+
+        driveStation = new UI(rightStick, gameCube);
         
         ult = new UltraSonic(3);
+        
+        // create winch
+        winch = new Winch();
 
     }
     
     @Override
     public void teleopPeriodic() {
+        gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y);
+        gameCube.getRawButton(Const.JoyStick.Button.GameCube_X);
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
     }
@@ -65,7 +73,14 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit() {
+        winch.setSafetyEnabled(false);
+        
         Autonomous.startTimer();
 
+    }
+
+    @Override
+    public void teleopInit() {
+        winch.setSafetyEnabled(true);
     }
 }
