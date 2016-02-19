@@ -79,30 +79,6 @@ public class Autonomous {
         choiceAuto.runAuto();
     }
 
-    /* working variables */
-    /*
-     * private static double lastTime; private static double
-     * Input,Output; private static double Setpoint; private static
-     * double errSum,lastErr;
-     */
-    // private double kp, ki, kd;
-
-    /*
-     * Example PID controller
-     * @author Jack Rausch
-     */
-    /*
-     * public double errorCompute() { // How long since we last
-     * calculated double now = time.get(); double timeChange = now -
-     * lastTime; // Compute all the working error variables double
-     * error = Setpoint - Input; errSum += (error * timeChange);
-     * double dErr = (error - lastErr) / timeChange; // Compute PID
-     * Output Output = kp * error + ki * errSum + kd * dErr; //
-     * Remember some variables for next time lastErr = error; lastTime
-     * = now; return Output; } void SetTunings(double Kp, double Ki,
-     * double Kd) { kp = Kp; ki = Ki; kd = Kd; } // DO NOT DELETE THIS
-     * CODE EVER!!!!!
-     */
 
     /**
      * PID controller implementation for accelerometer Waweru and I
@@ -218,19 +194,6 @@ public class Autonomous {
             public static final double driveToDistance = 500d;
             public static final double driveThroughDistance = 500d;
         }
-
-        /**
-         * Constant for autoPortcullis.
-         *
-         * @author James
-         */
-        @SuppressWarnings("unused")
-        @Deprecated
-        public static final class Portcullis {
-            
-            // public static final double driveToDistance = 500d;
-            // public static final double driveThroughDistance = 500d;
-        }
     }
 
     /**
@@ -276,6 +239,7 @@ public class Autonomous {
      * @param moveDistance
      *            Meters of required distance.
      */
+    
     private void driveStraight(double moveDistance) {
         setpointGyro = 0;
         double startTime = time.get();
