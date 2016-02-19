@@ -55,7 +55,29 @@ public class RobotModule extends IterativeModule {
         
         // create winch
         winch = new Winch();
-
+        
+        logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
+        
+        
+        left = Registrar.victor(3);
+        left2 = Registrar.victor(1);
+        right = Registrar.victor(2);
+        right2 = Registrar.victor(0);
+        
+        chassis = new DriveTrain(left,left2, right,right2);
+        
+        rightStick = new Joystick(1);
+        
+        I2CGyro.initGyro();
+        I2CGyro.pingerStart();
+    }
+    
+    public void runAccel(){
+    	while(true){
+    	double[] accel = I2CGyro.getAngles();
+    	if(accel[0]+accel[1]+accel[2] != 0)
+    		logger.info("Angles : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
+    	}
     }
     
     @Override
