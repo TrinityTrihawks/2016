@@ -194,6 +194,12 @@ public class I2CGyro {
     	RobotModule.logger.info("Coeffecient : " + coeff);
     }
     
+    
+    /**
+     * Gives the current angular position of the robot
+     * Returns a array of three doubles
+     * @return
+     */
     public static double[] getAngles(){
     	return angles;
     }
