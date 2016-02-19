@@ -189,9 +189,8 @@ public class Autonomous {
 
             public static final double armMoveMaxTime = 2d;
 
-            public static final double armDown = -1d, armUp = 1d,
-                    armStop = 0d;
-
+            public static final double armDown = -1d, armStop = 0d;
+            
             public static final double intakeDelay = 1d;
             
             public static final double moveDistance = 1000;
@@ -233,6 +232,7 @@ public class Autonomous {
          *
          * @author James
          */
+        @SuppressWarnings("unused")
         @Deprecated
         public static final class Portcullis {
             
@@ -268,6 +268,7 @@ public class Autonomous {
      *
      * @author James
      */
+    @SuppressWarnings("unused")
     @Deprecated
     private void armLifterTop() {
         return;
@@ -368,9 +369,8 @@ public class Autonomous {
      * @author James
      * @return Accelerations, double[] with length of 3
      */
-    private static double[] I2CAccelerometer_getAccel() {
-        double[] accel = new double[3];
-        return accel; // placeholder
+    private static double[] I2CAccel_getAccel() {
+        return I2CAccel.getAccel();
     }
 
     /**
@@ -389,7 +389,7 @@ public class Autonomous {
             double time2 = time.get();
             double timeChange = time2 - time1;
             time1 = time.get();
-            double[] acceleration = I2CAccelerometer_getAccel();
+            double[] acceleration = I2CAccel_getAccel();
 
             distanceTraveled +=
                     .5 * acceleration[0] * Math.pow(timeChange, 2);
@@ -400,7 +400,7 @@ public class Autonomous {
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
-                I2CAccelerometer_getAccel();
+                I2CAccel_getAccel();
         };
 
         threadPing = new Thread(pinger);
@@ -414,10 +414,10 @@ public class Autonomous {
      *
      * @author James
      * @return Angles, double[] with length of 3
+     * @see main.java.frc.team4215.stronghold.I2CGyro.getAngles()
      */
     private static double[] I2CGyro_getAngles() {
-        double[] angles = new double[3];
-        return angles; // placeholder
+        return I2CGyro.getAngles();
     }
 
 }
