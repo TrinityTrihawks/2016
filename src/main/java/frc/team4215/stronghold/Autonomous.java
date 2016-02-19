@@ -23,10 +23,14 @@ public class Autonomous {
     private static double accelerometerKi;
     
     // private static double lastTime;
-    private static double input;
-    private static double setpoint;
-    private static double errSum;
-    private static double lastTime;
+    private static double setpointGyro;
+    private static double setpointAccel;
+    private static double errSumGyro;
+    private static double errSumAccel;
+    
+    private static double gyroKp, gyroKi;
+    private static double lastTimeGyro;
+    private static double lastTimeAccel;
     
     /**
      * Length of Autonomous period, seconds
@@ -107,21 +111,20 @@ public class Autonomous {
      *
      * @author Joey
      */
-    public static double accelerometerPID() {
+    public static double accelerometerPID(double input) {
         // Time since last calculation
         double now = time.get();
-        double timeChange = now - lastTime;
+        double timeChange = now - lastTimeAccel;
 
         // Calculate error variables
-        double error = setpoint - input;
-        errSum += error * timeChange;
+        double error = setpointAccel - input;
+        errSumAccel += error * timeChange;
 
         // Sum errors
-        double accelerometerError =
-                accelerometerKp * error + accelerometerKi * errSum;
+        double accelerometerError = accelerometerKp*error + accelerometerKi*errSumAccel;
                 
         // Reset time variable
-        lastTime = now;
+        lastTimeAccel = now;
 
         return accelerometerError;
     }
@@ -133,34 +136,22 @@ public class Autonomous {
      * @param gyroKi
      * @author Joey
      */
-    public double gyroPID(double gyroKp, double gyroKi) {
+    public double gyroPID(double input) {
         // Time since last calculation
         double now = time.get();
-        double timeChange = now - lastTime;
+        double timeChange = now - lastTimeGyro;
 
         // Calculate error variables
-        double error = setpoint - input;
-        errSum += error * timeChange;
+        double error = setpointGyro - input;
+        errSumGyro += error * timeChange;
 
         // Sum errors
-        double gyroOutput = gyroKp * error + gyroKi * errSum;
+        double gyroOutput = gyroKp * error + gyroKi * errSumGyro;
 
         // Reset time variable
-        lastTime = now;
+        lastTimeGyro = now;
 
         return gyroOutput;
-    }
-
-    /**
-     * Method called to set the Setpoint so the PID controller has the
-     * capability to calculate errors and correct them.
-     *
-     * @param defSetpoint
-     *            double value
-     * @author Jack Rausch
-     */
-    public static void setSetpoint(double defSetpoint) {
-        setpoint = defSetpoint;
     }
     
     /**
