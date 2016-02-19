@@ -33,7 +33,9 @@ public class Arm {
      */
     private Victor armMotor1;
     private Victor armMotor2;
-
+    
+    
+    private static double coeff = .65;
     /**
      * Default constructor.
      * -- Waweru
@@ -51,8 +53,8 @@ public class Arm {
     public void Run() {
 
 
-        this.armMotor1.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
-        this.armMotor2.set(Math.pow(.5*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD),16));
+        armMotor1.set(coeff*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        armMotor2.set(coeff*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
     }
     

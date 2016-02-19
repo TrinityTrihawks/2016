@@ -14,6 +14,8 @@ public class DriveTrain {
     Victor rightMotor;
     Victor rightMotor2;
     Victor leftMotor2;
+    static double coeff = .5;
+    
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
@@ -56,7 +58,7 @@ public class DriveTrain {
      */
     private static double scaling(double speed) {
         if (speed == 0) return 0d;
-        else return Math.signum(speed)
+        else return coeff*Math.signum(speed)
                 * ((Math.abs(speed) * .96) + .04);
     }
     
