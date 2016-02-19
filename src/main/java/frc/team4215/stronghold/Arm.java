@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.registry.Registrar;
 
-
 /**
  * <dl>
  * <dt>Properties:</dt>
@@ -22,45 +21,45 @@ import jaci.openrio.toast.lib.registry.Registrar;
  * @author James Yu
  */
 public class Arm {
-    
+
     /**
      * The Joystick used to control arms and the intake.
      */
     private Joystick gameCube;
-
+    
     /**
      * The Motor, Victor, for controling the arm.
      */
     private Victor armMotor1;
     private Victor armMotor2;
     
+    private static final double axisCoeff = .65;
     
-    private static double coeff = .65;
     /**
-     * Default constructor.
-     * -- Waweru
-     * Turns out the arm has 2 motors
+     * Default constructor. -- Waweru Turns out the arm has 2 motors
      */
     public Arm() {
-        this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
-        this.armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
+        gameCube = new Joystick(Const.JoyStick.Num.GameCube);
+        armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
+        armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
     }
-    
+
     /**
      * Run on this
      */
     public void Run() {
-
-
-        armMotor1.set(coeff*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
-        armMotor2.set(coeff*gameCube.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        
+        armMotor1.set(axisCoeff * gameCube
+                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        armMotor2.set(axisCoeff * gameCube
+                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
     }
-    
-    public void set(double setValue) {
-        this.armMotor1.set(Math.pow(setValue,16));
-        this.armMotor2.set(Math.pow(setValue,16));
-    }
 
+    public void set(double setValue) {
+        double power = .16;
+        armMotor1.set(Math.pow(setValue, power));
+        armMotor2.set(Math.pow(setValue, power));
+    }
+    
 }
