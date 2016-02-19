@@ -44,7 +44,7 @@ public class RobotModule extends IterativeModule {
      */
     @Override
     public void robotInit() {
-        
+
         // leftStick = new Joystick(0);
         rightStick = new Joystick(Const.JoyStick.Num.PlayStation);
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
@@ -55,16 +55,15 @@ public class RobotModule extends IterativeModule {
         
         // create winch
         winch = new Winch();
-        
+
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-        
-        
+
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
-        
-        chassis = new DriveTrain(left,left2, right,right2);
+
+        chassis = new DriveTrain(left, left2, right, right2);
         
         rightStick = new Joystick(1);
         
@@ -72,16 +71,24 @@ public class RobotModule extends IterativeModule {
         I2CGyro.pingerStart();
     }
     
-    public void runAccel(){
-    	while(true){
-    	double[] accel = I2CGyro.getAngles();
-    	if(accel[0]+accel[1]+accel[2] != 0)
-    		logger.info("Angles : " + accel[0] + " ," + accel[1] + " ," + accel[2]);
-    	}
+    public void runAccel() {
+        while (true) {
+            double[] accel = I2CGyro.getAngles();
+            if (accel[0] + accel[1] + accel[2] != 0)
+                logger.info("Angles : " + accel[0] + " ," + accel[1]
+                        + " ," + accel[2]);
+        }
     }
     
     @Override
     public void teleopPeriodic() {
+        if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
+            winch.set(Const.Motor.Run.WinchForward);
+        else if (gameCube
+                .getRawButton(Const.JoyStick.Button.GameCube_X))
+            winch.set(Const.Motor.Run.WinchBackward);
+        else winch.set(Const.Motor.Run.WinchStop);
+        
         gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y);
         gameCube.getRawButton(Const.JoyStick.Button.GameCube_X);
         double[] inputs = driveStation.getDriveInputs();

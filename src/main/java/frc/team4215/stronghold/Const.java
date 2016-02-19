@@ -24,10 +24,7 @@ package frc.team4215.stronghold;
  *     <b>class</b> <spam style="color:#00f">Axis</spam>
  *       <spam style="color:#3d8">PlayStationCtrlLeft_UD</spam> = 1
  *       <spam style="color:#3d8">PlayStationCtrlRight_UD</spam> = 5
-<<<<<<< HEAD
-=======
  *       <spam style="color:#3d8">GameCubeCtrl_LR</spam> = 0
->>>>>>> Autonomous
  *       <spam style="color:#3d8">GameCubeCtrl_UD</spam> = 1
  *     <b>class</b> <spam style="color:#00f">Button</spam>
  *       <spam style="color:#3d8">GameCube_Y</spam> = 1
@@ -53,8 +50,10 @@ public final class Const {
 
             public final static double Forward = 1d, Backward = -1d,
                     Stop = 0d;
-            public final static double WinchPartialSpeed = .3,
-                    WinchPartialTime = .25;
+            public final static double WinchInitSpeed = .3,
+                    WinchInitTime = .25;
+            public final static double WinchForward = .5d,
+                    WinchBackward = -.5d, WinchStop = 0d;
                     
         }
     }
