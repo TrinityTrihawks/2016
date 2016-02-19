@@ -277,7 +277,14 @@ public class Autonomous {
      *            Meters of required distance.
      */
     private void driveStraight(double moveDistance) {
-        setpointGyro = moveDistance;
+        setpointGyro = 0;
+        double startTime = time.get();
+        double delayTime  = 0;
+        double maxTime = startTime + delayTime;
+        
+        while(Timer.getMatchTime() >= maxTime){
+        	
+        }
         
         // while (distanceTraveled < moveDistance) {
         // dT.drive(Const.Motor.Run.Forward);
@@ -382,8 +389,7 @@ public class Autonomous {
             time1 = time.get();
             double[] acceleration = I2CAccel_getAccel();
 
-            distanceTraveled +=
-                    .5 * acceleration[0] * Math.pow(timeChange, 2);
+            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
                     
         }
     }
@@ -391,7 +397,7 @@ public class Autonomous {
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
-                I2CAccel_getAccel();
+            	I2CDistanceTraveled();
         };
 
         threadPing = new Thread(pinger);
