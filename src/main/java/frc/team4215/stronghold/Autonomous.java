@@ -269,10 +269,12 @@ public class Autonomous {
      *
      * @author James
      */
+    @Deprecated
     private void armLifterTop() {
-        arm.set(Constant.Shared.armUp);
-        Timer.delay(Constant.Shared.armMoveMaxTime);
-        arm.set(Constant.Shared.armStop);
+        return;
+        // arm.set(Constant.Shared.armUp);
+        // Timer.delay(Constant.Shared.armMoveMaxTime);
+        // arm.set(Constant.Shared.armStop);
     }
     
     /**
