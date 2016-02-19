@@ -8,21 +8,22 @@ import edu.wpi.first.wpilibj.Timer;
  * @author James
  */
 public class Autonomous {
-
+    
     private static Thread threadPing;
-
+    
     /**
      * Measured in inches.
      */
     private static double distanceTraveled;
-
-    public static Timer time = new Timer();
-
-    private static double accelerometerKp;
-
-    private static double accelerometerKi;
     
+    public static Timer time = new Timer();
+    
+    private static double accelerometerKp;
+    
+    private static double accelerometerKi;
+
     // private static double lastTime;
+
     private static double setpointGyro;
     private static double setpointAccel;
     private static double errSumGyro;
@@ -40,26 +41,26 @@ public class Autonomous {
      * Sample rate, times/second.
      */
     private static final double SAMPLINGRATE = 20;
-    
+
     // private Victor armMotor, intake;
-    
+
     private DriveTrain dT;
-    
+
     private Arm arm;
-
+    
     private Intake intake;
-
+    
     private Winch winch;
-    
+
     private Interface choiceAuto;
-    
+
     public Autonomous(DriveTrain dT_) throws RobotException {
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
     }
-    
+
     /*
      * Actually, I highly doubt if this would work or not. If this
      * won't work I know how to fix it. - James
@@ -71,13 +72,13 @@ public class Autonomous {
         // else if (num == 4) choiceAuto = () -> autoPortcullis();
         else choiceAuto = null;
     }
-    
+
     public void autoChoice() throws RobotException {
         if (null != choiceAuto)
             throw new RobotException("There is not a method chosen.");
         choiceAuto.runAuto();
     }
-    
+
     /* working variables */
     /*
      * private static double lastTime; private static double
@@ -85,7 +86,7 @@ public class Autonomous {
      * double errSum,lastErr;
      */
     // private double kp, ki, kd;
-    
+
     /*
      * Example PID controller
      * @author Jack Rausch
@@ -102,7 +103,7 @@ public class Autonomous {
      * double Kd) { kp = Kp; ki = Ki; kd = Kd; } // DO NOT DELETE THIS
      * CODE EVER!!!!!
      */
-    
+
     /**
      * PID controller implementation for accelerometer Waweru and I
      * have decided that the derivative part for the controller is
@@ -128,7 +129,7 @@ public class Autonomous {
 
         return accelerometerError;
     }
-
+    
     /**
      * PID controller implementation for gyroscope
      *
@@ -139,7 +140,7 @@ public class Autonomous {
     public double gyroPID(double input) {
         // Time since last calculation
         double now = time.get();
-        double timeChange = now - lastTimeGyro;
+		double timeChange = now - lastTimeGyro;
 
         // Calculate error variables
         double error = setpointGyro - input;
@@ -154,6 +155,8 @@ public class Autonomous {
         return gyroOutput;
     }
     
+    
+
     /**
      * Timer method integrating the Timer class from wpilibj. USE THIS
      * TIMER UNIVERSALLY!!!!!
@@ -163,59 +166,59 @@ public class Autonomous {
     public static void startTimer() {
         time.start();
     }
-    
+
     /**
      * All constants.
      *
      * @author James
      */
     private static final class Constant {
-        
+
         /**
          * Constant shared.
          *
          * @author James
          */
         public static final class Shared {
-            
-            public static final double armMoveMaxTime = 2d;
-            
-            public static final double armDown = -1d, armStop = 0d;
 
+            public static final double armMoveMaxTime = 2d;
+
+            public static final double armDown = -1d, armStop = 0d;
+            
             public static final double intakeDelay = 1d;
         }
-        
+
         /**
          * Constant for autoLowBar.
          *
          * @author James
          */
         private static final class LowBar {
-            
+
             public static final double driveThroughDistance = 500d;
         }
-        
+
         /**
          * Constant for autoSpyBotLowGoal.
          *
          * @author James
          */
         private static final class SpyBotLowGoal {
-            
+
             public static final double driveToDistance = 500d;
         }
-        
+
         /**
          * Constant for autoChevalDeFrise.
          *
          * @author James
          */
         private static final class ChevalDeFrise {
-            
+
             public static final double driveToDistance = 500d;
             public static final double driveThroughDistance = 500d;
         }
-        
+
         /**
          * Constant for autoPortcullis.
          *
@@ -224,12 +227,12 @@ public class Autonomous {
         @SuppressWarnings("unused")
         @Deprecated
         public static final class Portcullis {
-
+            
             // public static final double driveToDistance = 500d;
             // public static final double driveThroughDistance = 500d;
         }
     }
-    
+
     /**
      * The interface for programs outside to run the chosen autonomous
      * function.
@@ -237,10 +240,10 @@ public class Autonomous {
      * @author James
      */
     public interface Interface {
-        
+
         public void runAuto();
     }
-    
+
     /**
      * to lower arm. Need more info.
      *
@@ -251,7 +254,7 @@ public class Autonomous {
         Timer.delay(Constant.Shared.armMoveMaxTime);
         arm.set(Constant.Shared.armStop);
     }
-    
+
     /**
      * to lift arm. Need more info
      *
@@ -265,7 +268,7 @@ public class Autonomous {
         // Timer.delay(Constant.Shared.armMoveMaxTime);
         // arm.set(Constant.Shared.armStop);
     }
-    
+
     /**
      * To drive straight.
      *
@@ -274,14 +277,16 @@ public class Autonomous {
      *            Meters of required distance.
      */
     private void driveStraight(double moveDistance) {
-        while (distanceTraveled < moveDistance) {
-            dT.drive(Const.Motor.Run.Forward);
-            I2CDistanceTraveled();
-        }
+        setpointGyro = moveDistance;
         
+        // while (distanceTraveled < moveDistance) {
+        // dT.drive(Const.Motor.Run.Forward);
+        // I2CDistanceTraveled();
+        // }
+
         dT.drive(Const.Motor.Run.Stop);
     }
-
+    
     /**
      * throw ball out. Yet tested.
      *
@@ -292,13 +297,13 @@ public class Autonomous {
         Timer.delay(Constant.Shared.intakeDelay);
         intake.set(Const.Motor.Run.Stop);
     }
-
+    
     private void winchInit() {
         winch.set(Const.Motor.Run.WinchInitSpeed);
         Timer.delay(Const.Motor.Run.WinchInitTime);
         winch.set(Const.Motor.Run.WinchStop);
     }
-    
+
     /**
      * Autonomous function No.1
      *
@@ -309,7 +314,7 @@ public class Autonomous {
         armLowerBottom();
         driveStraight(Constant.LowBar.driveThroughDistance);
     }
-    
+
     /**
      * Autonomous function No.2
      *
@@ -321,7 +326,7 @@ public class Autonomous {
         driveStraight(Constant.SpyBotLowGoal.driveToDistance);
         throwBall();
     }
-    
+
     /**
      * Autonomous function No.3
      *
@@ -333,7 +338,7 @@ public class Autonomous {
         armLowerBottom();
         driveStraight(Constant.ChevalDeFrise.driveThroughDistance);
     }
-    
+
     /**
      * Autonomous function No.4, not used.
      *
@@ -347,7 +352,7 @@ public class Autonomous {
         // armLifterTop();
         // driveStraight(Constant.Portcullis.driveThroughDistance);
     }
-    
+
     /**
      * Should be equivalent to a method called getAccel of another
      * class I2CAccelerometer which isn't here yet.
@@ -358,7 +363,7 @@ public class Autonomous {
     private static double[] I2CAccel_getAccel() {
         return I2CAccel.getAccel();
     }
-    
+
     /**
      * Calculates distance traveled based on information from the
      * accelerometer. The distanceTraveled is measured in inches.
@@ -366,34 +371,34 @@ public class Autonomous {
      * @author Joey
      */
     private static void I2CDistanceTraveled() {
-        
+
         double time1 = time.get();
         for (int count =
                 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
-                
+
             Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
             double timeChange = time2 - time1;
             time1 = time.get();
             double[] acceleration = I2CAccel_getAccel();
-            
+
             distanceTraveled +=
                     .5 * acceleration[0] * Math.pow(timeChange, 2);
-
+                    
         }
     }
-
+    
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (true)
                 I2CAccel_getAccel();
         };
-        
+
         threadPing = new Thread(pinger);
         threadPing.start();
-        
+
     }
-    
+
     /**
      * Should be equivalent to a method called getAngles of another
      * class I2CGyro which isn't here yet.
@@ -405,5 +410,5 @@ public class Autonomous {
     private static double[] I2CGyro_getAngles() {
         return I2CGyro.getAngles();
     }
-    
+
 }
