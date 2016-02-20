@@ -238,13 +238,13 @@ public class Autonomous {
      *            Meters of required distance.
      */
     
-    private void driveStraight(double moveDistance) {
+    private void driveStraight(double moveTime) {
         setpointGyro = 0;
         // lasting time
         Timer newtime = new Timer();
         newtime.start();
         double inittime = newtime.get();
-        double lasttime = 1d; // seconds of lasting
+        double lasttime = moveTime; // seconds of lasting
 
         double[] angles = I2CGyro_getAngles();
         while (newtime.get() < (inittime + lasttime)) {
@@ -369,9 +369,11 @@ public class Autonomous {
         threadPing.start();
         
     }
+    
     public void driveStraightTest(){
-    	driveStraight();
+    	driveStraight(20000);
     }
+    
     public void timeBased(){
     	winchInit();
     }
