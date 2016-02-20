@@ -14,7 +14,7 @@ public class DriveTrain {
     Victor rightMotor;
     Victor rightMotor2;
     Victor leftMotor2;
-    double coeff = .8;
+    double coeff = .9;
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
