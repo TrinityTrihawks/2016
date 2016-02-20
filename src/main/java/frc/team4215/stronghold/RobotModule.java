@@ -101,9 +101,6 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit() {
         winch.setSafetyEnabled(false);
         auto.winchInit();
-        
-        auto.driveStraightTest();
-       
     }
 
     @Override
