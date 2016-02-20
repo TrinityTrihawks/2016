@@ -342,7 +342,7 @@ public class Autonomous {
      *
      * @author Joey
      */
-    private static void I2CDistanceTraveled() {
+    private void I2CDistanceTraveled() {
         
         double time1 = time.get();
         for (int count =
@@ -359,7 +359,7 @@ public class Autonomous {
         }
     }
 
-    public static void pingerStart() {
+    public void pingerStart() {
         Runnable pinger = () -> {
             while (true)
                 I2CDistanceTraveled();
@@ -368,6 +368,12 @@ public class Autonomous {
         threadPing = new Thread(pinger);
         threadPing.start();
         
+    }
+    public void driveStraightTest(){
+    	driveStraight();
+    }
+    public void timeBased(){
+    	winchInit();
     }
     
     /**
