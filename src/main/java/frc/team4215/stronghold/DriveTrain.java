@@ -14,8 +14,7 @@ public class DriveTrain {
     Victor rightMotor;
     Victor rightMotor2;
     Victor leftMotor2;
-    static double coeff = .5;
-    
+    double coeff = .5;
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
@@ -32,6 +31,24 @@ public class DriveTrain {
      * @param rightSpeed
      */
     public void drive(double leftSpeed, double rightSpeed) {
+        /*
+         * The Victors don't respond to a voltage of less then 4%
+         * either direction so I provided some scaling.
+         */
+        /*
+         * The scaling part is moved into a new function to simplify
+         * the code. - James
+         */
+        leftSpeed = coeff*scaling(leftSpeed);
+        rightSpeed = coeff*scaling(rightSpeed);
+        
+        leftMotor.set(-leftSpeed);
+        leftMotor2.set(-leftSpeed);
+        rightMotor.set(rightSpeed);
+        rightMotor2.set(rightSpeed);
+    }
+    
+    public void driveNonScaled(double leftSpeed, double rightSpeed) {
         /*
          * The Victors don't respond to a voltage of less then 4%
          * either direction so I provided some scaling.
@@ -58,7 +75,7 @@ public class DriveTrain {
      */
     private static double scaling(double speed) {
         if (speed == 0) return 0d;
-        else return coeff*Math.signum(speed)
+        else return Math.signum(speed)
                 * ((Math.abs(speed) * .96) + .04);
     }
     

@@ -11,19 +11,12 @@ public class Winch {
     private double coeff = .5;
     public Winch() {
         winch = Registrar.victor(Const.Motor.Num.Winch);
-        gameCube = new Joystick(Const.JoyStick.Num.GameCube);
     }
 
     public void setSafetyEnabled(boolean bool) {
         winch.setSafetyEnabled(bool);
     }
     
-    public void run(){
-    	
-     double val = gameCube.getRawAxis(Const.JoyStick.Button.GameCube_Y);
-     winch.set(coeff*val);
-    		
-    }
     public void set(double value) {
         winch.set(value);
     }

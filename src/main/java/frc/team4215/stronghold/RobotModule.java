@@ -2,6 +2,7 @@
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
@@ -85,34 +86,58 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void teleopPeriodic() {
+    	/*
+    	 * A quick series of if statements
+    	 *  to set the winch
+    	 */
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
-            winch.set(Const.Motor.Run.WinchForward);
-        else if (gameCube
-                .getRawButton(Const.JoyStick.Button.GameCube_X))
-            winch.set(Const.Motor.Run.WinchBackward);
-        else winch.set(Const.Motor.Run.WinchStop);
+           auto.winchInit();
         
-        gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y);
-        gameCube.getRawButton(Const.JoyStick.Button.GameCube_X);
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
     }
     
     @Override
-    public void autonomousPeriodic() {
-
-    }
-    
-    @Override
     public void autonomousInit() {
         winch.setSafetyEnabled(false);
+        auto.winchInit();
         
-       auto.driveStraightTest();
+        auto.driveStraightTest();
        
     }
 
     @Override
     public void teleopInit() {
         winch.setSafetyEnabled(true);
+    }
+    
+    @Override
+    public void testInit(){
+    	double[] inputs = new double[3];
+    	
+    	logger.warn("Starting Calibration:in five seconds");
+    	Timer.delay(5);
+    	
+    	logger.warn("Max out the foward motion on the \n" + 
+    				"left joystick on the drive contoller");
+    	inputs = driveStation.getDriveInputs();
+    	chassis.driveNonScaled(inputs[0], 0);
+    	
+    	logger.warn("Max out the backward motion on the \n" + 
+					"left joystick on the drive contoller");
+    	inputs = driveStation.getDriveInputs();
+    	chassis.driveNonScaled(inputs[0], 0);
+    	
+    	logger.warn("Max out the foward motion on the \n" + 
+					"right joystick on the drive contoller");
+    	inputs = driveStation.getDriveInputs();
+    	chassis.driveNonScaled(0, inputs[1]);
+    	
+    	logger.warn("Max out the backward motion on the \n" + 
+					"right joystick on the drive contoller");
+    	inputs = driveStation.getDriveInputs();
+    	chassis.driveNonScaled(0, inputs[1]);
+    	
+    	
     }
 }

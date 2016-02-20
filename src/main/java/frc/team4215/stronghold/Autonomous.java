@@ -270,7 +270,7 @@ public class Autonomous {
         intake.set(Const.Motor.Run.Stop);
     }
 
-    private void winchInit() {
+    public void winchInit() {
         winch.set(Const.Motor.Run.WinchInitSpeed);
         Timer.delay(Const.Motor.Run.WinchInitTime);
         winch.set(Const.Motor.Run.WinchStop);
