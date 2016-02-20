@@ -21,6 +21,8 @@ public class RobotModule extends IterativeModule {
     
     UltraSonic ult;
     
+    Autonomous auto;
+    
     public static Logger logger;
 
     private static final String ModuleName = "stronghold";
@@ -66,6 +68,7 @@ public class RobotModule extends IterativeModule {
         chassis = new DriveTrain(left, left2, right, right2);
         
         rightStick = new Joystick(1);
+        auto = new Autonomous(chassis);
         
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
@@ -104,8 +107,8 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit() {
         winch.setSafetyEnabled(false);
         
-        Autonomous.startTimer();
-        // Autonomous.driveStraightTest();
+       auto.driveStraightTest();
+       
     }
 
     @Override

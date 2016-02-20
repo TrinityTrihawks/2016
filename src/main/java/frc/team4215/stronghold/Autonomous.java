@@ -54,7 +54,7 @@ public class Autonomous {
     
     private Interface choiceAuto;
     
-    public Autonomous(DriveTrain dT_) throws RobotException {
+    public Autonomous(DriveTrain dT_){
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
