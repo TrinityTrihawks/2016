@@ -112,25 +112,25 @@ public class RobotModule extends IterativeModule {
     public void testInit(){
     	double[] inputs = new double[3];
     	
-    	logger.warn("Starting Calibration:in five seconds");
+    	logger.warn("Starting Calibration in five seconds!!!!");
     	Timer.delay(5);
     	
-    	logger.warn("Max out the foward motion on the \n" + 
+    	logger.warn("Max out the foward motion on the "+  System.lineSeparator() + 
     				"left joystick on the drive contoller");
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(inputs[0], 0);
     	
-    	logger.warn("Max out the backward motion on the \n" + 
+    	logger.warn("Max out the backward motion on the "+  System.lineSeparator() +
 					"left joystick on the drive contoller");
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(inputs[0], 0);
     	
-    	logger.warn("Max out the foward motion on the \n" + 
+    	logger.warn("Max out the foward motion on the " + System.lineSeparator() + 
 					"right joystick on the drive contoller");
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(0, inputs[1]);
     	
-    	logger.warn("Max out the backward motion on the \n" + 
+    	logger.warn("Max out the backward motion on the " +  System.lineSeparator() + 
 					"right joystick on the drive contoller");
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(0, inputs[1]);
