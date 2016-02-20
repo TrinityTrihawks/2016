@@ -105,7 +105,7 @@ public class RobotModule extends IterativeModule {
         winch.setSafetyEnabled(false);
         
         Autonomous.startTimer();
-
+        // Autonomous.driveStraightTest();
     }
 
     @Override
