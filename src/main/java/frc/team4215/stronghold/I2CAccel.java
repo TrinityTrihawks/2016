@@ -23,13 +23,10 @@ public class I2CAccel {
         // Accelerometer
         byte[] reg12 = new byte[1];
         accel.read(0x12, 1, reg12);
-
-        // accel.write(CTRL_REG, 0x00);
+        
         accel.write(CTRL_REG + 1, 0x57); // 0x20
-        // accel.write(CTRL_REG+2, 0x00); //0x21
         accel.write(CTRL_REG + 3, 0x0);// 4); //0x22
         accel.write(CTRL_REG + 4, 0x0);// 4); //0x23
-        // accel.write(CTRL_REG+5, 0x14); //0x24
         accel.write(CTRL_REG + 6, 0x00); // 0x25
         accel.write(CTRL_REG + 7, 0x00); // 0x26
         accel.read(WHO_AM_I, 1, ID);
