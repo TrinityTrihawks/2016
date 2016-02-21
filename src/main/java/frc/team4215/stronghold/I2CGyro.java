@@ -65,7 +65,7 @@ public class I2CGyro {
     public static void pingGyro() {
 
         double newTime = timer.get();
-        double deltat = newTime - lastTime;
+        double deltat = (newTime - lastTime)/1000;
         lastTime = newTime;
         double[] angularSpeed = new double[3];
 
