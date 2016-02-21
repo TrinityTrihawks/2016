@@ -23,6 +23,7 @@ public class RobotModule extends IterativeModule {
     UltraSonic ult;
     
     Autonomous auto;
+    Timer timer = new Timer();
     
     public static Logger logger;
 
@@ -117,23 +118,42 @@ public class RobotModule extends IterativeModule {
     	
     	logger.warn("Max out the foward motion on the "+  System.lineSeparator() + 
     				"left joystick on the drive contoller");
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(inputs[0], 0);
+    	timer.start();
+    	
+    	while(timer.get() < 10000){
+    		inputs = driveStation.getDriveInputs();
+    		chassis.driveNonScaled(inputs[0], 0);
+    	}
     	
     	logger.warn("Max out the backward motion on the "+  System.lineSeparator() +
 					"left joystick on the drive contoller");
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(inputs[0], 0);
+    	timer.reset();
+    	timer.start();
+    	
+    	while(timer.get() < 10000){
+    		inputs = driveStation.getDriveInputs();
+    		chassis.driveNonScaled(inputs[0], 0);
+    	}
     	
     	logger.warn("Max out the foward motion on the " + System.lineSeparator() + 
 					"right joystick on the drive contoller");
+    	
+    	timer.reset();
+    	timer.start();
+    	
+    	while(timer.get() < 10000){
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(0, inputs[1]);
+    	}
     	
     	logger.warn("Max out the backward motion on the " +  System.lineSeparator() + 
 					"right joystick on the drive contoller");
+    	timer.reset();
+    	timer.start();
+    	while(timer.get() > 10000){
     	inputs = driveStation.getDriveInputs();
     	chassis.driveNonScaled(0, inputs[1]);
+    	}
     	
     	
     }
