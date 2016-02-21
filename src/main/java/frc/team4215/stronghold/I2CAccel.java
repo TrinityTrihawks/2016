@@ -59,16 +59,6 @@ public class I2CAccel {
         return coeff * ((test > 32767) ? test - 65536 : test);
     }
 
-    public static int normalize(byte h, byte l) {
-
-        int high = Byte.toUnsignedInt(h);
-        int low = Byte.toUnsignedInt(l);
-
-        int val = (high << 8) | low;
-
-        return (val > 0x1FFFF) ? val - 0x10000 : val;
-    }
-
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (pingFlag) {
