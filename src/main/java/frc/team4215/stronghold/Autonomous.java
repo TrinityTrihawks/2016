@@ -264,7 +264,13 @@ public class Autonomous {
     double distanceTraveledki;
     double distanceTraveledkd;
     double outPut;
-    
+   /**
+    * This function takes the Distance traveled over a given amount of time and sets
+    * the voltage
+    * Thanks to Jack for the prototype code
+    * @param setPoint
+    * @author Ransom
+    */
     public void distancePid(double setPoint){
         // How long since we last calculated
     	double now = time.get();
@@ -285,13 +291,16 @@ public class Autonomous {
     	   
     	    //Saved for next calculation
     	    double lastTime = now;
+    	    
     }
     
     public double getOutPut(){
     	return outPut;
     }
     
-    
+    public double distanceTraveled(){
+    	return distanceTraveled;
+    }
     
 
     /**
