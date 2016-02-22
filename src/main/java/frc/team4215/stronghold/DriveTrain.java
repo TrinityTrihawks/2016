@@ -14,7 +14,8 @@ public class DriveTrain {
     Victor rightMotor;
     Victor rightMotor2;
     Victor leftMotor2;
-    double coeff = .85;
+    boolean state;
+    double coeff = .65;
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
@@ -41,31 +42,35 @@ public class DriveTrain {
          */
         leftSpeed = coeff*scaling(leftSpeed);
         rightSpeed = coeff*scaling(rightSpeed);
-        
+        RobotModule.logger.info("Coeff used: " + coeff);
         leftMotor.set(-leftSpeed);
         leftMotor2.set(-leftSpeed);
         rightMotor.set(rightSpeed);
         rightMotor2.set(rightSpeed);
     }
     
-    public void driveNonScaled(double leftSpeed, double rightSpeed) {
+    public void setIndependently(double leftSpeed1, double leftSpeed2, 
+    							 double rightSpeed1, double rightSpeed2) {
         /*
          * The Victors don't respond to a voltage of less then 4%
          * either direction so I provided some scaling.
          */
-        /*
-         * The scaling part is moved into a new function to simplify
-         * the code. - James
-         */
-        leftSpeed = scaling(leftSpeed);
-        rightSpeed = scaling(rightSpeed);
         
-        leftMotor.set(-leftSpeed);
-        leftMotor2.set(-leftSpeed);
-        rightMotor.set(rightSpeed);
-        rightMotor2.set(rightSpeed);
+        leftMotor.set(-leftSpeed1);
+        leftMotor2.set(-leftSpeed2);
+        rightMotor.set(rightSpeed1);
+        rightMotor2.set(rightSpeed2);
     }
-    
+    public void setState(boolean newState){
+    	state = newState;
+    	if(state){
+    		coeff = 1;
+    	}
+    	else{
+    		coeff = .65;
+    	}
+    	RobotModule.logger.info("Coeff: " + coeff);
+    }
     /**
      * Scaling because Victor does not response to volts less than 4%
      * either direction.
