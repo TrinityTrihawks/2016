@@ -248,7 +248,9 @@ public class Autonomous {
 
         double[] angles = I2CGyro_getAngles();
         while (newtime.get() < (inittime + lasttime)) {
-            dT.drive(1, gyroPID(angles[2]));
+        	double input = gyroPID(angles[2]);
+        	input = 1/(-input+1)+1;
+            dT.drive(1, 1-input);
         }
 
         // while (distanceTraveled < moveDistance) {
