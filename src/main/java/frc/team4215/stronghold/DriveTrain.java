@@ -72,8 +72,8 @@ public class DriveTrain {
     	RobotModule.logger.info("Coeff: " + coeff);
     }
     /**
-     * Scaling because Victor does not response to volts less than 4%
-     * either direction.
+     * Scaling because Victor does not respond to voltage less than 4%
+     * in either direction.
      *
      * @param speed
      * @return scaled speed
@@ -88,8 +88,8 @@ public class DriveTrain {
     						rightMotor.get(),rightMotor2.get()};
     }
     /**
-     * You can use this function when left speed and right speed are
-     * the same.
+     * You can use this function when the left speed and right speed
+     * is the same.
      *
      * @author James
      * @param speed
