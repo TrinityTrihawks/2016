@@ -1,4 +1,4 @@
-[!Build Status](https://travis-ci.org/TrinityTrihawks/2016.svg?branch=master)](https://travis-ci.org/TrinityTrihawks/2016)
+[![Build Status](https://travis-ci.org/TrinityTrihawks/2016.svg?branch=master)](https://travis-ci.org/TrinityTrihawks/2016)
 
 ﻿Uses ToastAPI
 
