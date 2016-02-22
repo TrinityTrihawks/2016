@@ -33,8 +33,8 @@ public class Arm {
     private Victor armMotor1;
     private Victor armMotor2;
     private boolean state;
-    
-    private static double axisCoeff = .65;
+    // The arm is really sensitive!!!!!
+    private static double axisCoeff = .15;
     
     /**
      * Default constructor. -- Waweru Turns out the arm has 2 motors
@@ -43,7 +43,7 @@ public class Arm {
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
         armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
         armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
-        state = true;
+        state = false;
     }
 
     /**
@@ -64,14 +64,13 @@ public class Arm {
         armMotor2.set(Math.pow(setValue, power));
     }
     
-    public void changeState(){
+    public void changeState(boolean newState){
+    	state = newState;
     	if(state){
-    		state = false;
-    		axisCoeff = .65;
+    		axisCoeff = .5;
     	}
     	else{
-    		state = true;
-    		axisCoeff = 1;
+    		axisCoeff = .15;
     	}
     }
 }
