@@ -29,7 +29,7 @@ public class Autonomous {
     private static double errSumGyro;
     private static double errSumAccel;
 
-    private static double gyroKp, gyroKi;
+    private static double gyroKp = .12, gyroKi = .01;
     private static double lastTimeGyro;
     private static double lastTimeAccel;
 
@@ -239,10 +239,11 @@ public class Autonomous {
      */
     
     private void driveStraight(double moveTime) {
-        setpointGyro = 0;
+        setpointGyro = 180;
         // lasting time
         Timer newtime = new Timer();
         newtime.start();
+        
         double inittime = newtime.get();
         double lasttime = moveTime; // seconds of lasting
 
@@ -250,13 +251,8 @@ public class Autonomous {
         while (newtime.get() < (inittime + lasttime)) {
         	double input = gyroPID(angles[2]);
         	input = -1/(input-1)-1;
-            dT.drive(1, 1-input);
+            dT.drive(0,input);
         }
-
-        // while (distanceTraveled < moveDistance) {
-        // dT.drive(Const.Motor.Run.Forward);
-        // I2CDistanceTraveled();
-        // }
         
         dT.drive(Const.Motor.Run.Stop);
     }

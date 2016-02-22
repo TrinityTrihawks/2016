@@ -102,7 +102,7 @@ public class RobotModule extends IterativeModule {
         	logger.info("Button 6 pressed");
         
         double[] inputs = driveStation.getDriveInputs();
-        chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
+        chassis.drive(inputs[0], inputs[1]);
         arm.Run();
     }
     
@@ -120,7 +120,7 @@ public class RobotModule extends IterativeModule {
     @Override
     public void testPeriodic(){
     	double[] inputs = driveStation.getDriveInputs();
-        chassis.drive(inputs[0], inputs[1]);
+    	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
 }
