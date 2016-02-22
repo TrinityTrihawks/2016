@@ -16,7 +16,7 @@ public class RobotModule extends IterativeModule {
     private Arm arm;
     private Winch winch;
     
-    private Joystick leftStick, rightStick, gameCube;
+    private Joystick rightStick, gameCube;
 
     private UI driveStation;
     
@@ -66,7 +66,8 @@ public class RobotModule extends IterativeModule {
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
-
+        
+        arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
         
         rightStick = new Joystick(1);
@@ -91,13 +92,17 @@ public class RobotModule extends IterativeModule {
     	 * A quick series of if statements
     	 *  to set the winch
     	 */
+    	
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
-           auto.winchInit();
-        if (gameCube.getRawButton(6))
-        	arm.changeState();
+           auto.winchInit();  
+        
+        arm.changeState(gameCube.getRawButton(6));
+        chassis.setState(rightStick.getRawButton(6));
+        if(rightStick.getRawButton(6))
+        	logger.info("Button 6 pressed");
         
         double[] inputs = driveStation.getDriveInputs();
-        chassis.drive(inputs[0], inputs[1]);
+        chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
         arm.Run();
     }
     
@@ -113,51 +118,9 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
-    public void testInit(){
-    	double[] inputs = new double[3];
-    	
-    	logger.warn("Starting Calibration in five seconds!!!!");
-    	Timer.delay(5);
-    	
-    	logger.warn("Max out the foward motion on the "+  System.lineSeparator() + 
-    				"left joystick on the drive contoller");
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    		inputs = driveStation.getDriveInputs();
-    		chassis.driveNonScaled(inputs[0], 0);
-    	}
-    	
-    	logger.warn("Max out the backward motion on the "+  System.lineSeparator() +
-					"left joystick on the drive contoller");
-    	timer.reset();
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    		inputs = driveStation.getDriveInputs();
-    		chassis.driveNonScaled(inputs[0], 0);
-    	}
-    	
-    	logger.warn("Max out the foward motion on the " + System.lineSeparator() + 
-					"right joystick on the drive contoller");
-    	
-    	timer.reset();
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(0, inputs[1]);
-    	}
-    	
-    	logger.warn("Max out the backward motion on the " +  System.lineSeparator() + 
-					"right joystick on the drive contoller");
-    	timer.reset();
-    	timer.start();
-    	while(timer.get() > 10000){
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(0, inputs[1]);
-    	}
-    	
-    	
+    public void testPeriodic(){
+    	double[] inputs = driveStation.getDriveInputs();
+        chassis.drive(inputs[0], inputs[1]);
     }
+    
 }
