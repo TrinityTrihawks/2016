@@ -32,8 +32,9 @@ public class Arm {
      */
     private Victor armMotor1;
     private Victor armMotor2;
+    private boolean state;
     
-    private static final double axisCoeff = .65;
+    private static double axisCoeff = .65;
     
     /**
      * Default constructor. -- Waweru Turns out the arm has 2 motors
@@ -42,6 +43,7 @@ public class Arm {
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
         armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
         armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
+        state = true;
     }
 
     /**
@@ -55,11 +57,21 @@ public class Arm {
                 .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
         return;
     }
-
+    
     public void set(double setValue) {
         double power = .16;
         armMotor1.set(Math.pow(setValue, power));
         armMotor2.set(Math.pow(setValue, power));
     }
     
+    public void changeState(){
+    	if(state){
+    		state = false;
+    		axisCoeff = .65;
+    	}
+    	else{
+    		state = true;
+    		axisCoeff = 1;
+    	}
+    }
 }

@@ -93,9 +93,12 @@ public class RobotModule extends IterativeModule {
     	 */
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
            auto.winchInit();
+        if (gameCube.getRawButton(6))
+        	arm.changeState();
         
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
+        arm.Run();
     }
     
     @Override
