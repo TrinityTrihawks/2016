@@ -296,7 +296,9 @@ public class Autonomous {
     	return outPut;
     }
     
-    
+    public double distanceTraveled(){
+    	return distanceTraveled;
+    }
     
 
     /**
