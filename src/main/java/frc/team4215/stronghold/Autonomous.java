@@ -260,6 +260,41 @@ public class Autonomous {
         
         dT.drive(Const.Motor.Run.Stop);
     }
+    double errSum = 0;
+    double lastTime = 0;
+    double distanceTraveledkp;
+    double distanceTraveledki;
+    double distanceTraveledkd;
+    double outPut;
+    
+    public void distancePid(double setPoint){
+        // How long since we last calculated
+    	double now = time.get();
+			double timeChange = now - lastTime;
+    	    
+		    // Compute all the working error variables 
+    	    double error = setPoint - distanceTraveled;
+    	    errSum += (error * timeChange);
+    	    
+    	    // Compute PID Output
+    	    outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
+    	    
+    	    //Normalizes the Output between -1 and 1
+    	    outPut = 2/Math.PI * Math.atan(outPut);
+    	    
+    	    //Uses Output to drive
+    	    dT.drive(outPut);
+    	   
+    	    //Saved for next calculation
+    	    double lastTime = now;
+    }
+    
+    public double outPut(){
+    	return outPut;
+    }
+    
+    
+    
 
     /**
      * throw ball out. Yet tested.
@@ -391,5 +426,6 @@ public class Autonomous {
     private static double[] I2CGyro_getAngles() {
         return I2CGyro.getAngles();
     }
+    
     
 }
