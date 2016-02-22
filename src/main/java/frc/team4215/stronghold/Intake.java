@@ -53,7 +53,9 @@ public class Intake {
             intake.set(Const.Motor.Run.Backward);
         else intake.set(Const.Motor.Run.Stop);
     }
-    
+    public double get(){
+    	return intake.get();
+    }
     public void set(double setValue) {
         intake.set(setValue);
     }

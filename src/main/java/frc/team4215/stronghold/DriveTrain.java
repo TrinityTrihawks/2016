@@ -83,7 +83,10 @@ public class DriveTrain {
         else return Math.signum(speed)
                 * ((Math.abs(speed) * .96) + .04);
     }
-    
+    public double[] getVoltages() {
+    	return new double[] { leftMotor.get(),leftMotor2.get(),
+    						rightMotor.get(),rightMotor2.get()};
+    }
     /**
      * You can use this function when left speed and right speed are
      * the same.

@@ -72,9 +72,10 @@ public class RobotModule extends IterativeModule {
         
         rightStick = new Joystick(1);
         auto = new Autonomous(chassis);
-        
+        // Starting 
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
+        auto.pingerStart();
     }
     
     public void runAccel() {

@@ -32,6 +32,7 @@ public class Autonomous {
     private static double gyroKp = .12, gyroKi = .01;
     private static double lastTimeGyro;
     private static double lastTimeAccel;
+    private static double lastTimeDistance;
 
     /**
      * Length of Autonomous period, seconds
@@ -240,7 +241,6 @@ public class Autonomous {
     
     private void driveStraight(double moveTime) {
         setpointGyro = 180;
-        // lasting time
         Timer newtime = new Timer();
         newtime.start();
         
@@ -250,7 +250,7 @@ public class Autonomous {
         double[] angles = I2CGyro_getAngles();
         while (newtime.get() < (inittime + lasttime)) {
         	double input = gyroPID(angles[2]);
-        	input = -1/(input-1)-1;
+        	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
             dT.drive(0,input);
         }
         
@@ -342,18 +342,16 @@ public class Autonomous {
      */
     private void I2CDistanceTraveled() {
         
-        double time1 = time.get();
-        for (int count =
-                0; count < (AUTOTIME * SAMPLINGRATE); count++) {
+        for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
                 
             Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
-            double timeChange = time2 - time1;
-            time1 = time.get();
+            double timeChange = time2 - lastTimeDistance;
+            lastTimeDistance = time.get();
             double[] acceleration = I2CAccel_getAccel();
             
-            distanceTraveled +=
-                    .5 * acceleration[0] * Math.pow(timeChange, 2);
+            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
+            
         }
     }
 
@@ -364,6 +362,7 @@ public class Autonomous {
         };
         
         threadPing = new Thread(pinger);
+        lastTimeDistance = time.get();
         threadPing.start();
         
     }
