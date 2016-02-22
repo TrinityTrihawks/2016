@@ -78,15 +78,6 @@ public class RobotModule extends IterativeModule {
         auto.pingerStart();
     }
     
-    public void runAccel() {
-        while (true) {
-            double[] accel = I2CGyro.getAngles();
-            if (accel[0] + accel[1] + accel[2] != 0)
-                logger.info("Angles : " + accel[0] + " ," + accel[1]
-                        + " ," + accel[2]);
-        }
-    }
-    
     @Override
     public void teleopPeriodic() {
     	/*
@@ -112,7 +103,12 @@ public class RobotModule extends IterativeModule {
         winch.setSafetyEnabled(false);
         auto.winchInit();
     }
-
+    
+    @Override
+    public void autonomousPeriodic(){
+    	auto.driveStraight(180);
+    }
+    
     @Override
     public void teleopInit() {
         winch.setSafetyEnabled(true);

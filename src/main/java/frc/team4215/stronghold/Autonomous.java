@@ -243,7 +243,7 @@ public class Autonomous {
      *            Meters of required distance.
      */
     double input;
-    private void driveStraight(double target) {
+    public void driveStraight(double target) {
         setpointGyro = target;
         Timer newtime = new Timer();
         newtime.start();
