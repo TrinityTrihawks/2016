@@ -55,11 +55,15 @@ public class Autonomous {
     
     private Interface choiceAuto;
     
+    private Autonomous auto;
+    
     public Autonomous(DriveTrain dT_){
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
+        
+    	
     }
     
     /*
@@ -238,24 +242,22 @@ public class Autonomous {
      * @param moveDistance
      *            Meters of required distance.
      */
-    
-    private void driveStraight(double moveTime) {
-        setpointGyro = 180;
+    double input;
+    private void driveStraight(double target) {
+        setpointGyro = target;
         Timer newtime = new Timer();
         newtime.start();
-        
-        double inittime = newtime.get();
-        double lasttime = moveTime; // seconds of lasting
 
         double[] angles = I2CGyro_getAngles();
-        while (newtime.get() < (inittime + lasttime)) {
-        	double input = gyroPID(angles[2]);
-        	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
-            dT.drive(0,input);
-        }
-        
-        dT.drive(Const.Motor.Run.Stop);
+        double input = gyroPID(angles[2]);
+    	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
+        dT.drive(0,input);
     }
+    
+    public double getDriveStraight(){
+    	return input;
+    }
+    
     double errSum = 0;
     double lastTime = 0;
     double distanceTraveledkp;
@@ -285,7 +287,7 @@ public class Autonomous {
     	    double lastTime = now;
     }
     
-    public double outPut(){
+    public double getOutPut(){
     	return outPut;
     }
     
@@ -400,10 +402,6 @@ public class Autonomous {
         lastTimeDistance = time.get();
         threadPing.start();
         
-    }
-    
-    public void driveStraightTest(){
-    	driveStraight(20000);
     }
     
     public void timeBased(){

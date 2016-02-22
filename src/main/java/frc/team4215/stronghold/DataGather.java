@@ -8,11 +8,13 @@ import jaci.openrio.module.blackbox.BlackBoxContext;
 public class DataGather {
 	BlackBoxContext context;
 	
-	public DataGather() {
+	public DataGather(Autonomous auto) {
 		context.add("Gyro Data",this::zRot);
 		context.add("Accel x data", this::xAccel);
 		context.add("Accel Y data", this::yAccel);
-		context.add("Distance traveled", value_supplier);
+		context.add("Distance traveled", auto::getDistanceTraveled);
+		context.add("Distance Traveled Pid", auto::getOutPut);
+		context.add("Drive Straight Pid",auto::getDriveStraight);
 	}
 	
 	public double zRot(){
