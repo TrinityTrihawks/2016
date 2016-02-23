@@ -16,6 +16,8 @@ public class Autonomous {
      */
     private static double distanceTraveled;
 
+    private static double velocityAttained;
+
     public static Timer time = new Timer();
 
     private static double accelerometerKp;
@@ -287,10 +289,11 @@ public class Autonomous {
     	    outPut = 2/Math.PI * Math.atan(outPut);
     	    
     	    //Uses Output to drive
-    	    dT.drive(outPut);
+    	    dT.drive(-outPut);
     	   
     	    //Saved for next calculation
-    	    double lastTime = now;
+    	    lastTime = now;
+    	    RobotModule.logger.info("Output: " + outPut);
     	    
     }
     
