@@ -39,7 +39,7 @@ public class I2CGyro {
 
         boolean worked = gyro.read(WHO_AM_I, 1, ID);
 
-        if (ID[0] == 0xD4 && worked) {
+        if (ID[0] == 0xD4) {
             RobotModule.logger.info("Gyro active!");
         } else {
             RobotModule.logger.error("Gyro not operating, please check wiring! "
