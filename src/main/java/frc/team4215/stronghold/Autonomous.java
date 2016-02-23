@@ -303,14 +303,15 @@ public class Autonomous {
     	    return outPut;
     }
     
-    public double getOutPut(){
-    	return outPut;
-    }
-    
     public double distanceTraveled(){
     	return distanceTraveled;
     }
-    
+    /**
+     * Drives forward while turning
+     * @param x
+     * @param y
+     * @author Ransom
+     */
     public void driveToPoint(double x, double y){
     	double theta = Math.atan(x/y);
     	double r = Math.pow(x, 2) + Math.pow(y, 2);
