@@ -250,12 +250,13 @@ public class Autonomous {
     private double pidTurn(double target) {
         setpointGyro = target;
         
-        // Input for the 
+        // Input for the pid loop
         double[] angles = I2CGyro_getAngles();
         
         double input = gyroPID(angles[2]);
         
     	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
+    	
     	return input;
     }
     
@@ -266,8 +267,8 @@ public class Autonomous {
     
     double errSum = 0;
     double lastTime = 0;
-    double distanceTraveledkp;
-    double distanceTraveledki;
+    double distanceTraveledkp = .009;
+    double distanceTraveledki = 0;
     double distanceTraveledkd;
     double outPut;
    /**
