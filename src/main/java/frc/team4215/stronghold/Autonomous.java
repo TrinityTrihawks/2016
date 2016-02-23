@@ -215,7 +215,7 @@ public class Autonomous {
     }
     
     /**
-     * to lower arm. Need more info.
+     * To lower arm. Need more info.
      *
      * @author James
      */
@@ -226,7 +226,7 @@ public class Autonomous {
     }
     
     /**
-     * to lift arm. Need more info
+     * To lift arm. Need more info
      *
      * @author James
      */
@@ -318,9 +318,15 @@ public class Autonomous {
     	double r = Math.pow(x, 2) + Math.pow(y, 2);
     	RobotModule.logger.info("The angle is" + theta);
     	RobotModule.logger.info("The distance is" + r);
-    	if(theta - 15 < .5){
-    		dT.drive(-distancePid(20) - pidTurn(15), -distancePid(10) - pidTurn(8));
-    	}	
+    	if(theta - I2CGyro.getAngles()[2] < .5){
+    		dT.drive((distancePid(r) + pidTurn(theta)), distancePid(r) + pidTurn(theta));
+    		if(DEBUG)
+    			RobotModule.logger.info("Left: " + -(distancePid(r) + pidTurn(theta)) + "Right: " + -(distancePid(r) + pidTurn(theta)));
+    	}
+    	else{
+    		dT.drive(-pidTurn(theta), pidTurn(theta));
+    		RobotModule.logger.info("Turning: " + -pidTurn(theta) + pidTurn(theta));
+    	}
     }
     /**
      * Throws ball out. Yet to be tested.
