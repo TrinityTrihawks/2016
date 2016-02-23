@@ -215,7 +215,7 @@ public class Autonomous {
     }
     
     /**
-     * to lower arm. Need more info.
+     * To lower arm. Need more info.
      *
      * @author James
      */
@@ -226,7 +226,7 @@ public class Autonomous {
     }
     
     /**
-     * to lift arm. Need more info
+     * To lift arm. Need more info
      *
      * @author James
      */
@@ -317,7 +317,9 @@ public class Autonomous {
     	RobotModule.logger.info("The angle is" + theta);
     	RobotModule.logger.info("The distance is" + r);
     	if(theta - 15 < .5){
-    		dT.drive(-distancePid(20) - pidTurn(15), -distancePid(10) - pidTurn(8));
+    		dT.drive(-distancePid(r) - pidTurn(theta), -distancePid(r) - pidTurn(theta));
+    		if(DEBUG)
+    			RobotModule.logger.info("Left: " + -(distancePid(r) + pidTurn(theta)) + "Right: " + -(distancePid(r) + pidTurn(theta)));
     	}	
     }
     /**
