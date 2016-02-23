@@ -27,6 +27,9 @@ public class DriveTrain {
     
     /**
      * Set Drive train speed Inputs from -1 to 1
+     * 2/23/16
+     * So because of the design and the weight of history
+     * -1 makes the robot go forward and 1 backwards
      *
      * @param leftSpeed
      * @param rightSpeed

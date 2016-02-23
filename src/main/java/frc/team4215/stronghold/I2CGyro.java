@@ -9,7 +9,7 @@ public class I2CGyro {
     private static I2C gyro;
     private static boolean pingFlag;
     private static double lastTime = 0;
-    private static double coeff = 0.0875d;
+    private static double coeff = 0.00875;
     private static HardwareTimer hardTimer = new HardwareTimer();
     private static Timer.Interface timer;
     
@@ -17,7 +17,7 @@ public class I2CGyro {
             OUT_REG = 0x28;
 
     private static double[] angles;
-    private static int limit = 10;
+    private static int limit = 15;
     private static byte[] ID = new byte[1], dataBuffer = new byte[1];
     
     private static Thread threadPing;
@@ -88,7 +88,7 @@ public class I2CGyro {
         gyro.read(OUT_REG + 5, 1, dataBuffer);
         gH = dataBuffer[0];
         angularSpeed[2] = concatCorrect(gL, gH);
-
+        RobotModule.logger.info("Angle Speed: " + angularSpeed[2]);
         double cX, cY, cZ;
         cX = angles[0] + angularSpeed[0] * deltat;
         cY = angles[1] + angularSpeed[1] * deltat;
@@ -137,10 +137,10 @@ public class I2CGyro {
         int low = Byte.toUnsignedInt(l);
         int test = ((0xFF & high) << 8) + (0xFF & low);
         test = (test > 0x7FFF) ? test - 0xFFFF : test;
-        double testTwo = coeff*test;
+        double testTwo = (coeff*test)/20;
         
         // Makes sure that any offset is eliminated
-        if(Math.abs(testTwo) > 0) 
+        if(Math.abs(testTwo) > limit) 
         	return testTwo;
         else
         	return 0;

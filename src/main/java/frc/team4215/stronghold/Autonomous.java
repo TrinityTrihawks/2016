@@ -270,8 +270,8 @@ public class Autonomous {
     
     double errSum = 0;
     double lastTime = 0;
-    double distanceTraveledkp;
-    double distanceTraveledki;
+    double distanceTraveledkp = .0001;
+    double distanceTraveledki = 0;
     double distanceTraveledkd;
     double outPut;
    /**
@@ -283,7 +283,8 @@ public class Autonomous {
     */
     public void distancePid(double setPoint){
         // How long since we last calculated
-    	double now = time.get();
+    		
+    		double now = time.get();
 			double timeChange = now - lastTime;
     	    
 		    // Compute all the working error variables 
@@ -294,13 +295,14 @@ public class Autonomous {
     	    outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
     	    
     	    //Normalizes the Output between -1 and 1
-    	    outPut = 2/Math.PI * Math.atan(outPut);
+    	    outPut = Math.PI/2 * Math.atan(outPut);
     	    
     	    //Uses Output to drive
-    	    dT.drive(outPut);
+    	    dT.drive(-outPut);
     	   
     	    //Saved for next calculation
-    	    double lastTime = now;
+    	    lastTime = now;
+    	    RobotModule.logger.info("Output: " + outPut);
     	    
     }
     
@@ -407,8 +409,7 @@ public class Autonomous {
             double[] acceleration = I2CAccel_getAccel();
             velocityAttained = timeChange*acceleration[0];
             
-            distanceTraveled += velocityAttained*timeChange + 
-            					.5 * acceleration[0] * Math.pow(timeChange, 2);
+            distanceTraveled += .5 * acceleration[1] * Math.pow(timeChange, 2);
             
         }
     }

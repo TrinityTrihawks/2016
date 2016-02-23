@@ -48,6 +48,7 @@ public class I2CAccel {
         accelVal[2] = concatCorrect(buffH[0], buffL[0]);
         accelVal[2] /= 1000;
         accelVal[2] *= G_IN_IPS2;
+        RobotModule.logger.info("Accel: " + accelVal[1] );
 
     }
 
@@ -56,7 +57,13 @@ public class I2CAccel {
         int low = Byte.toUnsignedInt(l);
         int test = ((0xFF & high) << 8) + (0xFF & low);
         
-        return coeff * ((test > 0x7FFF) ? test - 0xFFFF : test);
+        test = ((test > 0x7FFF) ? test - 0xFFFF : test);
+        test *= coeff;
+        
+        if(test > 65)
+        	return test;
+        else
+        	return 0;
     }
 
     public static void pingerStart() {

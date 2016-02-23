@@ -78,6 +78,8 @@ public class RobotModule extends IterativeModule {
         // Starting 
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
+        I2CAccel.initAccel();
+        I2CAccel.pingerStart();
         auto.pingerStart();
     }
     
@@ -104,15 +106,14 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit() {
-        winch.setSafetyEnabled(false);
-        auto.winchInit();
-        double[] angles = I2CGyro.getAngles();
-        logger.info("Start angle: " + angles[2]);
+       auto.time.reset();;
+       auto.time.start();
     }
     
     @Override
     public void autonomousPeriodic(){
-    	auto.driveStraight(180);
+    	auto.distancePid(60);
+    	
     	blackBox.tick();
     	
     }
