@@ -264,7 +264,7 @@ public class Autonomous {
     	dT.drive(out,-out);
     }
     
-    public double getDriveStraight(){
+    public double getPidTurn(){
     	return input;
     }
     
