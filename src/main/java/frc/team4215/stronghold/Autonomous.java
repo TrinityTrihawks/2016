@@ -280,7 +280,7 @@ public class Autonomous {
     */
     public double distancePid(double setPoint){
         // How long since we last calculated
-    	double now = time.get();
+    		double now = time.get();
 			double timeChange = now - lastTime;
     	    
 		    // Compute all the working error variables 
@@ -298,8 +298,10 @@ public class Autonomous {
     	   
     	    //Saved for next calculation
     	    lastTime = now;
-    	    if(DEBUG)
+    	    if(DEBUG){
     	    	RobotModule.logger.info("Output: " + outPut);
+    	    	RobotModule.logger.info("Distance: " + distanceTraveled);
+    	    }
     	    return outPut;
     }
     
@@ -410,13 +412,16 @@ public class Autonomous {
             Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
             double timeChange = time2 - lastTimeDistance;
-            lastTimeDistance = time.get();
-            double[] acceleration = I2CAccel_getAccel();
+            lastTimeDistance = time2;
+            double[] acceleration = I2CAccel.getAccel();
             
-            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
+            velocityAttained += acceleration[1]*timeChange;
+            
+            distanceTraveled += velocityAttained*timeChange;
             
         }
     }
+    
 
     public void pingerStart() {
         Runnable pinger = () -> {
