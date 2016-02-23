@@ -247,19 +247,21 @@ public class Autonomous {
      *            Meters of required distance.
      */
     double input;
-    private void driveStraight(double target) {
+    private double pidTurn(double target) {
         setpointGyro = target;
-        Timer newtime = new Timer();
-        newtime.start();
-
+        
+        // Input for the 
         double[] angles = I2CGyro_getAngles();
+        
         double input = gyroPID(angles[2]);
+        
     	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
-        dT.drive(0,input);
+    	return input;
     }
     
-    public double getDriveStraight(){
-    	return input;
+    private void driveStraight(double target){
+    	double out = pidTurn(target);
+    	dT.drive(-out,out);
     }
     
     double errSum = 0;
@@ -315,8 +317,7 @@ public class Autonomous {
     	RobotModule.logger.info("The distance is" + r);
     	if(theta - 15 < .5){
     		dT.drive(-distancePid(20) - pidTurn(15), -distancePid(10) - pidTurn(8));
-    	}
-    	
+    	}	
     }
     /**
      * Throws ball out. Yet to be tested.
