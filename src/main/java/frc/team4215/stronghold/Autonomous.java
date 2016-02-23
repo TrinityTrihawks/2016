@@ -316,11 +316,15 @@ public class Autonomous {
     	double r = Math.pow(x, 2) + Math.pow(y, 2);
     	RobotModule.logger.info("The angle is" + theta);
     	RobotModule.logger.info("The distance is" + r);
-    	if(theta - 15 < .5){
-    		dT.drive(-distancePid(r) - pidTurn(theta), -distancePid(r) - pidTurn(theta));
+    	if(theta - I2CGyro.getAngles()[2] < .5){
+    		dT.drive((distancePid(r) + pidTurn(theta)), distancePid(r) + pidTurn(theta));
     		if(DEBUG)
     			RobotModule.logger.info("Left: " + -(distancePid(r) + pidTurn(theta)) + "Right: " + -(distancePid(r) + pidTurn(theta)));
-    	}	
+    	}
+    	else{
+    		dT.drive(-pidTurn(theta), pidTurn(theta));
+    		RobotModule.logger.info("Turning: " + -pidTurn(theta) + pidTurn(theta));
+    	}
     }
     /**
      * Throws ball out. Yet to be tested.
