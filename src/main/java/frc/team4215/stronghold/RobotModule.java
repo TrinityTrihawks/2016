@@ -32,7 +32,7 @@ public class RobotModule extends IterativeModule {
 
     private static final String ModuleName = "stronghold";
 
-    private static final String ModuleVersion = "0.0.1";
+    private static final String ModuleVersion = "0.1.0";
     
     @Override
     public String getModuleName() {
