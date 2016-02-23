@@ -9,12 +9,13 @@ public class DataGather {
 	BlackBoxContext context;
 	
 	public DataGather(Autonomous auto) {
+		context = BlackBox.context("gathered_data.txt");
 		context.add("Gyro Data",this::zRot);
 		context.add("Accel x data", this::xAccel);
 		context.add("Accel Y data", this::yAccel);
 		context.add("Distance traveled", auto::distanceTraveled);
 		context.add("Distance Traveled Pid", auto::getOutPut);
-		context.add("Drive Straight Pid",auto::getDriveStraight);
+		context.add("Drive Straight Pid",auto::getPidTurn);
 	}
 	
 	public void tick(){

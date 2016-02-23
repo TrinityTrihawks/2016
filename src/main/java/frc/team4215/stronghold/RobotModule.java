@@ -23,6 +23,9 @@ public class RobotModule extends IterativeModule {
     UltraSonic ult;
     
     Autonomous auto;
+    
+    DataGather blackBox;
+    
     Timer timer = new Timer();
     
     public static Logger logger;
@@ -69,9 +72,9 @@ public class RobotModule extends IterativeModule {
         
         arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
-        
-        rightStick = new Joystick(1);
         auto = new Autonomous(chassis);
+        blackBox = new DataGather(auto);
+        
         // Starting 
         I2CGyro.initGyro();
         I2CGyro.pingerStart();
