@@ -15,7 +15,6 @@ public class DataGather {
 		context.add("Accel Y data", this::yAccel);
 		context.add("Distance traveled", auto::distanceTraveled);
 		context.add("Distance Traveled Pid", auto::getOutPut);
-		context.add("Drive Straight Pid",auto::getPidTurn);
 	}
 	
 	public void tick(){
