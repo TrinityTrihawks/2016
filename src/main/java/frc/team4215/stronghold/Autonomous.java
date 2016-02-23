@@ -15,8 +15,7 @@ public class Autonomous {
      * Measured in inches.
      */
     private static double distanceTraveled;
-    private static double velocityAttained;
-    private final static boolean DEBUG = true;
+
     public static Timer time = new Timer();
 
     private static double accelerometerKp;
@@ -30,7 +29,7 @@ public class Autonomous {
     private static double errSumGyro;
     private static double errSumAccel;
 
-    private static double gyroKp = .0025, gyroKi = 0;
+    private static double gyroKp = .12, gyroKi = .01;
     private static double lastTimeGyro;
     private static double lastTimeAccel;
     private static double lastTimeDistance;
@@ -240,38 +239,29 @@ public class Autonomous {
      * To drive straight.
      *
      * @author James
-     * @author Waweru
-     * @param targetAngle
-     *            Required angle in degrees
+     * @param moveDistance
+     *            Meters of required distance.
      */
     double input;
-    public double pidTurn(double target) {
+    private void driveStraight(double target) {
         setpointGyro = target;
         Timer newtime = new Timer();
         newtime.start();
-        
+
         double[] angles = I2CGyro_getAngles();
         double input = gyroPID(angles[2]);
     	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
-        return input;
+        dT.drive(0,input);
     }
     
-    public void driveStraight(double target){
-    	double out = pidTurn(target);
-    	double[] angles = I2CGyro.getAngles();
-    	RobotModule.logger.info("PID Output: " + out);
-    	RobotModule.logger.info("Angle: " + angles[2]);
-    	dT.drive(out,-out);
-    }
-    
-    public double getPidTurn(){
+    public double getDriveStraight(){
     	return input;
     }
     
     double errSum = 0;
     double lastTime = 0;
-    double distanceTraveledkp = .0001;
-    double distanceTraveledki = 0;
+    double distanceTraveledkp;
+    double distanceTraveledki;
     double distanceTraveledkd;
     double outPut;
    /**
@@ -281,10 +271,9 @@ public class Autonomous {
     * @param setPoint
     * @author Ransom
     */
-    public double distancePid(double setPoint){
+    public void distancePid(double setPoint){
         // How long since we last calculated
-    		
-    		double now = time.get();
+    	double now = time.get();
 			double timeChange = now - lastTime;
     	    
 		    // Compute all the working error variables 
@@ -295,13 +284,14 @@ public class Autonomous {
     	    outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
     	    
     	    //Normalizes the Output between -1 and 1
-    	    outPut = Math.PI/2 * Math.atan(outPut);
+    	    outPut = 2/Math.PI * Math.atan(outPut);
     	    
-    	    if(DEBUG)
-    	    	RobotModule.logger.info("Output: " + outPut);
+    	    //Uses Output to drive
+    	    dT.drive(outPut);
+    	   
     	    //Saved for next calculation
-    	    lastTime = now;
-    	    return outPut;
+    	    double lastTime = now;
+    	    
     }
     
     public double getOutPut(){
@@ -312,9 +302,14 @@ public class Autonomous {
     	return distanceTraveled;
     }
     
-
+    public void driveToPoint(double x, double y){
+    	double c = Math.atan(x/y);
+    	double r = Math.pow(x, 2) + Math.pow(y, 2);
+    	RobotModule.logger.info("");
+    	
+    }
     /**
-     * throw ball out. Yet tested.
+     * Throws ball out. Yet to be tested.
      *
      * @author James
      */
@@ -405,15 +400,10 @@ public class Autonomous {
             double timeChange = time2 - lastTimeDistance;
             lastTimeDistance = time.get();
             double[] acceleration = I2CAccel_getAccel();
-            velocityAttained = timeChange*acceleration[0];
             
-            distanceTraveled += .5 * acceleration[1] * Math.pow(timeChange, 2);
+            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
             
         }
-    }
-    
-    public double velocity(){
-    	return velocityAttained;
     }
 
     public void pingerStart() {
