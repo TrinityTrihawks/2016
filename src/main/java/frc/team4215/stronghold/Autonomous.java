@@ -312,10 +312,13 @@ public class Autonomous {
     }
     
     public void driveToPoint(double x, double y){
-    	double c = Math.atan(x/y);
+    	double theta = Math.atan(x/y);
     	double r = Math.pow(x, 2) + Math.pow(y, 2);
-    	RobotModule.logger.info("");
-    	
+    	RobotModule.logger.info("The angle is" + theta);
+    	RobotModule.logger.info("The distance is" + r);
+    	if(theta - 15 < .5){
+    		dT.drive(-distancePid(20) - pidTurn(15), -distancePid(10) - pidTurn(8));
+    	}	
     }
     /**
      * Throws ball out. Yet to be tested.
