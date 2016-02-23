@@ -69,7 +69,6 @@ public class DriveTrain {
     	else{
     		coeff = .65;
     	}
-    	RobotModule.logger.info("Coeff: " + coeff);
     }
     /**
      * Scaling because Victor does not respond to voltage less than 4%

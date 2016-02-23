@@ -10,7 +10,7 @@ public class I2CGyro {
     private static boolean pingFlag;
     private static double lastTime = 0;
     private static int bitMax = 0xFFFF;
-    private static int range = 200;
+    private static int range = 245;
     private static double coeff = (double) range / bitMax;
     private static HardwareTimer hardTimer = new HardwareTimer();
     private static Timer.Interface timer;
@@ -20,7 +20,6 @@ public class I2CGyro {
 
     private static double[] angles;
     private static int limit = 10;
-    private static int numOfCalibPings = 1000;
     private static byte[] ID = new byte[1], dataBuffer = new byte[1];
     
     private static Thread threadPing;
@@ -65,7 +64,7 @@ public class I2CGyro {
     public static void pingGyro() {
 
         double newTime = timer.get();
-        double deltat = (newTime - lastTime)/1000;
+        double deltat = (newTime - lastTime);
         lastTime = newTime;
         double[] angularSpeed = new double[3];
 
@@ -95,7 +94,7 @@ public class I2CGyro {
         angularSpeed[2] = concatCorrect(gL, gH);
 
         double cX, cY, cZ;
-        cX = angles[0] +  angularSpeed[0] * deltat;
+        cX = angles[0] + angularSpeed[0] * deltat;
         cY = angles[1] + angularSpeed[1] * deltat;
         cZ = angles[2] + angularSpeed[2] * deltat;
         
@@ -141,11 +140,11 @@ public class I2CGyro {
         int high = Byte.toUnsignedInt(h);
         int low = Byte.toUnsignedInt(l);
         int test = ((0xFF & high) << 8) + (0xFF & low);
-        test = (test > 0x1FFFF) ? test - 0x10000 : test;
+        test = (test > 0x7FFF) ? test - 0x7FFF : test;
         double testTwo = coeff*test;
         
         // Makes sure that any offset is eliminated
-        if(Math.abs(testTwo) > 10)
+        if(Math.abs(testTwo) > 65) 
         	return testTwo;
         else
         	return 0;

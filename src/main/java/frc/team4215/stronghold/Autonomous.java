@@ -15,6 +15,7 @@ public class Autonomous {
      * Measured in inches.
      */
     private static double distanceTraveled;
+    private static double velocityAttained;
 
     public static Timer time = new Timer();
 
@@ -29,7 +30,7 @@ public class Autonomous {
     private static double errSumGyro;
     private static double errSumAccel;
 
-    private static double gyroKp = .12, gyroKi = .01;
+    private static double gyroKp = .0025, gyroKi = 0;
     private static double lastTimeGyro;
     private static double lastTimeAccel;
     private static double lastTimeDistance;
@@ -239,19 +240,28 @@ public class Autonomous {
      * To drive straight.
      *
      * @author James
-     * @param moveDistance
-     *            Meters of required distance.
+     * @author Waweru
+     * @param targetAngle
+     *            Required angle in degrees
      */
     double input;
-    public void driveStraight(double target) {
+    public double pidTurn(double target) {
         setpointGyro = target;
         Timer newtime = new Timer();
         newtime.start();
-
+        
         double[] angles = I2CGyro_getAngles();
         double input = gyroPID(angles[2]);
     	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
-        dT.drive(0,input);
+        return input;
+    }
+    
+    public void driveStraight(double target){
+    	double out = pidTurn(target);
+    	double[] angles = I2CGyro.getAngles();
+    	RobotModule.logger.info("PID Output: " + out);
+    	RobotModule.logger.info("Angle: " + angles[2]);
+    	dT.drive(out,-out);
     }
     
     public double getDriveStraight(){
@@ -395,10 +405,16 @@ public class Autonomous {
             double timeChange = time2 - lastTimeDistance;
             lastTimeDistance = time.get();
             double[] acceleration = I2CAccel_getAccel();
+            velocityAttained = timeChange*acceleration[0];
             
-            distanceTraveled += .5 * acceleration[0] * Math.pow(timeChange, 2);
+            distanceTraveled += velocityAttained*timeChange + 
+            					.5 * acceleration[0] * Math.pow(timeChange, 2);
             
         }
+    }
+    
+    public double velocity(){
+    	return velocityAttained;
     }
 
     public void pingerStart() {

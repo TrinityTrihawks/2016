@@ -86,12 +86,12 @@ public class RobotModule extends IterativeModule {
     	 */
     	
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
-           auto.winchInit();  
+           auto.winchInit();
+        else
+        	winch.set(0);
         
         arm.changeState(gameCube.getRawButton(6));
         chassis.setState(rightStick.getRawButton(6));
-        if(rightStick.getRawButton(6))
-        	logger.info("Button 6 pressed");
         
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
@@ -102,6 +102,8 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit() {
         winch.setSafetyEnabled(false);
         auto.winchInit();
+        double[] angles = I2CGyro.getAngles();
+        logger.info("Start angle: " + angles[2]);
     }
     
     @Override
