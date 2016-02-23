@@ -112,7 +112,8 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousPeriodic(){
-    	auto.distancePid(60);
+    	double output = auto.distancePid(60);
+    	chassis.drive(output);
     	
     	blackBox.tick();
     	
