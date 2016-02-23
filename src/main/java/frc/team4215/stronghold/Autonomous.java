@@ -16,7 +16,7 @@ public class Autonomous {
      */
     private static double distanceTraveled;
     private static double velocityAttained;
-
+    private final static boolean DEBUG = true;
     public static Timer time = new Timer();
 
     private static double accelerometerKp;
@@ -281,7 +281,7 @@ public class Autonomous {
     * @param setPoint
     * @author Ransom
     */
-    public void distancePid(double setPoint){
+    public double distancePid(double setPoint){
         // How long since we last calculated
     		
     		double now = time.get();
@@ -297,13 +297,11 @@ public class Autonomous {
     	    //Normalizes the Output between -1 and 1
     	    outPut = Math.PI/2 * Math.atan(outPut);
     	    
-    	    //Uses Output to drive
-    	    dT.drive(-outPut);
-    	   
+    	    if(DEBUG)
+    	    	RobotModule.logger.info("Output: " + outPut);
     	    //Saved for next calculation
     	    lastTime = now;
-    	    RobotModule.logger.info("Output: " + outPut);
-    	    
+    	    return outPut;
     }
     
     public double getOutPut(){
