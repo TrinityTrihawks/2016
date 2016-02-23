@@ -99,6 +99,7 @@ public class RobotModule extends IterativeModule {
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
         arm.Run();
+        blackBox.tick();
     }
     
     @Override
@@ -112,6 +113,8 @@ public class RobotModule extends IterativeModule {
     @Override
     public void autonomousPeriodic(){
     	auto.driveStraight(180);
+    	blackBox.tick();
+    	
     }
     
     @Override
