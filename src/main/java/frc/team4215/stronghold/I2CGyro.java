@@ -55,8 +55,6 @@ public class I2CGyro {
 
         // Resetting the tracker variables
         angles = new double[] { 0, 0, 0 };
-        
-        RobotModule.logger.info("Coeff :" + coeff);
     }
 
     public static void pingGyro() {
@@ -142,7 +140,7 @@ public class I2CGyro {
         double testTwo = coeff*test;
         
         // Makes sure that any offset is eliminated
-        if(Math.abs(testTwo) > 65) 
+        if(Math.abs(testTwo) > 0) 
         	return testTwo;
         else
         	return 0;
