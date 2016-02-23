@@ -9,9 +9,7 @@ public class I2CGyro {
     private static I2C gyro;
     private static boolean pingFlag;
     private static double lastTime = 0;
-    private static int bitMax = 0xFFFF;
-    private static int range = 245;
-    private static double coeff = (double) range / bitMax;
+    private static double coeff = 0.0875d;
     private static HardwareTimer hardTimer = new HardwareTimer();
     private static Timer.Interface timer;
     
@@ -140,7 +138,7 @@ public class I2CGyro {
         int high = Byte.toUnsignedInt(h);
         int low = Byte.toUnsignedInt(l);
         int test = ((0xFF & high) << 8) + (0xFF & low);
-        test = (test > 0x7FFF) ? test - 0x7FFF : test;
+        test = (test > 0x7FFF) ? test - 0xFFFF : test;
         double testTwo = coeff*test;
         
         // Makes sure that any offset is eliminated
