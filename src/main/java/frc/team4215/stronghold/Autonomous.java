@@ -123,7 +123,7 @@ public class Autonomous {
      * @author Joey
      */
     public double gyroPID(double input) {
-        // Time since last calculation
+        // Time since last calculation8/
         double now = time.get();
         double timeChange = now - lastTimeGyro;
         
