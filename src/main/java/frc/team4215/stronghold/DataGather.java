@@ -9,18 +9,40 @@ import jaci.openrio.module.blackbox.BlackBoxContext;
 public class DataGather {
 	BlackBoxContext context;
 	DriveTrain chassis;
-	public DataGather( DriveTrain chassis) {
+	UI ds;
+	
+	public DataGather( DriveTrain chassis, UI ds) {
 		this.chassis = chassis;
-		context = BlackBox.context("gathered_data.txt");
+		this.ds = ds;
+		
+		context = BlackBox.context("gathered_data.csv");
+		
 		context.add("Volts: ", this::leftVolts);
 		context.add("Volts: ", this::rightVolts);
-		context.add("Accel z data", this::zAccel);
-		context.add("Accel x data", this::xAccel);
+		
+		context.add("Drive Left", this::leftInputs);
+		context.add("Drive Right", this::rightInputs);
+		
+		context.add("Accel Z data", this::zAccel);
+		context.add("Accel X data", this::xAccel);
 		context.add("Accel Y data", this::yAccel);
+		
+		
 	}
 	
 	public void tick(){
 		context.tick();
+	}
+	
+	
+	public double leftInputs(){
+		double[] inputs = ds.getDriveInputs();
+		return inputs[0];
+	}
+	
+	public double rightInputs(){
+		double[] inputs = ds.getDriveInputs();
+		return inputs[1];
 	}
 	
 	public double leftVolts(){
