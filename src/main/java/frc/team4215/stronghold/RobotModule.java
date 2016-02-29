@@ -73,7 +73,7 @@ public class RobotModule extends IterativeModule {
         arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
-        blackBox = new DataGather(chassis);
+        blackBox = new DataGather(chassis,driveStation);
         
         // Starting 
         I2CGyro.initGyro();
@@ -105,21 +105,6 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
-    public void autonomousInit() {
-       auto.time.reset();;
-       auto.time.start();
-    }
-    
-    @Override
-    public void autonomousPeriodic(){
-    	double output = auto.distancePid(60);
-    	chassis.drive(-output);
-    	
-    	blackBox.tick();
-    	
-    }
-    
-    @Override
     public void teleopInit() {
         winch.setSafetyEnabled(true);
     }
@@ -127,7 +112,10 @@ public class RobotModule extends IterativeModule {
     @Override
     public void testPeriodic(){
     	double[] inputs = driveStation.getDriveInputs();
-    	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
+    	chassis.drive(inputs[1]);
+    	blackBox.tick();
+    	
+    	//chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
 }
