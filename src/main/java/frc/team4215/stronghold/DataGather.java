@@ -17,17 +17,22 @@ public class DataGather {
 		
 		context = BlackBox.context("gathered_data.csv");
 		
-		context.add("Volts: ", this::leftVolts);
-		context.add("Volts: ", this::rightVolts);
+		//  Logging the volts to the motors
+		context.add("Volts: Right ", this::leftVolts);
+		context.add("Volts: Left", this::rightVolts);
 		
-		context.add("Drive Left", this::leftInputs);
-		context.add("Drive Right", this::rightInputs);
+		// Logginng the inputs to the drive station
+		context.add("Drive: Left", this::leftInputs);
+		context.add("Drive: Right", this::rightInputs);
 		
-		context.add("Accel Z data", this::zAccel);
-		context.add("Accel X data", this::xAccel);
-		context.add("Accel Y data", this::yAccel);
+		// Logging Accelerations
+		context.add("Accel: Z", this::zAccel);
+		context.add("Accel: X data", this::xAccel);
+		context.add("Accel: Y data", this::yAccel);
 		
-		
+		// Logging Angles and Angular speed from the Gyro
+		context.add("Angle: Z ", this::zAngle);
+		context.add("Angular-Speed: Z", this::zAngularSpeed);
 	}
 	
 	public void tick(){
@@ -54,6 +59,7 @@ public class DataGather {
 		double[] volts = chassis.getVoltages();
 		return volts[4];
 	}
+	
 	public double zAccel(){
 		double[] accel = I2CAccel.getAccel();
 		return accel[2];
@@ -67,5 +73,15 @@ public class DataGather {
 	public double yAccel(){
 		double[] accel = I2CAccel.getAccel();
 		return accel[1];
+	}
+	
+	public double zAngularSpeed(){
+		double[] speed = I2CGyro.getAngSpeed();
+		return speed[2];
+	}
+	
+	public double zAngle(){
+		double[] angles  = I2CGyro.getAngles();
+		return angles[2];
 	}
 }
