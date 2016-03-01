@@ -77,17 +77,37 @@ public class RobotModule extends IterativeModule {
         
         // Starting 
         I2CGyro.initGyro();
-        I2CGyro.pingerStart();
         I2CAccel.initAccel();
-        I2CAccel.pingerStart();
-        auto.pingerStart();
+
+    }
+    
+    @Override
+    public void disabledInit(){
+    	
+    	/*
+    	 *  Stop the sensors to try
+    	 *  to mitagate Sensor drift and
+    	 *  power usage
+    	 */
+    	
+    	I2CGyro.pingerStop();
+    	I2CAccel.pingerStop();
+    }
+    
+    @Override
+    public void teleopInit(){
+    	/*
+    	 * Start the sensors
+    	 */
+    	I2CGyro.pingerStart();
+    	I2CAccel.pingerStart();
     }
     
     @Override
     public void teleopPeriodic() {
     	/*
-    	 * A quick series of if statements
-    	 *  to set the winch
+    	 * Runs the winch code when a button's pressed
+    	 * 
     	 */
     	
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
@@ -105,17 +125,10 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
-    public void teleopInit() {
-        winch.setSafetyEnabled(true);
-    }
-    
-    @Override
     public void testPeriodic(){
     	double[] inputs = driveStation.getDriveInputs();
-    	chassis.drive(inputs[1]);
-    	blackBox.tick();
     	
-    	//chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
+    	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
 }
