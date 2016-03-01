@@ -17,6 +17,7 @@ public class I2CGyro {
             OUT_REG = 0x28;
 
     private static double[] angles;
+    private static double[] lastAngleSpeed;
     private static int limit = 15;
     private static byte[] ID = new byte[1], dataBuffer = new byte[1];
     
@@ -54,6 +55,7 @@ public class I2CGyro {
         timer = hardTimer.newTimer();
 
         // Resetting the tracker variables
+        lastAngleSpeed = new double[] { 0, 0, 0};
         angles = new double[] { 0, 0, 0 };
     }
 
@@ -89,10 +91,12 @@ public class I2CGyro {
         gH = dataBuffer[0];
         angularSpeed[2] = concatCorrect(gL, gH);
         RobotModule.logger.info("Angle Speed: " + angularSpeed[2]);
+        
         double cX, cY, cZ;
-        cX = angles[0] + angularSpeed[0] * deltat;
-        cY = angles[1] + angularSpeed[1] * deltat;
-        cZ = angles[2] + angularSpeed[2] * deltat;
+        // Adjusted algorithms so that it is hopefully less erratic
+        cX = angles[0] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
+        cY = angles[1] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
+        cZ = angles[2] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
         
         cX = cX % 360;
         if (cX < 0) cX += 360;
@@ -104,7 +108,9 @@ public class I2CGyro {
         if (cZ < 0) cZ += 360;
 
         angles = new double[] { cX, cY, cZ };
+        lastAngleSpeed = angularSpeed;
     }
+    
     /**
      * 
      */		
@@ -155,5 +161,11 @@ public class I2CGyro {
     public static double[] getAngles() {
         return angles;
     }
-
+    
+    /**
+     * Gives the last angular speed sensed by the robot
+     */
+    public static double[] getAngSpeed(){
+    	return lastAngleSpeed;
+    }
 }
