@@ -67,7 +67,7 @@ public class I2CGyro {
         double[] angularSpeed = new double[3];
 
         /*
-         * The velocities are stored in registers 0x28-0x2D. And are
+         * The angular velocities are stored in registers 0x28-0x2D. And are
          * stored in two's complement form with the first byte being
          * the right half of the number and the second being the left
          * half.
@@ -93,10 +93,22 @@ public class I2CGyro {
         RobotModule.logger.info("Angle Speed: " + angularSpeed[2]);
         
         double cX, cY, cZ;
-        // Adjusted algorithms so that it is hopefully less erratic
+        /*
+         * Since we only get angular velocities
+         * we need to integrate it to get it's angular position
+         * 
+         * - Adjusted algorithms so that it is hopefully less erratic
+         */
+        
         cX = angles[0] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
         cY = angles[1] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
         cZ = angles[2] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
+        
+        /*
+         * Since an angle of more or less then 360 degrees
+         * makes little useful sense we find remainder of
+         * the current position divided by 360
+         */
         
         cX = cX % 360;
         if (cX < 0) cX += 360;
@@ -115,8 +127,14 @@ public class I2CGyro {
      * 
      */		
     public static void pingerStart() {
-        // Starts a thread to continually update our status variables
+    	
+        /*
+         * Assigns piece of code that runs the pingGyro method constantly
+         * to pinger
+         */
+    	
         Runnable pinger = () -> {
+            timer.start();
             while (pingFlag) {
                 pingGyro();
                 try {
@@ -126,11 +144,9 @@ public class I2CGyro {
                 }
             }
         };
-
+        // I then run the code autonoumously
         threadPing = new Thread(pinger);
         pingFlag = true;
-        timer.start();
-
         threadPing.start();
     }
     
