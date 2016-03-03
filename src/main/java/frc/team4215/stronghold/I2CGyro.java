@@ -90,7 +90,6 @@ public class I2CGyro {
         gyro.read(OUT_REG + 5, 1, dataBuffer);
         gH = dataBuffer[0];
         angularSpeed[2] = concatCorrect(gL, gH);
-        RobotModule.logger.info("Angle Speed: " + angularSpeed[2]);
         
         double cX, cY, cZ;
         /*
@@ -101,8 +100,8 @@ public class I2CGyro {
          */
         
         cX = angles[0] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
-        cY = angles[1] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
-        cZ = angles[2] + .5*(angularSpeed[0] + lastAngleSpeed[0]) * deltat;
+        cY = angles[1] + .5*(angularSpeed[1] + lastAngleSpeed[1]) * deltat;
+        cZ = angles[2] + .5*(angularSpeed[2] + lastAngleSpeed[2]) * deltat;
         
         /*
          * Since an angle of more or less then 360 degrees
@@ -169,7 +168,7 @@ public class I2CGyro {
     }
 
     /**
-     * Gives the current angular position of the robot Returns a array
+     * Gives the current angular position of the robot. Returns a array
      * of three doubles
      *
      * @return angles

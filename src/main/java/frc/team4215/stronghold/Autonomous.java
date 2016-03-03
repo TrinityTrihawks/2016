@@ -115,7 +115,7 @@ public class Autonomous {
     }
     
     /**
-     * PID controller implementation for accelerometer Waweru and I
+     * PID controller implementation for accelerometer. Waweru and I
      * have decided that the derivative part for the controller is
      * unnecessary. Derivative function taken out. I moved this code
      * directly into the I2CDistanceTraveled section.
