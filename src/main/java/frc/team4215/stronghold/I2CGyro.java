@@ -168,7 +168,7 @@ public class I2CGyro {
     }
 
     /**
-     * Gives the current angular position of the robot Returns a array
+     * Gives the current angular position of the robot. Returns a array
      * of three doubles
      *
      * @return angles
