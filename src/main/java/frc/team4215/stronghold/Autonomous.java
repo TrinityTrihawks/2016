@@ -70,6 +70,32 @@ public class Autonomous {
     	
     }
     
+    boolean first = true;
+    boolean backwards = false;
+    double then = 0;
+    public void childsPlay(){
+    	if(backwards){
+    		if((time.get() - then) >= 3)
+    			dT.drive(0);
+    		else
+    			dT.drive(.3);
+    	}
+    	else{
+    		
+    		if(first){
+    			then = time.get();
+    			first = false;
+    		}
+    		
+    		if((time.get() - then) >= 3){
+    			backwards = false;
+    			then = time.get();
+    		}
+    		else
+    			dT.drive(-.3);
+    	}
+    }
+    
     /*
      * Actually, I highly doubt if this would work or not. If this
      * won't work I know how to fix it. - James

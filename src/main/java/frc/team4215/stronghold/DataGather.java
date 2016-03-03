@@ -57,7 +57,7 @@ public class DataGather {
 	
 	public double rightVolts(){
 		double[] volts = chassis.getVoltages();
-		return volts[4];
+		return volts[3];
 	}
 	
 	public double zAccel(){
