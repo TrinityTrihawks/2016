@@ -131,4 +131,10 @@ public class RobotModule extends IterativeModule {
     	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
+    
+    @Override
+    public void disabledPeriodic(){
+    	blackBox.tick();
+    	
+    }
 }
