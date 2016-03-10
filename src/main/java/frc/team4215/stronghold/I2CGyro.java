@@ -1,5 +1,8 @@
 package frc.team4215.stronghold;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.internal.HardwareTimer;
@@ -69,7 +72,17 @@ public class I2CGyro {
          * stored in two's complement form with the first byte being the right
          * half of the number and the second being the left half.
          */
-
+        type[] data = new type[]{
+        		
+        };
+        	
+        
+        gyro.write(0x2E, 0x10);
+        for(int i = 0; i < FSS; i++){
+        	
+        	
+        	int FSS = gyro.read(0x2F, 1, data);
+        	int FSS2 = data[1] & 0b00011111;
         gyro.read(OUT_REG, 1, dataBuffer);
         byte gL = dataBuffer[0];
         gyro.read(OUT_REG + 1, 1, dataBuffer);
@@ -87,7 +100,7 @@ public class I2CGyro {
         gyro.read(OUT_REG + 5, 1, dataBuffer);
         gH = dataBuffer[0];
         angularSpeed[2] = concatCorrect(gL, gH);
-
+        }
         double cX, cY, cZ;
         /*
          * Since we only get angular velocities we need to integrate it to get
