@@ -1,5 +1,7 @@
 package frc.team4215.stronghold;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.I2C;
 
 public class I2CAccel {
@@ -13,6 +15,9 @@ public class I2CAccel {
     private static byte[] buffL = new byte[1], buffH = new byte[1],
             ID = new byte[1];
     private static double[] accelVal = new double[3];
+    private static double[] velocVal = new double[3];
+    private static double[] positVal = new double[3];
+
     private static Thread pingerThread;
     
     /**
@@ -38,6 +43,11 @@ public class I2CAccel {
     public static void velInteg() {
         accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
         final int loopCount = buffL[0] & 0x1f;
+        ArrayList<double[]> accelList = new ArrayList<double[]>();
+        for (int i = 0; i < loopCount; i++) {
+            pingAccel();
+            accelList.add(accelVal);
+        }
 
     }
     
