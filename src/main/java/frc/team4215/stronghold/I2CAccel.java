@@ -7,12 +7,19 @@ public class I2CAccel {
     private static I2C accel;
     private static final double coeff = .061;
     private static boolean pingFlag;
-    private final static byte WHO_AM_I = 0x0F, CTRL_REG = 0x1F, OUT_REG = 0x28;
+    private final static byte WHO_AM_I = 0x0F, CTRL_REG = 0x1F, OUT_REG = 0x28,
+            FIFO_SRC_REG = 0x2F;
     private static final double G_IN_IPS2 = 386.09;
     private static byte[] buffL = new byte[1], buffH = new byte[1],
             ID = new byte[1];
     private static double[] accelVal = new double[3];
     private static Thread pingerThread;
+    
+    /**
+     * Should always size it as [x][3].
+     */
+    protected static double[][] velocity;
+    protected static double[] position;
 
     public static void initAccel() {
         accel = new I2C(I2C.Port.kOnboard, 0x1D);
@@ -21,15 +28,31 @@ public class I2CAccel {
         accel.read(0x12, 1, reg12);
         
         accel.write(CTRL_REG + 1, 0x57); // 0x20
-        accel.write(CTRL_REG + 3, 0x0);// 4); //0x22
-        accel.write(CTRL_REG + 4, 0x0);// 4); //0x23
+        accel.write(CTRL_REG + 3, 0x00);// 4); //0x22
+        accel.write(CTRL_REG + 4, 0x00);// 4); //0x23
         accel.write(CTRL_REG + 6, 0x00); // 0x25
         accel.write(CTRL_REG + 7, 0x00); // 0x26
         accel.read(WHO_AM_I, 1, ID);
     }
+    
+    public static void velInteg() {
+        accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
+        final int loopCount = buffL[0] & 0x1f;
 
-    public static void integrate() {
+    }
+    
+    public static void distInteg() {
         
+    }
+
+    /**
+     * @param data
+     *            Sized as [X][3]
+     * @return
+     */
+    private static double[] integrate(double[][] data) {
+        
+        return null; // placeholder
     }
 
     public static void pingAccel() {
