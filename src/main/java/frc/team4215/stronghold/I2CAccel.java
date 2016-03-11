@@ -58,9 +58,11 @@ public class I2CAccel {
     /**
      * @param data
      *            Sized as [X][3]
+     * @param delt
+     *            change of time between each two values
      * @return
      */
-    private static double[] integrate(double[][] data) {
+    private static double[] integrate(double[][] data, double delt) {
         
         return null; // placeholder
     }
