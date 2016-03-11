@@ -125,6 +125,13 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
+    public void autonomousPeriodic(){
+    	auto.childsPlay();
+    	
+    }
+    
+    
+    @Override
     public void testPeriodic(){
     	double[] inputs = driveStation.getDriveInputs();
     	

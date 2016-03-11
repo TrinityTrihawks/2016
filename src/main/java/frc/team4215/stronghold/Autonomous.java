@@ -16,8 +16,8 @@ public class Autonomous {
      */
     private static double distanceTraveled;
 
-    private static final boolean DEBUG = true; 
-    
+    private static final boolean DEBUG = true;
+
     private static double velocityAttained;
 
     public static Timer time = new Timer();
@@ -60,14 +60,14 @@ public class Autonomous {
     private Interface choiceAuto;
     
     private Autonomous auto;
+
+    double input;
     
-    public Autonomous(DriveTrain dT_){
+    public Autonomous(DriveTrain dT_) {
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
-        
-    	
     }
     
     boolean first = true;
@@ -97,14 +97,14 @@ public class Autonomous {
     }
     
     /*
-     * Actually, I highly doubt if this would work or not. If this
-     * won't work I know how to fix it. - James
+     * Actually, I highly doubt if this would work or not. If this won't
+     * work I know how to fix it. - James
      */
     public void chooseAuto(int num) {
-        if (num == 1) choiceAuto = () -> autoLowBar();
-        else if (num == 2) choiceAuto = () -> autoSpyBotLowGoal();
-        else if (num == 3) choiceAuto = () -> autoChevalDeFrise();
-        // else if (num == 4) choiceAuto = () -> autoPortcullis();
+        if (num == 1) choiceAuto = this::autoLowBar;
+        else if (num == 2) choiceAuto = this::autoSpyBotLowGoal;
+        else if (num == 3) choiceAuto = this::autoChevalDeFrise;
+        // else if (num == 4) choiceAuto = this::autoPortcullis;
         else choiceAuto = null;
     }
     
@@ -115,10 +115,10 @@ public class Autonomous {
     }
     
     /**
-     * PID controller implementation for accelerometer. Waweru and I
-     * have decided that the derivative part for the controller is
-     * unnecessary. Derivative function taken out. I moved this code
-     * directly into the I2CDistanceTraveled section.
+     * PID controller implementation for accelerometer. Waweru and I have
+     * decided that the derivative part for the controller is unnecessary.
+     * Derivative function taken out. I moved this code directly into the
+     * I2CDistanceTraveled section.
      *
      * @author Joey
      */
@@ -132,8 +132,8 @@ public class Autonomous {
         errSumAccel += error * timeChange;
         
         // Sum errors
-        double accelerometerError = accelerometerKp * error
-                + accelerometerKi * errSumAccel;
+        double accelerometerError =
+                accelerometerKp * error + accelerometerKi * errSumAccel;
 
         // Reset time variable
         lastTimeAccel = now;
@@ -149,7 +149,7 @@ public class Autonomous {
      * @author Joey
      */
     public double gyroPID(double input) {
-        // Time since last calculation8/
+        // Time since last calculation
         double now = time.get();
         double timeChange = now - lastTimeGyro;
         
@@ -272,7 +272,7 @@ public class Autonomous {
      * @param moveDistance
      *            Meters of required distance.
      */
-    double input;
+    
     private double pidTurn(double target) {
         setpointGyro = target;
         
@@ -280,15 +280,16 @@ public class Autonomous {
         double[] angles = I2CGyro_getAngles();
         
         double input = gyroPID(angles[2]);
-        
-    	input = Math.atan((Math.PI/2)*input); // function with a curve like the error curve
-    	
-    	return input;
+
+        input = Math.atan((Math.PI / 2) * input); // function with a curve
+                                                  // like the error curve
+
+        return input;
     }
     
-    private void driveStraight(double target){
-    	double out = pidTurn(target);
-    	dT.drive(-out,out);
+    private void driveStraight(double target) {
+        double out = pidTurn(target);
+        dT.drive(-out, out);
     }
     
     double errSum = 0;
@@ -297,64 +298,70 @@ public class Autonomous {
     double distanceTraveledki = 0;
     double distanceTraveledkd;
     double outPut;
-   /**
-    * This function takes the Distance traveled over a given amount of time and sets
-    * the voltage
-    * Thanks to Jack for the prototype code
-    * @param setPoint
-    * @author Ransom
-    */
-    public double distancePid(double setPoint){
+
+    /**
+     * This function takes the Distance traveled over a given amount of
+     * time and sets the voltage Thanks to Jack for the prototype code
+     *
+     * @param setPoint
+     * @author Ransom
+     */
+    public double distancePid(double setPoint) {
         // How long since we last calculated
-    		double now = time.get();
-			double timeChange = now - lastTime;
-    	    
-		    // Compute all the working error variables 
-    	    double error = setPoint - distanceTraveled;
-    	    errSum += (error * timeChange);
-    	    
-    	    // Compute PID Output
-    	    outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
-    	    
-    	    //Normalizes the Output between -1 and 1
-    	    outPut = 2/Math.PI * Math.atan(outPut);
-    	    
-    	    //Uses Output to drive
-    	    dT.drive(-outPut);
-    	   
-    	    //Saved for next calculation
-    	    lastTime = now;
-    	    if(DEBUG){
-    	    	RobotModule.logger.info("Output: " + outPut);
-    	    	RobotModule.logger.info("Distance: " + distanceTraveled);
-    	    }
-    	    return outPut;
+        double now = time.get();
+        double timeChange = now - lastTime;
+
+        // Compute all the working error variables
+        double error = setPoint - distanceTraveled;
+        errSum += (error * timeChange);
+
+        // Compute PID Output
+        outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
+
+        // Normalizes the Output between -1 and 1
+        outPut = 2 / Math.PI * Math.atan(outPut);
+
+        // Uses Output to drive
+        dT.drive(-outPut);
+
+        // Saved for next calculation
+        lastTime = now;
+        if (DEBUG) {
+            RobotModule.logger.info("Output: " + outPut);
+            RobotModule.logger.info("Distance: " + distanceTraveled);
+        }
+        return outPut;
     }
     
-    public double distanceTraveled(){
-    	return distanceTraveled;
+    public double distanceTraveled() {
+        return distanceTraveled;
     }
+
     /**
      * Drives forward while turning
+     *
      * @param x
      * @param y
      * @author Ransom
      */
-    public void driveToPoint(double x, double y){
-    	double theta = Math.atan(x/y);
-    	double r = Math.pow(x, 2) + Math.pow(y, 2);
-    	RobotModule.logger.info("The angle is" + theta);
-    	RobotModule.logger.info("The distance is" + r);
-    	if(theta - I2CGyro.getAngles()[2] < .5){
-    		dT.drive((distancePid(r) + pidTurn(theta)), distancePid(r) + pidTurn(theta));
-    		if(DEBUG)
-    			RobotModule.logger.info("Left: " + -(distancePid(r) + pidTurn(theta)) + "Right: " + -(distancePid(r) + pidTurn(theta)));
-    	}
-    	else{
-    		dT.drive(-pidTurn(theta), pidTurn(theta));
-    		RobotModule.logger.info("Turning: " + -pidTurn(theta) + pidTurn(theta));
-    	}
+    public void driveToPoint(double x, double y) {
+        double theta = Math.atan(x / y);
+        double r = Math.pow(x, 2) + Math.pow(y, 2);
+        RobotModule.logger.info("The angle is" + theta);
+        RobotModule.logger.info("The distance is" + r);
+        if (theta - I2CGyro.getAngles()[2] < .5) {
+            dT.drive((distancePid(r) + pidTurn(theta)),
+                    distancePid(r) + pidTurn(theta));
+            if (DEBUG) RobotModule.logger
+                    .info("Left: " + -(distancePid(r) + pidTurn(theta))
+                            + "Right: " + -(distancePid(r) + pidTurn(theta)));
+        } else {
+            dT.drive(-pidTurn(theta), pidTurn(theta));
+            RobotModule.logger
+                    .info("Turning: " + -pidTurn(theta) + pidTurn(theta));
+        }
     }
+
     /**
      * Throws ball out. Yet to be tested.
      *
@@ -422,13 +429,16 @@ public class Autonomous {
     }
     
     /**
-     * Should be equivalent to a method called getAccel of another
-     * class I2CAccelerometer which isn't here yet.
+     * Should be equivalent to a method called getAccel of another class
+     * I2CAccelerometer which isn't here yet.
      *
      * @author James
      * @return Accelerations, double[] with length of 3
      */
+    @SuppressWarnings("unused")
+    @Deprecated
     private static double[] I2CAccel_getAccel() {
+        // Ok, it seems like this function is not used?
         return I2CAccel.getAccel();
     }
     
@@ -441,20 +451,19 @@ public class Autonomous {
     private void I2CDistanceTraveled() {
         
         for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
-                
+
             Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
             double timeChange = time2 - lastTimeDistance;
             lastTimeDistance = time2;
             double[] acceleration = I2CAccel.getAccel();
             
-            velocityAttained += acceleration[1]*timeChange;
+            velocityAttained += acceleration[1] * timeChange;
             
-            distanceTraveled += velocityAttained*timeChange;
+            distanceTraveled += velocityAttained * timeChange;
             
         }
     }
-    
 
     public void pingerStart() {
         Runnable pinger = () -> {
@@ -468,13 +477,13 @@ public class Autonomous {
         
     }
     
-    public void timeBased(){
-    	winchInit();
+    public void timeBased() {
+        winchInit();
     }
     
     /**
-     * Should be equivalent to a method called getAngles of another
-     * class I2CGyro which isn't here yet.
+     * Should be equivalent to a method called getAngles of another class
+     * I2CGyro which isn't here yet.
      *
      * @author James
      * @return Angles, double[] with length of 3
@@ -483,6 +492,5 @@ public class Autonomous {
     private static double[] I2CGyro_getAngles() {
         return I2CGyro.getAngles();
     }
-    
-    
+
 }
