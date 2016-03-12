@@ -15,6 +15,7 @@ public class RobotModule extends IterativeModule {
     private DriveTrain chassis;
     private Arm arm;
     private Winch winch;
+    private Intake intake;
     
     private Joystick rightStick, gameCube;
 
@@ -62,7 +63,7 @@ public class RobotModule extends IterativeModule {
         
         // create winch
         winch = new Winch();
-
+        intake = new Intake();
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
 
         left = Registrar.victor(3);
@@ -121,6 +122,8 @@ public class RobotModule extends IterativeModule {
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(inputs[0], inputs[1]);
         arm.Run();
+        intake.Run();
+        
         blackBox.tick();
     }
     

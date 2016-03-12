@@ -33,22 +33,44 @@ public class I2CAccel {
         accel.read(0x12, 1, reg12);
         
         accel.write(CTRL_REG + 1, 0x57); // 0x20
-        accel.write(CTRL_REG + 3, 0x00);// 4); //0x22
-        accel.write(CTRL_REG + 4, 0x00);// 4); //0x23
+        accel.write(CTRL_REG + 3, 0x00); // 0x22
+        accel.write(CTRL_REG + 4, 0x00); // 0x23
+        accel.write(CTRL_REG + 5, 0x40); // 0x24
         accel.write(CTRL_REG + 6, 0x00); // 0x25
         accel.write(CTRL_REG + 7, 0x00); // 0x26
         accel.read(WHO_AM_I, 1, ID);
+        if(ID[0] == 0x49)
+        	RobotModule.logger.info("Accelerometer enabled!");
+        else
+        	RobotModule.logger.warn("Accelerometer disabled!");
+        
+        
     }
     
     public static void velInteg() {
         accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
-        final int loopCount = buffL[0] & 0x1f;
+        double deltat = .08;
+        int loopCount = buffL[0] & 0x1f;
         ArrayList<double[]> accelList = new ArrayList<double[]>();
         for (int i = 0; i < loopCount; i++) {
             pingAccel();
             accelList.add(accelVal);
         }
-
+        
+        double[] vel = new double[] { 0, 0, 0};
+        for(int i = 0; i < loopCount; i++){
+        	double[] cur = accelList.get(i);
+        	
+        	vel[0] += cur[0];
+        	vel[1] += cur[1];
+        	vel[2] += cur[2];
+        	
+        }
+        
+        velocVal[0] += vel[0]*deltat;
+        velocVal[1] += vel[1]*deltat;
+        velocVal[2] += vel[2]*deltat;
+        
     }
     
     public static void distInteg() {
@@ -127,7 +149,11 @@ public class I2CAccel {
     public static double[] getAccel() {
         return accelVal;
     }
-
+    
+    public static double[] getVeloc(){
+    	return velocVal;
+    }
+    
     public static void pingerStop() {
         pingFlag = false;
     }

@@ -46,7 +46,7 @@ public class I2CGyro {
             RobotModule.logger.info("Gyro active!");
         } else {
             RobotModule.logger.error("Gyro not operating, please check wiring! "
-                    + Integer.toBinaryString(ID[0]) + " " + worked);
+                    + Integer.toBinaryString(ID[0]));
         }
         
         /*

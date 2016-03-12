@@ -33,6 +33,11 @@ public class DataGather {
         context.add("Accel: X data", this::xAccel);
         context.add("Accel: Y data", this::yAccel);
         
+        //Logging Velocities
+        context.add("Veloc: Z", this::zVeloc);
+        context.add("Veloc: X", this::xVeloc);
+        context.add("Veloc: Y", this::yVeloc);
+        
         // Logging Angles and Angular speed from the Gyro
         context.add("Angle: X ", this::xAngle);
         context.add("Angular-Speed: X", this::xAngularSpeed);
@@ -65,7 +70,7 @@ public class DataGather {
     
     public double rightVolts() {
         double[] volts = chassis.getVoltages();
-        return volts[4];
+        return volts[3];
     }
     
     public double zAccel() {
@@ -83,9 +88,24 @@ public class DataGather {
         return accel[1];
     }
     
+    public double xVeloc(){
+    	double[] vel = I2CAccel.getVeloc();
+    	return vel[0];
+    }
+    
+    public double yVeloc(){
+    	double[] vel = I2CAccel.getVeloc();
+    	return vel[0];
+    }
+    
     public double xAngularSpeed() {
         double[] speed = I2CGyro.getAngSpeed();
-        return speed[0];
+        return speed[1];
+    }
+    
+    public double zVeloc(){
+    	double[] vel = I2CAccel.getVeloc();
+    	return vel[2];
     }
     
     public double xAngle() {

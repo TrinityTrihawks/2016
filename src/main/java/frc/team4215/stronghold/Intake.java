@@ -32,6 +32,7 @@ public class Intake {
      */
     private Victor intake;
     static double coeff = .5;
+    
     /**
      * Default constructor.
      */
