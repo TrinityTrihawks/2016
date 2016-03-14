@@ -24,14 +24,14 @@ public class DataGather {
         context.add("Volts: Right ", this::leftVolts);
         context.add("Volts: Left", this::rightVolts);
         
-        // Logginng the inputs to the drive station
+        // Logging the inputs to the drive station
         context.add("Drive: Left", this::leftInputs);
         context.add("Drive: Right", this::rightInputs);
         
         // Logging Accelerations
         context.add("Accel: Z", this::zAccel);
-        context.add("Accel: X data", this::xAccel);
-        context.add("Accel: Y data", this::yAccel);
+        context.add("Accel: X", this::xAccel);
+        context.add("Accel: Y", this::yAccel);
         
         //Logging Velocities
         context.add("Veloc: Z", this::zVeloc);

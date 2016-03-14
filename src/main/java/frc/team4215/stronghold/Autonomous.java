@@ -374,9 +374,14 @@ public class Autonomous {
     }
 
     public void winchInit() {
+    	winch.setSafetyEnabled(false);
+    	
         winch.set(Const.Motor.Run.WinchInitSpeed);
         Timer.delay(Const.Motor.Run.WinchInitTime);
         winch.set(Const.Motor.Run.WinchStop);
+        
+        winch.setSafetyEnabled(true);
+        
     }
     
     /**
