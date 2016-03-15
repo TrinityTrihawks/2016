@@ -322,7 +322,7 @@ public class Autonomous {
         outPut = 2 / Math.PI * Math.atan(outPut);
 
         // Uses Output to drive
-        dT.drive(-outPut);
+        dT.drive(outPut);
 
         // Saved for next calculation
         lastTime = now;
@@ -482,8 +482,13 @@ public class Autonomous {
         
     }
     
-    public void timeBased() {
-        winchInit();
+    public void timeBasedLowBarAuto() {
+        dT.setSafetyEnabled(false);
+        dT.drive(.6,.5);
+        Timer.delay(3);
+        dT.drive(0);
+        Timer.delay(.5);
+        dT.drive(-.6,-.5);
     }
     
     /**
