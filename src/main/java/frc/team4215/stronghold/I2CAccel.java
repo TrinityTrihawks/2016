@@ -131,9 +131,9 @@ public class I2CAccel {
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (pingFlag) {
-                pingAccel();
+                velInteg();
                 try {
-                    Thread.sleep(700);
+                    Thread.sleep(7);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
