@@ -485,10 +485,15 @@ public class Autonomous {
     public void timeBasedLowBarAuto() {
         dT.setSafetyEnabled(false);
         dT.drive(.6,.5);
-        Timer.delay(3);
+        Timer.delay(5);
         dT.drive(0);
         Timer.delay(.5);
         dT.drive(-.6,-.5);
+        Timer.delay(4);
+        dT.drive(0);
+        
+        return;
+        
     }
     
     /**
