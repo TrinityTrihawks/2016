@@ -28,8 +28,7 @@ public class DriveTrain {
     /**
      * Set Drive train speed Inputs from -1 to 1
      * 2/23/16
-     * So because of the design and the weight of history
-     * -1 makes the robot go forward and 1 backwards
+     * The World is sane again!!
      *
      * @param leftSpeed
      * @param rightSpeed
@@ -46,10 +45,10 @@ public class DriveTrain {
         leftSpeed = coeff*scaling(leftSpeed);
         rightSpeed = coeff*scaling(rightSpeed);
         RobotModule.logger.info("Coeff used: " + coeff);
-        leftMotor.set(-leftSpeed);
-        leftMotor2.set(-leftSpeed);
-        rightMotor.set(rightSpeed);
-        rightMotor2.set(rightSpeed);
+        leftMotor.set(leftSpeed);
+        leftMotor2.set(leftSpeed);
+        rightMotor.set(-rightSpeed);
+        rightMotor2.set(-rightSpeed);
     }
     
     public void setIndependently(double leftSpeed1, double leftSpeed2, 
@@ -100,4 +99,13 @@ public class DriveTrain {
         drive(speed, speed);
     }
     
+    
+    public void setSafetyEnabled(boolean enabled){
+    	leftMotor.setSafetyEnabled(enabled);
+    	leftMotor2.setSafetyEnabled(enabled);
+    	rightMotor.setSafetyEnabled(enabled);
+    	rightMotor2.setSafetyEnabled(enabled);
+    	
+    	return;
+    }
 }
