@@ -48,10 +48,10 @@ public class Intake {
         
         if (gameCube
                 .getRawButton(Const.JoyStick.Button.GameCube_A))
-            intake.set(Const.Motor.Run.Forward);
+            intake.set(Const.Motor.Run.Backward);
         else if (gameCube
                 .getRawButton(Const.JoyStick.Button.GameCube_B))
-            intake.set(Const.Motor.Run.Backward);
+            intake.set(Const.Motor.Run.Forward);
         else intake.set(Const.Motor.Run.Stop);
     }
     public double get(){
