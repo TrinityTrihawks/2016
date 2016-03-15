@@ -34,7 +34,7 @@ public class Arm {
     private Victor armMotor2;
     private boolean state;
     // The arm is really sensitive!!!!!
-    private static double axisCoeff = .25;
+    private static double axisCoeff = .35;
     
     /**
      * Default constructor. -- Waweru Turns out the arm has 2 motors
@@ -70,7 +70,7 @@ public class Arm {
     		axisCoeff = .5;
     	}
     	else{
-    		axisCoeff = .15;
+    		axisCoeff = .35;
     	}
     }
 }
