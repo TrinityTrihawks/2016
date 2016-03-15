@@ -133,7 +133,7 @@ public class I2CAccel {
             while (pingFlag) {
                 velInteg();
                 try {
-                    Thread.sleep(7);
+                    Thread.sleep(12);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
