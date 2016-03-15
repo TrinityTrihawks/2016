@@ -59,9 +59,17 @@ public class Arm {
     }
     
     public void set(double setValue) {
-        double power = .16;
-        armMotor1.set(Math.pow(setValue, power));
-        armMotor2.set(Math.pow(setValue, power));
+        armMotor1.set(axisCoeff*setValue);
+        armMotor2.set(axisCoeff*setValue);
+        
+        return;
+    }
+    
+    public void setSafetyEnabled(boolean enabled){
+    	armMotor1.setSafetyEnabled(enabled);
+    	armMotor2.setSafetyEnabled(enabled);
+    	
+    	return;
     }
     
     public void changeState(boolean newState){

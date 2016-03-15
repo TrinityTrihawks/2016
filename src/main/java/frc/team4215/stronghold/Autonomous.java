@@ -484,6 +484,12 @@ public class Autonomous {
     
     public void timeBasedLowBarAuto() {
         dT.setSafetyEnabled(false);
+        arm.setSafetyEnabled(false);
+        
+        arm.set(.1);
+        Timer.delay(3);
+        arm.set(0);
+        
         dT.drive(.6,.5);
         Timer.delay(5);
         dT.drive(0);

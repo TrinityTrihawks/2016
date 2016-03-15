@@ -102,6 +102,12 @@ public class RobotModule extends IterativeModule {
     	 */
     	I2CGyro.pingerStart();
     	I2CAccel.pingerStart();
+    	/*
+    	 * Make safe the motors
+    	 */
+    	chassis.setSafetyEnabled(true);
+    	arm.setSafetyEnabled(true);
+    	
     }
     
     @Override
