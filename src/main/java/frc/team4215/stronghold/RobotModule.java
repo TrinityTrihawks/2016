@@ -120,7 +120,7 @@ public class RobotModule extends IterativeModule {
         chassis.setState(rightStick.getRawButton(6));
         
         double[] inputs = driveStation.getDriveInputs();
-        chassis.drive(inputs[0], inputs[1]);
+        chassis.drive(-inputs[0], -inputs[1]);
         arm.Run();
         intake.Run();
         
@@ -128,8 +128,13 @@ public class RobotModule extends IterativeModule {
     }
     
     @Override
+    public void autonomousInit(){
+    	auto.timeBasedLowBarAuto();
+    }
+    
+    @Override
     public void autonomousPeriodic(){
-    	auto.childsPlay();
+    	//auto.childsPlay();
     	
     }
     
