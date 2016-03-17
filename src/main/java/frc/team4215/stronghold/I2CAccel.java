@@ -17,21 +17,21 @@ public class I2CAccel {
     private static double[] accelVal = new double[3];
     private static double[] velocVal = new double[3];
     private static double[] positVal = new double[3];
-
-    private static Thread pingerThread;
     
+    private static Thread pingerThread;
+
     /**
      * Should always size it as [x][3].
      */
     protected static double[][] velocity;
     protected static double[] position;
-
+    
     public static void initAccel() {
         accel = new I2C(I2C.Port.kOnboard, 0x1D);
         // Accelerometer
         byte[] reg12 = new byte[1];
         accel.read(0x12, 1, reg12);
-        
+
         accel.write(CTRL_REG + 1, 0x57); // 0x20
         accel.write(CTRL_REG + 3, 0x00); // 0x22
         accel.write(CTRL_REG + 4, 0x00); // 0x23
@@ -41,9 +41,9 @@ public class I2CAccel {
         accel.read(WHO_AM_I, 1, ID);
         if (ID[0] == 0x49) RobotModule.logger.info("Accelerometer enabled!");
         else RobotModule.logger.warn("Accelerometer disabled!");
-
+        
     }
-    
+
     public static void velInteg() {
         accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
         double[] vel = new double[3];
@@ -54,26 +54,24 @@ public class I2CAccel {
             pingAccel();
             accelList.add(accelVal);
         }
-        
+
         for (int i = 0; i < loopCount; i++) {
             double[] cur = accelList.get(i);
-
+            
             vel[0] += cur[0];
             vel[1] += cur[1];
             vel[2] += cur[2];
-
         }
-        
+
         velocVal[0] += vel[0] * deltat;
         velocVal[1] += vel[1] * deltat;
         velocVal[2] += vel[2] * deltat;
-        
     }
-    
+
     public static void distInteg() {
         
     }
-
+    
     /**
      * @return a copy of accelVal.
      */
@@ -84,13 +82,13 @@ public class I2CAccel {
         accelVal[0] = concatCorrect(buffH[0], buffL[0]);
         accelVal[0] /= 1000;
         accelVal[0] *= G_IN_IPS2;
-        
+
         accel.read(OUT_REG + 2, 1, buffL);
         accel.read(OUT_REG + 3, 1, buffH);
         accelVal[1] = concatCorrect(buffH[0], buffL[0]);
         accelVal[1] /= 1000;
         accelVal[1] *= G_IN_IPS2;
-        
+
         accel.read(OUT_REG + 4, 1, buffL);
         accel.read(OUT_REG + 5, 1, buffH);
         accelVal[2] = concatCorrect(buffH[0], buffL[0]);
@@ -98,19 +96,19 @@ public class I2CAccel {
         accelVal[2] *= G_IN_IPS2;
         RobotModule.logger.info("Accel: " + accelVal[1]);
     }
-
+    
     public static double concatCorrect(byte h, byte l) {
         int high = Byte.toUnsignedInt(h);
         int low = Byte.toUnsignedInt(l);
         int test = ((0xFF & high) << 8) + (0xFF & low);
-        
+
         test = ((test > 0x7FFF) ? test - 0xFFFF : test);
         test *= coeff;
-        
+
         if (test > 65) return test;
         else return 0;
     }
-
+    
     public static void pingerStart() {
         Runnable pinger = () -> {
             while (pingFlag) {
@@ -122,23 +120,23 @@ public class I2CAccel {
                 }
             }
         };
-
+        
         pingerThread = new Thread(pinger);
         pingFlag = true;
         pingerThread.start();
-
+        
     }
-
+    
     public static double[] getAccel() {
         return accelVal;
     }
-    
+
     public static double[] getVeloc() {
         return velocVal;
     }
-    
+
     public static void pingerStop() {
         pingFlag = false;
     }
-
+    
 }
