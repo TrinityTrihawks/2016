@@ -63,6 +63,9 @@ public class I2CAccel {
         }
         for (int j = 0; j < 3; j++)
             velocVal[j] += acc[j] * deltat;
+        
+        // Then get the current position
+        distInteg();
     }
 
     public static void distInteg() {
