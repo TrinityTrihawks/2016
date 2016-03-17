@@ -18,6 +18,8 @@ public class I2CAccel {
     private static double[] velocVal = new double[3];
     private static double[] positVal = new double[3];
     
+    private static final double deltat = .08;
+    
     private static Thread pingerThread;
 
     /**
@@ -46,8 +48,7 @@ public class I2CAccel {
 
     public static void velInteg() {
         accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
-        double[] vel = new double[3];
-        double deltat = .08;
+        double[] acc = new double[3];
         int loopCount = buffL[0] & 0x1f;
         ArrayList<double[]> accelList = new ArrayList<double[]>();
         for (int i = 0; i < loopCount; i++) {
@@ -57,19 +58,16 @@ public class I2CAccel {
 
         for (int i = 0; i < loopCount; i++) {
             double[] cur = accelList.get(i);
-            
-            vel[0] += cur[0];
-            vel[1] += cur[1];
-            vel[2] += cur[2];
+            for (int j = 0; j < 3; j++)
+                acc[j] += cur[j];
         }
-
-        velocVal[0] += vel[0] * deltat;
-        velocVal[1] += vel[1] * deltat;
-        velocVal[2] += vel[2] * deltat;
+        for (int j = 0; j < 3; j++)
+            velocVal[j] += acc[j] * deltat;
     }
 
     public static void distInteg() {
-        
+        for (int j = 0; j < 3; j++)
+            positVal[j] += velocVal[j] * deltat;
     }
     
     /**
