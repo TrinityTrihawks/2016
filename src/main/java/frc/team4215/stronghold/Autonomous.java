@@ -486,7 +486,7 @@ public class Autonomous {
         dT.setSafetyEnabled(false);
         arm.setSafetyEnabled(false);
         
-        arm.set(.1);
+        arm.set(-.1);
         Timer.delay(3);
         arm.set(0);
         
