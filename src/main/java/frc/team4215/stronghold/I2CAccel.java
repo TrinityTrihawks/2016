@@ -46,6 +46,7 @@ public class I2CAccel {
 
     public static void velInteg() {
         accel.read(I2CAccel.FIFO_SRC_REG, 1, buffL);
+        double[] vel = new double[3];
         double deltat = .08;
         int loopCount = buffL[0] & 0x1f;
         ArrayList<double[]> accelList = new ArrayList<double[]>();
@@ -54,7 +55,6 @@ public class I2CAccel {
             accelList.add(accelVal);
         }
 
-        double[] vel = new double[] { 0, 0, 0 };
         for (int i = 0; i < loopCount; i++) {
             double[] cur = accelList.get(i);
             
