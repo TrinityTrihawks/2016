@@ -44,7 +44,11 @@ public class I2CGyro {
         }
         
         for (int j = 0; j < 3; j++)
+<<<<<<< HEAD
             position[j] += vel[j] * deltat;
+=======
+            angles[j] += vel[j] * deltat;
+>>>>>>> 88df61906698855412759f7b934b3e702edfef49
         
     }
 
@@ -86,7 +90,6 @@ public class I2CGyro {
     public static void pingGyro() {
         
         double newTime = timer.get();
-        double deltat = (newTime - lastTime);
         lastTime = newTime;
         double[] angularSpeed = new double[3];
         
@@ -114,35 +117,11 @@ public class I2CGyro {
         gyro.read(OUT_REG + 5, 1, dataBuffer);
         gH = dataBuffer[0];
         angularSpeed[2] = concatCorrect(gL, gH);
-        
-        double cX, cY, cZ;
-        /*
-         * Since we only get angular velocities we need to integrate it to
-         * get it's angular position - Adjusted algorithms so that it is
-         * hopefully less erratic
-         */
 
-        cX = angles[0] + .5 * (angularSpeed[0] + lastAngleSpeed[0]) * deltat;
-        cY = angles[1] + .5 * (angularSpeed[1] + lastAngleSpeed[1]) * deltat;
-        cZ = angles[2] + .5 * (angularSpeed[2] + lastAngleSpeed[2]) * deltat;
-
-        /*
-         * Since an angle of more or less then 360 degrees makes little
-         * useful sense we find remainder of the current position divided
-         * by 360
-         */
-
-        cX = cX % 360;
-        if (cX < 0) cX += 360;
-
-        cY = cY % 360;
-        if (cY < 0) cY += 360;
-
-        cZ = cZ % 360;
-        if (cZ < 0) cZ += 360;
-        
-        angles = new double[] { cX, cY, cZ };
         lastAngleSpeed = angularSpeed;
+
+        velInteg();
+
     }
 
     /**
