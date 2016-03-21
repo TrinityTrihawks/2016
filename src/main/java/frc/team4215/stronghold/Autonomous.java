@@ -486,15 +486,15 @@ public class Autonomous {
         dT.setSafetyEnabled(false);
         arm.setSafetyEnabled(false);
         
-        arm.set(-.1);
-        Timer.delay(3);
+        arm.set(-.25);
+        Timer.delay(.5);
         arm.set(0);
         
-        dT.drive(.6,.5);
+        dT.drive(.5,.45);
         Timer.delay(5);
         dT.drive(0);
         Timer.delay(.5);
-        dT.drive(-.6,-.5);
+        dT.drive(-.5,-.45);
         Timer.delay(4);
         dT.drive(0);
         
