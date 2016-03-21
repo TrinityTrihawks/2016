@@ -20,7 +20,7 @@ public class I2CGyro {
     
     private static double[] angles;
     private static double[] lastAngleSpeed;
-    private static double[] HOWDOYOUCALLTHIS;
+    private static double[] position;
     private static int limit = 15;
     private static byte[] ID = new byte[1], dataBuffer = new byte[1];
 
@@ -44,7 +44,7 @@ public class I2CGyro {
         }
         
         for (int j = 0; j < 3; j++)
-            HOWDOYOUCALLTHIS[j] += vel[j] * deltat;
+            position[j] += vel[j] * deltat;
         
     }
 
@@ -162,7 +162,7 @@ public class I2CGyro {
                 }
             }
         };
-        // I then run the code autonoumously
+        // I then run the code autonomously
         threadPing = new Thread(pinger);
         pingFlag = true;
         threadPing.start();
