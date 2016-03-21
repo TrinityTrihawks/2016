@@ -91,8 +91,8 @@ public class RobotModule extends IterativeModule {
     	 *  power usage
     	 */
     	
-    	I2CGyro.pingerStop();
-    	I2CAccel.pingerStop();
+    	//I2CGyro.pingerStop();
+    	//I2CAccel.pingerStop();
     }
     
     @Override
@@ -100,8 +100,6 @@ public class RobotModule extends IterativeModule {
     	/*
     	 * Start the sensors
     	 */
-    	I2CGyro.pingerStart();
-    	I2CAccel.pingerStart();
     	/*
     	 * Make safe the motors
     	 */
@@ -137,7 +135,7 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit(){
     	auto.timeBasedLowBarAuto();
     }
-    
+    	
     @Override
     public void autonomousPeriodic(){
     	//auto.childsPlay();
@@ -156,6 +154,6 @@ public class RobotModule extends IterativeModule {
     @Override
     public void disabledPeriodic(){
     	blackBox.tick();
-    	
+    	//logger.info("Accel:" + I2CAccel.getAccel()[0] + I2CAccel.getAccel()[1] + I2CAccel.getAccel()[2]);
     }
 }

@@ -44,7 +44,7 @@ public class DriveTrain {
          */
         leftSpeed = coeff*scaling(leftSpeed);
         rightSpeed = coeff*scaling(rightSpeed);
-        RobotModule.logger.info("Coeff used: " + coeff);
+        
         leftMotor.set(leftSpeed);
         leftMotor2.set(leftSpeed);
         rightMotor.set(-rightSpeed);

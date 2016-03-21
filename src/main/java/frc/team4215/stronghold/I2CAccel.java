@@ -53,8 +53,8 @@ public class I2CAccel {
         int loopCount = buffL[0] & 0x1f;
         ArrayList<double[]> accelList = new ArrayList<double[]>();
         for (int i = 0; i < loopCount; i++) {
-            pingAccel();
-            accelList.add(accelVal);
+            double[] ac = pingAccel();
+            accelList.add(ac);
         }
         
         double[] vel = new double[] { 0, 0, 0};
@@ -133,7 +133,7 @@ public class I2CAccel {
             while (pingFlag) {
                 velInteg();
                 try {
-                    Thread.sleep(12);
+                    Thread.sleep(700);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
