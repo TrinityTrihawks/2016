@@ -44,11 +44,8 @@ public class I2CGyro {
         }
         
         for (int j = 0; j < 3; j++)
-<<<<<<< HEAD
-            position[j] += vel[j] * deltat;
-=======
+
             angles[j] += vel[j] * deltat;
->>>>>>> 88df61906698855412759f7b934b3e702edfef49
         
     }
 
