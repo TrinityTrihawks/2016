@@ -419,33 +419,7 @@ public class Autonomous {
         driveStraight(Constant.ChevalDeFrise.driveThroughDistance);
     }
     
-    /**
-     * Autonomous function No.4, not used.
-     *
-     * @author James
-     */
-    @Deprecated
-    public void autoPortcullis() {
-        throw null;
-        // armLowerBottom();
-        // driveStraight(Constant.Portcullis.driveToDistance);
-        // armLifterTop();
-        // driveStraight(Constant.Portcullis.driveThroughDistance);
-    }
     
-    /**
-     * Should be equivalent to a method called getAccel of another class
-     * I2CAccelerometer which isn't here yet.
-     *
-     * @author James
-     * @return Accelerations, double[] with length of 3
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    private static double[] I2CAccel_getAccel() {
-        // Ok, it seems like this function is not used?
-        return I2CAccel.getAccel();
-    }
     
     /**
      * Calculates distance traveled based on information from the
@@ -500,6 +474,19 @@ public class Autonomous {
         
         return;
         
+    }
+    
+    private void armDriveCycle(double volt, double time){
+    	arm.set(volt);
+    	Timer.delay(time);
+    	
+    }
+    
+    private void autoDriveCycle(double voltLeft, double voltRight, double time){
+    	dT.setSafetyEnabled(false);
+    	dT.drive(voltLeft,voltRight);
+    	Timer.delay(time);
+    	dT.setSafetyEnabled(true);
     }
     
     /**
