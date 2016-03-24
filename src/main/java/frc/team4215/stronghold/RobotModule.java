@@ -74,7 +74,7 @@ public class RobotModule extends IterativeModule {
         arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
-        blackBox = new DataGather(chassis,driveStation);
+        blackBox = new DataGather(chassis,arm,driveStation);
         
         // Starting 
         I2CGyro.initGyro();
