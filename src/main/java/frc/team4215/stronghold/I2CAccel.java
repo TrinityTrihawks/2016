@@ -52,8 +52,8 @@ public class I2CAccel {
         int loopCount = buffL[0] & 0x1f;
         ArrayList<double[]> accelList = new ArrayList<double[]>();
         for (int i = 0; i < loopCount; i++) {
-            double[] ac = pingAccel();
-            accelList.add(ac);
+            pingAccel();
+            accelList.add(accelVal);
         }
 
         for (int i = 0; i < loopCount; i++) {
