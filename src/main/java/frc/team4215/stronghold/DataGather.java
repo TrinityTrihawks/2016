@@ -14,7 +14,7 @@ public class DataGather {
     DriveTrain chassis;
     UI ds;
     
-    public DataGather(DriveTrain chassis, UI ds) {
+    public DataGather(DriveTrain chassis, Arm arm, UI ds) {
         this.chassis = chassis;
         this.ds = ds;
         
@@ -47,6 +47,8 @@ public class DataGather {
         
         context.add("Angle: Z ", this::zAngle);
         context.add("Angular-Speed: Z", this::zAngularSpeed);
+        
+        context.add("Arm inputs", arm::getInput);
     }
     
     public void tick() {
