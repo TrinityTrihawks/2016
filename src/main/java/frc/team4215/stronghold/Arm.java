@@ -58,6 +58,10 @@ public class Arm {
         return;
     }
     
+    public double getInput(){
+    	return armMotor1.get();
+    }
+    
     public void set(double setValue) {
         armMotor1.set(axisCoeff*setValue);
         armMotor2.set(axisCoeff*setValue);
