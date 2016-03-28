@@ -15,14 +15,18 @@ public class RobotModule extends IterativeModule {
     private DriveTrain chassis;
     private Arm arm;
     private Winch winch;
+    private Intake intake;
     
-    private Joystick leftStick, rightStick, gameCube;
+    private Joystick rightStick, gameCube;
 
     private UI driveStation;
     
     UltraSonic ult;
     
     Autonomous auto;
+    
+    DataGather blackBox;
+    
     Timer timer = new Timer();
     
     public static Logger logger;
@@ -59,102 +63,97 @@ public class RobotModule extends IterativeModule {
         
         // create winch
         winch = new Winch();
-
+        intake = new Intake();
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
 
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
-
+        
+        arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
-        
-        rightStick = new Joystick(1);
         auto = new Autonomous(chassis);
+        blackBox = new DataGather(chassis,arm,driveStation);
         
+        // Starting 
         I2CGyro.initGyro();
-        I2CGyro.pingerStart();
+        I2CAccel.initAccel();
+
     }
     
-    public void runAccel() {
-        while (true) {
-            double[] accel = I2CGyro.getAngles();
-            if (accel[0] + accel[1] + accel[2] != 0)
-                logger.info("Angles : " + accel[0] + " ," + accel[1]
-                        + " ," + accel[2]);
-        }
+    @Override
+    public void disabledInit(){
+    	
+    	/*
+    	 *  Stop the sensors to try
+    	 *  to mitagate Sensor drift and
+    	 *  power usage
+    	 */
+    	
+    	//I2CGyro.pingerStop();
+    	//I2CAccel.pingerStop();
+    }
+    
+    @Override
+    public void teleopInit(){
+    	/*
+    	 * Start the sensors
+    	 */
+    	/*
+    	 * Make safe the motors
+    	 */
+    	chassis.setSafetyEnabled(true);
+    	arm.setSafetyEnabled(true);
+    	
     }
     
     @Override
     public void teleopPeriodic() {
     	/*
-    	 * A quick series of if statements
-    	 *  to set the winch
+    	 * Runs the winch code when a button's pressed
+    	 * 
     	 */
+    	
         if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
            auto.winchInit();
+        else
+        	winch.set(0);
+        
+        arm.changeState(gameCube.getRawButton(6));
+        chassis.setState(rightStick.getRawButton(6));
         
         double[] inputs = driveStation.getDriveInputs();
-        chassis.drive(inputs[0], inputs[1]);
+        chassis.drive(-inputs[0], -inputs[1]);
+        arm.Run();
+        intake.Run();
+        
+        blackBox.tick();
     }
     
     @Override
-    public void autonomousInit() {
-        winch.setSafetyEnabled(false);
-        auto.winchInit();
+    public void autonomousInit(){
+    	auto.timeBasedLowBarAuto();
     }
-
+    	
     @Override
-    public void teleopInit() {
-        winch.setSafetyEnabled(true);
+    public void autonomousPeriodic(){
+    	//auto.childsPlay();
+    	
     }
     
+    
     @Override
-    public void testInit(){
-    	double[] inputs = new double[3];
+    public void testPeriodic(){
+    	double[] inputs = driveStation.getDriveInputs();
     	
-    	logger.warn("Starting Calibration in five seconds!!!!");
-    	Timer.delay(5);
-    	
-    	logger.warn("Max out the foward motion on the "+  System.lineSeparator() + 
-    				"left joystick on the drive contoller");
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    		inputs = driveStation.getDriveInputs();
-    		chassis.driveNonScaled(inputs[0], 0);
-    	}
-    	
-    	logger.warn("Max out the backward motion on the "+  System.lineSeparator() +
-					"left joystick on the drive contoller");
-    	timer.reset();
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    		inputs = driveStation.getDriveInputs();
-    		chassis.driveNonScaled(inputs[0], 0);
-    	}
-    	
-    	logger.warn("Max out the foward motion on the " + System.lineSeparator() + 
-					"right joystick on the drive contoller");
-    	
-    	timer.reset();
-    	timer.start();
-    	
-    	while(timer.get() < 10000){
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(0, inputs[1]);
-    	}
-    	
-    	logger.warn("Max out the backward motion on the " +  System.lineSeparator() + 
-					"right joystick on the drive contoller");
-    	timer.reset();
-    	timer.start();
-    	while(timer.get() > 10000){
-    	inputs = driveStation.getDriveInputs();
-    	chassis.driveNonScaled(0, inputs[1]);
-    	}
-    	
-    	
+    	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
+    }
+    
+    
+    @Override
+    public void disabledPeriodic(){
+    	blackBox.tick();
+    	//logger.info("Accel:" + I2CAccel.getAccel()[0] + I2CAccel.getAccel()[1] + I2CAccel.getAccel()[2]);
     }
 }

@@ -16,6 +16,10 @@ public class Autonomous {
      */
     private static double distanceTraveled;
 
+    private static final boolean DEBUG = true;
+
+    private static double velocityAttained;
+
     public static Timer time = new Timer();
 
     private static double accelerometerKp;
@@ -29,9 +33,10 @@ public class Autonomous {
     private static double errSumGyro;
     private static double errSumAccel;
 
-    private static double gyroKp, gyroKi;
+    private static double gyroKp = .12, gyroKi = .01;
     private static double lastTimeGyro;
     private static double lastTimeAccel;
+    private static double lastTimeDistance;
 
     /**
      * Length of Autonomous period, seconds
@@ -54,22 +59,52 @@ public class Autonomous {
     
     private Interface choiceAuto;
     
-    public Autonomous(DriveTrain dT_){
+    private Autonomous auto;
+
+    double input;
+    
+    public Autonomous(DriveTrain dT_) {
         dT = dT_;
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
     }
     
+    boolean first = true;
+    boolean backwards = false;
+    double then = 0;
+    public void childsPlay(){
+    	if(backwards){
+    		if((time.get() - then) >= 3)
+    			dT.drive(0);
+    		else
+    			dT.drive(.3);
+    	}
+    	else{
+    		
+    		if(first){
+    			then = time.get();
+    			first = false;
+    		}
+    		
+    		if((time.get() - then) >= 3){
+    			backwards = false;
+    			then = time.get();
+    		}
+    		else
+    			dT.drive(-.3);
+    	}
+    }
+    
     /*
-     * Actually, I highly doubt if this would work or not. If this
-     * won't work I know how to fix it. - James
+     * Actually, I highly doubt if this would work or not. If this won't
+     * work I know how to fix it. - James
      */
     public void chooseAuto(int num) {
-        if (num == 1) choiceAuto = () -> autoLowBar();
-        else if (num == 2) choiceAuto = () -> autoSpyBotLowGoal();
-        else if (num == 3) choiceAuto = () -> autoChevalDeFrise();
-        // else if (num == 4) choiceAuto = () -> autoPortcullis();
+        if (num == 1) choiceAuto = this::autoLowBar;
+        else if (num == 2) choiceAuto = this::autoSpyBotLowGoal;
+        else if (num == 3) choiceAuto = this::autoChevalDeFrise;
+        // else if (num == 4) choiceAuto = this::autoPortcullis;
         else choiceAuto = null;
     }
     
@@ -80,10 +115,10 @@ public class Autonomous {
     }
     
     /**
-     * PID controller implementation for accelerometer Waweru and I
-     * have decided that the derivative part for the controller is
-     * unnecessary. Derivative function taken out. I moved this code
-     * directly into the I2CDistanceTraveled section.
+     * PID controller implementation for accelerometer. Waweru and I have
+     * decided that the derivative part for the controller is unnecessary.
+     * Derivative function taken out. I moved this code directly into the
+     * I2CDistanceTraveled section.
      *
      * @author Joey
      */
@@ -97,8 +132,8 @@ public class Autonomous {
         errSumAccel += error * timeChange;
         
         // Sum errors
-        double accelerometerError = accelerometerKp * error
-                + accelerometerKi * errSumAccel;
+        double accelerometerError =
+                accelerometerKp * error + accelerometerKi * errSumAccel;
 
         // Reset time variable
         lastTimeAccel = now;
@@ -206,7 +241,7 @@ public class Autonomous {
     }
     
     /**
-     * to lower arm. Need more info.
+     * To lower arm. Need more info.
      *
      * @author James
      */
@@ -217,7 +252,7 @@ public class Autonomous {
     }
     
     /**
-     * to lift arm. Need more info
+     * To lift arm. Need more info
      *
      * @author James
      */
@@ -238,29 +273,97 @@ public class Autonomous {
      *            Meters of required distance.
      */
     
-    private void driveStraight(double moveTime) {
-        setpointGyro = 0;
-        // lasting time
-        Timer newtime = new Timer();
-        newtime.start();
-        double inittime = newtime.get();
-        double lasttime = moveTime; // seconds of lasting
-
-        double[] angles = I2CGyro_getAngles();
-        while (newtime.get() < (inittime + lasttime)) {
-            dT.drive(1, gyroPID(angles[2]));
-        }
-
-        // while (distanceTraveled < moveDistance) {
-        // dT.drive(Const.Motor.Run.Forward);
-        // I2CDistanceTraveled();
-        // }
+    private double pidTurn(double target) {
+        setpointGyro = target;
         
-        dT.drive(Const.Motor.Run.Stop);
+        // Input for the pid loop
+        double[] angles = I2CGyro_getAngles();
+        
+        double input = gyroPID(angles[2]);
+
+        input = Math.atan((Math.PI / 2) * input); // function with a curve
+                                                  // like the error curve
+
+        return input;
+    }
+    
+    private void driveStraight(double target) {
+        double out = pidTurn(target);
+        dT.drive(-out, out);
+    }
+    
+    double errSum = 0;
+    double lastTime = 0;
+    double distanceTraveledkp = .009;
+    double distanceTraveledki = 0;
+    double distanceTraveledkd;
+    double outPut;
+
+    /**
+     * This function takes the Distance traveled over a given amount of
+     * time and sets the voltage Thanks to Jack for the prototype code
+     *
+     * @param setPoint
+     * @author Ransom
+     */
+    public double distancePid(double setPoint) {
+        // How long since we last calculated
+        double now = time.get();
+        double timeChange = now - lastTime;
+
+        // Compute all the working error variables
+        double error = setPoint - distanceTraveled;
+        errSum += (error * timeChange);
+
+        // Compute PID Output
+        outPut = distanceTraveledkp * error + distanceTraveledki * errSum;
+
+        // Normalizes the Output between -1 and 1
+        outPut = 2 / Math.PI * Math.atan(outPut);
+
+        // Uses Output to drive
+        dT.drive(outPut);
+
+        // Saved for next calculation
+        lastTime = now;
+        if (DEBUG) {
+            RobotModule.logger.info("Output: " + outPut);
+            RobotModule.logger.info("Distance: " + distanceTraveled);
+        }
+        return outPut;
+    }
+    
+    public double distanceTraveled() {
+        return distanceTraveled;
     }
 
     /**
-     * throw ball out. Yet tested.
+     * Drives forward while turning
+     *
+     * @param x
+     * @param y
+     * @author Ransom
+     */
+    public void driveToPoint(double x, double y) {
+        double theta = Math.atan(x / y);
+        double r = Math.pow(x, 2) + Math.pow(y, 2);
+        RobotModule.logger.info("The angle is" + theta);
+        RobotModule.logger.info("The distance is" + r);
+        if (theta - I2CGyro.getAngles()[2] < .5) {
+            dT.drive((distancePid(r) + pidTurn(theta)),
+                    distancePid(r) + pidTurn(theta));
+            if (DEBUG) RobotModule.logger
+                    .info("Left: " + -(distancePid(r) + pidTurn(theta))
+                            + "Right: " + -(distancePid(r) + pidTurn(theta)));
+        } else {
+            dT.drive(-pidTurn(theta), pidTurn(theta));
+            RobotModule.logger
+                    .info("Turning: " + -pidTurn(theta) + pidTurn(theta));
+        }
+    }
+
+    /**
+     * Throws ball out. Yet to be tested.
      *
      * @author James
      */
@@ -271,9 +374,14 @@ public class Autonomous {
     }
 
     public void winchInit() {
+    	winch.setSafetyEnabled(false);
+    	
         winch.set(Const.Motor.Run.WinchInitSpeed);
         Timer.delay(Const.Motor.Run.WinchInitTime);
         winch.set(Const.Motor.Run.WinchStop);
+        
+        winch.setSafetyEnabled(true);
+        
     }
     
     /**
@@ -311,30 +419,7 @@ public class Autonomous {
         driveStraight(Constant.ChevalDeFrise.driveThroughDistance);
     }
     
-    /**
-     * Autonomous function No.4, not used.
-     *
-     * @author James
-     */
-    @Deprecated
-    public void autoPortcullis() {
-        throw null;
-        // armLowerBottom();
-        // driveStraight(Constant.Portcullis.driveToDistance);
-        // armLifterTop();
-        // driveStraight(Constant.Portcullis.driveThroughDistance);
-    }
     
-    /**
-     * Should be equivalent to a method called getAccel of another
-     * class I2CAccelerometer which isn't here yet.
-     *
-     * @author James
-     * @return Accelerations, double[] with length of 3
-     */
-    private static double[] I2CAccel_getAccel() {
-        return I2CAccel.getAccel();
-    }
     
     /**
      * Calculates distance traveled based on information from the
@@ -344,18 +429,18 @@ public class Autonomous {
      */
     private void I2CDistanceTraveled() {
         
-        double time1 = time.get();
-        for (int count =
-                0; count < (AUTOTIME * SAMPLINGRATE); count++) {
-                
+        for (int count = 0; count < (AUTOTIME * SAMPLINGRATE); count++) {
+
             Timer.delay(1 / SAMPLINGRATE);
             double time2 = time.get();
-            double timeChange = time2 - time1;
-            time1 = time.get();
-            double[] acceleration = I2CAccel_getAccel();
+            double timeChange = time2 - lastTimeDistance;
+            lastTimeDistance = time2;
+            double[] acceleration = I2CAccel.getAccel();
             
-            distanceTraveled +=
-                    .5 * acceleration[0] * Math.pow(timeChange, 2);
+            velocityAttained += acceleration[1] * timeChange;
+            
+            distanceTraveled += velocityAttained * timeChange;
+            
         }
     }
 
@@ -366,21 +451,40 @@ public class Autonomous {
         };
         
         threadPing = new Thread(pinger);
+        lastTimeDistance = time.get();
         threadPing.start();
         
     }
     
-    public void driveStraightTest(){
-    	driveStraight(20000);
+    public void timeBasedLowBarAuto() {
+        autoArmCycle(-.25,.5);
+        arm.set(0);
+        
+        autoDriveCycle(.5,.45,5);
+        Timer.delay(.5);
+        autoDriveCycle(.5,-.45,4);
+        dT.drive(0);
+        
+        return;
+        
     }
     
-    public void timeBased(){
-    	winchInit();
+    private void autoArmCycle(double volt, double time){
+    	arm.set(volt);
+    	Timer.delay(time);
+    	
+    }
+    
+    private void autoDriveCycle(double voltLeft, double voltRight, double time){
+    	dT.setSafetyEnabled(false);
+    	dT.drive(voltLeft,voltRight);
+    	Timer.delay(time);
+    	dT.setSafetyEnabled(true);
     }
     
     /**
-     * Should be equivalent to a method called getAngles of another
-     * class I2CGyro which isn't here yet.
+     * Should be equivalent to a method called getAngles of another class
+     * I2CGyro which isn't here yet.
      *
      * @author James
      * @return Angles, double[] with length of 3
@@ -389,5 +493,5 @@ public class Autonomous {
     private static double[] I2CGyro_getAngles() {
         return I2CGyro.getAngles();
     }
-    
+
 }

@@ -31,7 +31,8 @@ public class Intake {
      * The Motor, Victor, for controling the intake.
      */
     private Victor intake;
-    static double coeff = .5;
+    static double inCoeff = .75;
+    static double outCoeff = 1;
     /**
      * Default constructor.
      */
@@ -47,13 +48,15 @@ public class Intake {
         
         if (gameCube
                 .getRawButton(Const.JoyStick.Button.GameCube_A))
-            intake.set(Const.Motor.Run.Forward);
+            intake.set(outCoeff*Const.Motor.Run.Forward);
         else if (gameCube
                 .getRawButton(Const.JoyStick.Button.GameCube_B))
-            intake.set(Const.Motor.Run.Backward);
+            intake.set(inCoeff*Const.Motor.Run.Backward);
         else intake.set(Const.Motor.Run.Stop);
     }
-    
+    public double get(){
+    	return intake.get();
+    }
     public void set(double setValue) {
         intake.set(setValue);
     }

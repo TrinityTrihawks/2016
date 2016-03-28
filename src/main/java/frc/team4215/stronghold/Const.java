@@ -51,8 +51,8 @@ public final class Const {
 
             public final static double Forward = 1d, Backward = -1d,
                     Stop = 0d;
-            public final static double WinchInitSpeed = .574,
-                    WinchInitTime = .4;
+            public final static double WinchInitSpeed = .125,
+                    WinchInitTime = .125;
             public final static double WinchForward = .5d,
                     WinchBackward = -.5d, WinchStop = 0d;
                     

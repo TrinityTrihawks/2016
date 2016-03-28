@@ -3,7 +3,12 @@ package frc.team4215.stronghold;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.registry.Registrar;
-
+/**
+ * Controls the winch  for the basket on the robot
+ * 
+ * @author James
+ *
+ */
 public class Winch {
 
     private Victor winch;
