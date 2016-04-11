@@ -74,11 +74,11 @@ public class RobotModule extends IterativeModule {
         arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
-        blackBox = new DataGather(chassis,arm,driveStation);
+        //blackBox = new DataGather(chassis,arm,driveStation);
         
         // Starting 
-        I2CGyro.initGyro();
-        I2CAccel.initAccel();
+       // I2CGyro.initGyro();
+        //I2CAccel.initAccel();
 
     }
     
@@ -128,7 +128,7 @@ public class RobotModule extends IterativeModule {
         arm.Run();
         intake.Run();
         
-        blackBox.tick();
+        //blackBox.tick();
     }
     
     @Override
@@ -150,10 +150,4 @@ public class RobotModule extends IterativeModule {
     	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
-    
-    @Override
-    public void disabledPeriodic(){
-    	blackBox.tick();
-    	//logger.info("Accel:" + I2CAccel.getAccel()[0] + I2CAccel.getAccel()[1] + I2CAccel.getAccel()[2]);
-    }
 }
