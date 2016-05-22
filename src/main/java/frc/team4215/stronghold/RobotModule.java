@@ -21,8 +21,6 @@ public class RobotModule extends IterativeModule {
 
     private UI driveStation;
     
-    UltraSonic ult;
-    
     Autonomous auto;
     
     DataGather blackBox;
@@ -33,7 +31,7 @@ public class RobotModule extends IterativeModule {
 
     private static final String ModuleName = "stronghold";
 
-    private static final String ModuleVersion = "0.0.1";
+    private static final String ModuleVersion = "0.1.0";
     
     @Override
     public String getModuleName() {
@@ -59,8 +57,6 @@ public class RobotModule extends IterativeModule {
 
         driveStation = new UI(rightStick, gameCube);
         
-        ult = new UltraSonic(3);
-        
         // create winch
         winch = new Winch();
         intake = new Intake();
@@ -75,10 +71,6 @@ public class RobotModule extends IterativeModule {
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
         blackBox = new DataGather(chassis,arm,driveStation);
-        
-        // Starting 
-        I2CGyro.initGyro();
-        I2CAccel.initAccel();
 
     }
     
