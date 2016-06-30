@@ -4,6 +4,8 @@ package frc.team4215.stronghold;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
@@ -11,6 +13,14 @@ import jaci.openrio.toast.lib.registry.Registrar;
 public class RobotModule extends IterativeModule {
 
     private Victor left, right, left2, right2;
+    
+    double setPoint = .5;
+    double lastPoint = 0;
+    double[] previousPoints = {0};
+    
+    double Kp = .1;
+    double Ki = 0;
+    double Kd = 0;
     
     private DriveTrain chassis;
     private Arm arm;
@@ -20,6 +30,7 @@ public class RobotModule extends IterativeModule {
     private Joystick rightStick, gameCube;
 
     private UI driveStation;
+    private Encoder encode;
     
     UltraSonic ult;
     
@@ -76,9 +87,8 @@ public class RobotModule extends IterativeModule {
         auto = new Autonomous(chassis);
         blackBox = new DataGather(chassis,arm,driveStation);
         
-        // Starting 
-        I2CGyro.initGyro();
-        I2CAccel.initAccel();
+        encode = new Encoder(1,2,false);
+        encode.setDistancePerPulse(360);
 
     }
     
@@ -133,13 +143,28 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit(){
-    	auto.timeBasedLowBarAuto();
     }
     	
     @Override
     public void autonomousPeriodic(){
-    	//auto.childsPlay();
+    	double error = setPoint - encode.getDistance();
     	
+    	int sumSize = previousPoints.length;
+    	double[] points = new double[sumSize + 1];
+    	double sum = error;
+    	
+    	for(int i = 0; i < sumSize; i++){
+    		points[i] = previousPoints[i];
+    		sum += points[i];
+    	}
+    	
+    	points[sumSize] = error;
+    	sum /= sumSize + 1;
+    	previousPoints = points;
+    	
+    	double pi = Kp*error + Ki*sum;
+    	
+    	arm.set(pi);
     }
     
     
