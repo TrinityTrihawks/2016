@@ -138,7 +138,7 @@ public class RobotModule extends IterativeModule {
         arm.Run();
         intake.Run();
         
-        blackBox.tick();
+        //blackBox.tick();
     }
     
     @Override
@@ -178,7 +178,7 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void disabledPeriodic(){
-    	blackBox.tick();
+    	//blackBox.tick();
     	//logger.info("Accel:" + I2CAccel.getAccel()[0] + I2CAccel.getAccel()[1] + I2CAccel.getAccel()[2]);
     }
 }
