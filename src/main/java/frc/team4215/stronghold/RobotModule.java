@@ -15,8 +15,9 @@ public class RobotModule extends IterativeModule {
     private Victor left, right, left2, right2;
     
     double setPoint = .5;
-    double lastPoint = 0;
-    double[] previousPoints = {0};
+    double lastPoint;
+    double lastTime;
+    double sum;
     
     double Kp = .1;
     double Ki = 0;
@@ -69,8 +70,6 @@ public class RobotModule extends IterativeModule {
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
 
         driveStation = new UI(rightStick, gameCube);
-        
-        ult = new UltraSonic(3);
         
         // create winch
         winch = new Winch();
@@ -138,29 +137,25 @@ public class RobotModule extends IterativeModule {
         arm.Run();
         intake.Run();
         
-        //blackBox.tick();
+        blackBox.tick();
     }
     
     @Override
     public void autonomousInit(){
+    	sum = 0;
+    	lastTime = 0;
+    	
+    	timer.reset();
+    	
     }
     	
     @Override
     public void autonomousPeriodic(){
     	double error = setPoint - encode.getDistance();
-    	
-    	int sumSize = previousPoints.length;
-    	double[] points = new double[sumSize + 1];
-    	double sum = error;
-    	
-    	for(int i = 0; i < sumSize; i++){
-    		points[i] = previousPoints[i];
-    		sum += points[i];
-    	}
-    	
-    	points[sumSize] = error;
-    	sum /= sumSize + 1;
-    	previousPoints = points;
+    	double time = timer.get();
+    	double dt = time - lastTime;
+    	lastTime = time;
+    	sum = sum + dt*error;
     	
     	double pi = Kp*error + Ki*sum;
     	
@@ -178,7 +173,6 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void disabledPeriodic(){
-    	//blackBox.tick();
-    	//logger.info("Accel:" + I2CAccel.getAccel()[0] + I2CAccel.getAccel()[1] + I2CAccel.getAccel()[2]);
+    	blackBox.tick();
     }
 }
