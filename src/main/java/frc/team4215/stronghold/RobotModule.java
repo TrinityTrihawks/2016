@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import jaci.openrio.toast.core.Toast;
+import jaci.openrio.toast.core.thread.Heartbeat;
 import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
@@ -85,9 +87,12 @@ public class RobotModule extends IterativeModule {
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
         blackBox = new DataGather(chassis,arm,driveStation);
-        
-        encode = new Encoder(1,2,false);
-        encode.setDistancePerPulse(360);
+        Heartbeat.add(skipped -> {blackBox.tick();});
+        logger.info("" + Toast.isSimulation());
+        if(!Toast.isSimulation()){
+        	encode = new Encoder(1,2,false);
+        	encode.setDistancePerPulse(360);
+        }
 
     }
     
@@ -135,9 +140,8 @@ public class RobotModule extends IterativeModule {
         double[] inputs = driveStation.getDriveInputs();
         chassis.drive(-inputs[0], -inputs[1]);
         arm.Run();
-        intake.Run();
         
-        blackBox.tick();
+        intake.Run();
     }
     
     @Override
@@ -151,15 +155,17 @@ public class RobotModule extends IterativeModule {
     	
     @Override
     public void autonomousPeriodic(){
-    	double error = setPoint - encode.getDistance();
-    	double time = timer.get();
-    	double dt = time - lastTime;
-    	lastTime = time;
-    	sum = sum + dt*error;
+    	if(!Toast.isSimulation()){
+    		double error = setPoint - encode.getDistance();
+    		double time = timer.get();
+    		double dt = time - lastTime;
+    		lastTime = time;
+    		sum = sum + dt*error;
     	
-    	double pi = Kp*error + Ki*sum;
+    		double pi = Kp*error + Ki*sum;
     	
-    	arm.set(pi);
+    		arm.set(pi);
+    	}
     }
     
     
@@ -173,6 +179,5 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void disabledPeriodic(){
-    	blackBox.tick();
     }
 }
