@@ -53,10 +53,6 @@ public class DriveTrain {
     
     public void setIndependently(double leftSpeed1, double leftSpeed2, 
     							 double rightSpeed1, double rightSpeed2) {
-        /*
-         * The Victors don't respond to a voltage of less then 4%
-         * either direction so I provided some scaling.
-         */
         
         leftMotor.set(-leftSpeed1);
         leftMotor2.set(-leftSpeed2);

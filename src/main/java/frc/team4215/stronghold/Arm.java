@@ -51,10 +51,8 @@ public class Arm {
      */
     public void Run() {
         
-        armMotor1.set(axisCoeff * gameCube
-                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
-        armMotor2.set(axisCoeff * gameCube
-                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD));
+        armMotor1.set(axisCoeff * gameCube.getRawAxis(1));
+        armMotor2.set(axisCoeff * gameCube.getRawAxis(1));
         return;
     }
     
@@ -76,7 +74,7 @@ public class Arm {
     	return;
     }
     
-    public void changeState(boolean newState){
+    public void setState(boolean newState){
     	state = newState;
     	if(state){
     		axisCoeff = .5;

@@ -37,8 +37,8 @@ public class Intake {
      * Default constructor.
      */
     public Intake() {
-        this.gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-        this.intake = Registrar.victor(Const.Motor.Num.Intake);
+        gameCube = new Joystick(2);
+        intake = Registrar.victor(5);
     }
     
     /**
@@ -46,13 +46,11 @@ public class Intake {
      */
     public void Run() {
         
-        if (gameCube
-                .getRawButton(Const.JoyStick.Button.GameCube_A))
-            intake.set(outCoeff*Const.Motor.Run.Forward);
-        else if (gameCube
-                .getRawButton(Const.JoyStick.Button.GameCube_B))
-            intake.set(inCoeff*Const.Motor.Run.Backward);
-        else intake.set(Const.Motor.Run.Stop);
+        if (gameCube.getRawButton(3))
+            intake.set(outCoeff);
+        else if (gameCube.getRawButton(4))
+            intake.set(-inCoeff);
+        else intake.set(0);
     }
     public double get(){
     	return intake.get();

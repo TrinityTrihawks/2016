@@ -75,9 +75,8 @@ public class UI {
     public void choose(Integer num) {
         this.choose(num.intValue());
     }
-    
+    double[] inputs = new double[2];;
     double[] getDriveInputs() {
-        double[] inputs = new double[2];
         if (driveSticks.size() == 1) {
             inputs[0] = driveSticks.get(0).getRawAxis(1);
             inputs[1] = driveSticks.get(0).getRawAxis(5);

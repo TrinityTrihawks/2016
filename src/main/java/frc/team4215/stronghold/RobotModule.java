@@ -87,8 +87,11 @@ public class RobotModule extends IterativeModule {
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
         blackBox = new DataGather(chassis,arm,driveStation);
+        
         Heartbeat.add(skipped -> {blackBox.tick();});
-        logger.info("" + Toast.isSimulation());
+        //Heartbeat.add(skipped -> {arm.setState(gameCube.getRawButton(6));});
+        //Heartbeat.add(skipped -> {chassis.setState(rightStick.getRawButton(6));});
+        
         if(!Toast.isSimulation()){
         	encode = new Encoder(1,2,false);
         	encode.setDistancePerPulse(360);
@@ -121,34 +124,25 @@ public class RobotModule extends IterativeModule {
     	arm.setSafetyEnabled(true);
     	
     }
-    
+    double[] inputs;
     @Override
     public void teleopPeriodic() {
     	/*
     	 * Runs the winch code when a button's pressed
     	 * 
     	 */
-    	
-        if (gameCube.getRawButton(Const.JoyStick.Button.GameCube_Y))
-           auto.winchInit();
-        else
-        	winch.set(0);
         
-        arm.changeState(gameCube.getRawButton(6));
-        chassis.setState(rightStick.getRawButton(6));
-        
-        double[] inputs = driveStation.getDriveInputs();
+        inputs = driveStation.getDriveInputs();
         chassis.drive(-inputs[0], -inputs[1]);
         arm.Run();
-        
         intake.Run();
+        
     }
     
     @Override
     public void autonomousInit(){
     	sum = 0;
     	lastTime = 0;
-    	
     	timer.reset();
     	
     }
