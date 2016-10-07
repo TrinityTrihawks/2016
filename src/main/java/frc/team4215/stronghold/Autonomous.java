@@ -457,12 +457,12 @@ public class Autonomous {
     }
     
     public void timeBasedLowBarAuto() {
-        autoArmCycle(-.25,.5);
+        autoArmCycle(-.75,1);
         arm.set(0);
         
         autoDriveCycle(.5,.45,5);
         Timer.delay(.5);
-        autoDriveCycle(.5,-.45,4);
+        autoDriveCycle(-.5,-.45,4);
         dT.drive(0);
         
         return;
@@ -476,7 +476,7 @@ public class Autonomous {
     }
     
     private void autoDriveCycle(double voltLeft, double voltRight, double time){
-    	dT.setSafetyEnabled(false);
+     	dT.setSafetyEnabled(false);
     	dT.drive(voltLeft,voltRight);
     	Timer.delay(time);
     	dT.setSafetyEnabled(true);
