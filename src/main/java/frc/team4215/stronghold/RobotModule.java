@@ -94,7 +94,7 @@ public class RobotModule extends IterativeModule {
         
         if(!Toast.isSimulation()){
         	encode = new Encoder(1,2,false);
-        	encode.setDistancePerPulse(360);
+        	encode.setDistancePerPulse(0);
         }
 
     }
@@ -144,11 +144,13 @@ public class RobotModule extends IterativeModule {
     	sum = 0;
     	lastTime = 0;
     	timer.reset();
+    	auto.timeBasedLowBarAuto();
     	
     }
     	
     @Override
     public void autonomousPeriodic(){
+    	/*
     	if(!Toast.isSimulation()){
     		double error = setPoint - encode.getDistance();
     		double time = timer.get();
@@ -160,6 +162,8 @@ public class RobotModule extends IterativeModule {
     	
     		arm.set(pi);
     	}
+    	*/
+    	
     }
     
     
