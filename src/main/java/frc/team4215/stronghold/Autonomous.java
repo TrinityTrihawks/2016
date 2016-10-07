@@ -1,6 +1,7 @@
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Timer;
+import jaci.openrio.toast.lib.log.Logger;
 
 /**
  * The class for Autonomous.
@@ -60,6 +61,8 @@ public class Autonomous {
     private Interface choiceAuto;
     
     private Autonomous auto;
+    
+    private Logger autoLog;
 
     double input;
     
@@ -68,6 +71,7 @@ public class Autonomous {
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
+        autoLog = new Logger("Autonomous",Logger.ATTR_DEFAULT);
     }
     
     boolean first = true;
@@ -456,15 +460,16 @@ public class Autonomous {
         
     }
     
+    // 75 inches no more no less!!!!!
     public void timeBasedLowBarAuto() {
         autoArmCycle(-.75,1);
         arm.set(0);
         
-        autoDriveCycle(.5,.45,5);
+        autoDriveCycle(.5,.525,5);
         Timer.delay(.5);
-        autoDriveCycle(-.5,-.45,4);
+        autoDriveCycle(-.5,-.525,4);
         dT.drive(0);
-        
+        autoLog.warn("Look Upon my works ye mighty, and despair!!!!  --- nothings wrong don't worry!");
         return;
         
     }
