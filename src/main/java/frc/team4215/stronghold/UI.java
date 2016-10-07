@@ -97,10 +97,10 @@ public class UI {
     public Victor frontLeftMotor, backLeftMotor, backRightMotor,
             frontRightMotor, intake, arm;
             
-    public List<String> myVolts = new ArrayList<>();
     public List<Double> atVolts = new ArrayList<>();
     
     public List<String> getVoltages() {
+    	List<String> myVolts = new ArrayList<>();
         String lMotor1 = String.valueOf(frontLeftMotor.get());
         String lMotor2 = String.valueOf(backLeftMotor.get());
         String rMotor1 = String.valueOf(backRightMotor.get());
@@ -112,16 +112,16 @@ public class UI {
         return myVolts;
     }
     
-    public List<Double> getAttachmentsVoltages() {
+    public double[] getAttachmentsVoltages() {
         double inMotor = intake.get();
         double armMotor = arm.get();
-        atVolts.add(inMotor);
-        atVolts.add(armMotor);
+        double[] atVolts = { inMotor, armMotor };
         return atVolts;
-        
     }
     
     public void giveMotorVoltages() {
+    	List<String> myVolts = getVoltages();
+    	double[] atVolts = getAttachmentsVoltages();
         SmartDashboard.putString("Drive Motor 1",
                 "Leftmotor1 volts: " + myVolts.get(0));
         SmartDashboard.putString("Drive Motor 2",
@@ -130,8 +130,8 @@ public class UI {
                 "Rightmotor1 volts: " + myVolts.get(2));
         SmartDashboard.putString("Drive Motor 4",
                 "Rightmotor2 volts: " + myVolts.get(3));
-        SmartDashboard.putNumber("Intake Motor", atVolts.get(0));
-        SmartDashboard.putNumber("Arm Motor", atVolts.get(1));
+        SmartDashboard.putNumber("Intake Motor", atVolts[0]);
+        SmartDashboard.putNumber("Arm Motor", atVolts[1]);
         
     }
     
