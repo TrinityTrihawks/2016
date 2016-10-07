@@ -14,7 +14,7 @@ import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
 
-    private Victor left, right, left2, right2;
+    private Victor left, right, left2, right2, intakeMotor, armMotor;
     
     double setPoint = .5;
     double lastPoint;
@@ -71,7 +71,6 @@ public class RobotModule extends IterativeModule {
         rightStick = new Joystick(Const.JoyStick.Num.PlayStation);
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
 
-        driveStation = new UI(rightStick, gameCube);
         
         // create winch
         winch = new Winch();
@@ -82,15 +81,22 @@ public class RobotModule extends IterativeModule {
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
         right2 = Registrar.victor(0);
+        intakeMotor = Registrar.victor(5);
+        armMotor = Registrar.victor(4);
+        		
+        
+        driveStation = new UI(rightStick, gameCube, left, right, right2,left2,intakeMotor,armMotor);
         
         arm = new Arm();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis);
         blackBox = new DataGather(chassis,arm,driveStation);
         
+        // Gathers data 
         Heartbeat.add(skipped -> {blackBox.tick();});
-        //Heartbeat.add(skipped -> {arm.setState(gameCube.getRawButton(6));});
-        //Heartbeat.add(skipped -> {chassis.setState(rightStick.getRawButton(6));});
+        
+        // updates drivestation
+        Heartbeat.add(skipped -> {driveStation.giveMotorVoltages();});
         
         if(!Toast.isSimulation()){
         	encode = new Encoder(1,2,false);
