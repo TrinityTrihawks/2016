@@ -2,6 +2,7 @@
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Victor;
 import jaci.openrio.toast.lib.registry.Registrar;
 
@@ -20,7 +21,7 @@ import jaci.openrio.toast.lib.registry.Registrar;
  *
  * @author James Yu
  */
-public class Arm {
+public class Arm implements PIDOutput {
 
     /**
      * The Joystick used to control arms and the intake.
@@ -65,6 +66,13 @@ public class Arm {
         armMotor2.set(axisCoeff*setValue);
         
         return;
+    }
+    
+    public void pidWrite(double setValue){
+    	armMotor1.set(setValue);
+    	armMotor2.set(setValue);
+    	
+    	return;
     }
     
     public void setSafetyEnabled(boolean enabled){
