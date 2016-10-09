@@ -62,7 +62,6 @@ public class Autonomous {
     
     private Autonomous auto;
     
-    private Logger autoLog;
 
     double input;
     
@@ -71,7 +70,7 @@ public class Autonomous {
         arm = new Arm();
         intake = new Intake();
         winch = new Winch();
-        autoLog = new Logger("Autonomous",Logger.ATTR_DEFAULT);
+        		
     }
     
     boolean first = true;
@@ -469,7 +468,7 @@ public class Autonomous {
         Timer.delay(.5);
         autoDriveCycle(-.5,-.525,4);
         dT.drive(0);
-        autoLog.warn("Look Upon my works ye mighty, and despair!!!!  --- nothings wrong don't worry!");
+        RobotModule.logger.warn("Look Upon my works ye mighty, and despair!!!!  --- nothings wrong don't worry!");
         return;
         
     }
