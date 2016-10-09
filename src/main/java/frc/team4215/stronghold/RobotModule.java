@@ -2,6 +2,7 @@
 package frc.team4215.stronghold;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Encoder;
@@ -40,6 +41,8 @@ public class RobotModule extends IterativeModule {
     Autonomous auto;
     
     DataGather blackBox;
+    
+    PIDController  armControl;
     
     Timer timer = new Timer();
     
@@ -101,8 +104,9 @@ public class RobotModule extends IterativeModule {
         if(!Toast.isSimulation()){
         	encode = new Encoder(1,2,false);
         	encode.setDistancePerPulse(0);
+        	armControl = new PIDController(Kp,Ki,Kd,encode,arm);
         }
-
+        
     }
     
     @Override
@@ -121,11 +125,12 @@ public class RobotModule extends IterativeModule {
     @Override
     public void teleopInit(){
     	/*
-    	 * Start the sensors
-    	 */
-    	/*
     	 * Make safe the motors
     	 */
+    	if(armControl.isEnabled()){
+    		armControl.disable();
+    	}
+    	
     	chassis.setSafetyEnabled(true);
     	arm.setSafetyEnabled(true);
     	
@@ -152,23 +157,11 @@ public class RobotModule extends IterativeModule {
     	timer.reset();
     	auto.timeBasedLowBarAuto();
     	
-    }
-    	
-    @Override
-    public void autonomousPeriodic(){
-    	/*
     	if(!Toast.isSimulation()){
-    		double error = setPoint - encode.getDistance();
-    		double time = timer.get();
-    		double dt = time - lastTime;
-    		lastTime = time;
-    		sum = sum + dt*error;
-    	
-    		double pi = Kp*error + Ki*sum;
-    	
-    		arm.set(pi);
+    		armControl.setSetpoint(setPoint);
+    		armControl.enable();
+    		Heartbeat.add(skipped -> {if(armControl.isEnabled()) logger.info("Error:" + armControl.getAvgError());});
     	}
-    	*/
     	
     }
     
@@ -183,5 +176,8 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void disabledPeriodic(){
+    	if(armControl.isEnable()){
+    		armControl.disable();
+    	}
     }
 }
