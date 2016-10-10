@@ -114,8 +114,10 @@ public class RobotModule extends IterativeModule {
     @Override
     public void disabledInit(){
     	// Shuts down PID control
-    	if(armControl.isEnabled()){
-    		armControl.disable();
+    	if(Toast.isReal()){
+    		if(armControl.isEnabled()){
+    			armControl.disable();
+    		}
     	}
     }
     
@@ -123,8 +125,10 @@ public class RobotModule extends IterativeModule {
     public void teleopInit(){
     	
     	// Shutting down PID controller
-    	if(armControl.isEnabled()){
-    		armControl.disable();
+    	if(Toast.isReal()){
+    		if(armControl.isEnabled()){
+    			armControl.disable();
+    		}
     	}
     	
     	// Making 
@@ -154,7 +158,7 @@ public class RobotModule extends IterativeModule {
     	timer.reset();
     	auto.timeBasedLowBarAuto();
     	
-    	if(!Toast.isSimulation()){
+    	if(Toast.isReal()){
     		armControl.setSetpoint(setPoint);
     		armControl.enable();
     		Heartbeat.add(skipped -> {if(armControl.isEnabled()) logger.info("Error:" + armControl.getAvgError());});
