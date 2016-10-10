@@ -98,10 +98,12 @@ public class RobotModule extends IterativeModule {
         // Gathers data 
         Heartbeat.add(skipped -> {blackBox.tick();});
         
-        // updates drivestation
-        Heartbeat.add(skipped -> {driveStation.giveMotorVoltages();});
         
         if(!Toast.isSimulation()){
+        	// updates drivestation
+            Heartbeat.add(skipped -> {driveStation.giveMotorVoltages();});
+            
+        	// Setting up encoder and PID controller
         	encode = new Encoder(1,2,false);
         	encode.setDistancePerPulse(0);
         	armControl = new PIDController(Kp,Ki,Kd,encode,arm);
@@ -111,26 +113,21 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void disabledInit(){
-    	
-    	/*
-    	 *  Stop the sensors to try
-    	 *  to mitagate Sensor drift and
-    	 *  power usage
-    	 */
-    	
-    	//I2CGyro.pingerStop();
-    	//I2CAccel.pingerStop();
+    	// Shuts down PID control
+    	if(armControl.isEnabled()){
+    		armControl.disable();
+    	}
     }
     
     @Override
     public void teleopInit(){
-    	/*
-    	 * Make safe the motors
-    	 */
+    	
+    	// Shutting down PID controller
     	if(armControl.isEnabled()){
     		armControl.disable();
     	}
     	
+    	// Making 
     	chassis.setSafetyEnabled(true);
     	arm.setSafetyEnabled(true);
     	
@@ -173,11 +170,4 @@ public class RobotModule extends IterativeModule {
     	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
     }
     
-    
-    @Override
-    public void disabledPeriodic(){
-    	if(armControl.isEnable()){
-    		armControl.disable();
-    	}
-    }
 }
