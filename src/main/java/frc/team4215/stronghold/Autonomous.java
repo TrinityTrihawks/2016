@@ -255,20 +255,6 @@ public class Autonomous {
     }
     
     /**
-     * To lift arm. Need more info
-     *
-     * @author James
-     */
-    @SuppressWarnings("unused")
-    @Deprecated
-    private void armLifterTop() {
-        return;
-        // arm.set(Constant.Shared.armUp);
-        // Timer.delay(Constant.Shared.armMoveMaxTime);
-        // arm.set(Constant.Shared.armStop);
-    }
-    
-    /**
      * To drive straight.
      *
      * @author James
@@ -468,7 +454,7 @@ public class Autonomous {
         Timer.delay(.5);
         autoDriveCycle(-.5,-.525,4);
         dT.drive(0);
-        RobotModule.logger.warn("Look Upon my works ye mighty, and despair!!!!  --- nothings wrong don't worry!");
+        RobotModule.logger.info("Look Upon my works ye mighty, and despair!!!!  --- nothings wrong don't worry!");
         return;
         
     }
