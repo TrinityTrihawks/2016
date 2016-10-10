@@ -36,8 +36,6 @@ public class RobotModule extends IterativeModule {
     private UI driveStation;
     private Encoder encode;
     
-    UltraSonic ult;
-    
     Autonomous auto;
     
     DataGather blackBox;
@@ -50,7 +48,7 @@ public class RobotModule extends IterativeModule {
 
     private static final String ModuleName = "stronghold";
 
-    private static final String ModuleVersion = "0.0.1";
+    private static final String ModuleVersion = "0.1.0";
     
     @Override
     public String getModuleName() {
@@ -73,7 +71,6 @@ public class RobotModule extends IterativeModule {
         // leftStick = new Joystick(0);
         rightStick = new Joystick(Const.JoyStick.Num.PlayStation);
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
-
         
         // create winch
         winch = new Winch();
@@ -108,7 +105,6 @@ public class RobotModule extends IterativeModule {
         	encode.setDistancePerPulse(0);
         	armControl = new PIDController(Kp,Ki,Kd,encode,arm);
         }
-        
     }
     
     @Override
