@@ -16,17 +16,12 @@ import jaci.openrio.toast.lib.registry.Registrar;
  * <dd><strong>Constructors:</strong></dd>
  * <dd>{@link Arm#Arm()}</dd>
  * <dd><strong>Other Methods:</strong></dd>
- * <dd>{@link Arm#Run()}</dd>
+ * <dd>{@link Arm#inOrOut()}</dd>
  * </dl>
  *
  * @author James Yu
  */
 public class Arm implements PIDOutput {
-
-    /**
-     * The Joystick used to control arms and the intake.
-     */
-    private Joystick gameCube;
     
     /**
      * The Motor, Victor, for controling the arm.
@@ -38,35 +33,34 @@ public class Arm implements PIDOutput {
     private static double axisCoeff = .35;
     
     /**
-     * Default constructor. -- Waweru Turns out the arm has 2 motors
+     * Default constructor.
      */
     public Arm() {
-        gameCube = new Joystick(Const.JoyStick.Num.GameCube);
         armMotor1 = Registrar.victor(Const.Motor.Num.Arm1);
         armMotor2 = Registrar.victor(Const.Motor.Num.Arm2);
         state = false;
     }
-
-    /**
-     * Run on this
-     */
-    public void Run() {
-        
-        armMotor1.set(axisCoeff * gameCube.getRawAxis(1));
-        armMotor2.set(axisCoeff * gameCube.getRawAxis(1));
-        return;
-    }
     
+    /**
+     * Gets the last input to the arm
+     * @return
+     */
     public double getInput(){
     	return armMotor1.get();
     }
     
+    /**
+     * Sets the motors to the setValue 
+     * multiplied by a coeffecient
+     * @param setValue
+     */
     public void set(double setValue) {
         armMotor1.set(axisCoeff*setValue);
         armMotor2.set(axisCoeff*setValue);
         
         return;
     }
+    
     
     public void pidWrite(double setValue){
     	armMotor1.set(setValue);
@@ -75,6 +69,10 @@ public class Arm implements PIDOutput {
     	return;
     }
     
+    /**
+     * sets safety for component motors
+     * @param enabled
+     */
     public void setSafetyEnabled(boolean enabled){
     	armMotor1.setSafetyEnabled(enabled);
     	armMotor2.setSafetyEnabled(enabled);
@@ -82,6 +80,10 @@ public class Arm implements PIDOutput {
     	return;
     }
     
+    /**
+     * Allows the set coeffecient to swirch between . and .35
+     * @param newState
+     */
     public void setState(boolean newState){
     	state = newState;
     	if(state){
