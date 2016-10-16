@@ -28,33 +28,31 @@ public class Intake {
     private Joystick gameCube;
     
     /**
-     * The Motor, Victor, for controling the intake.
+     * The Motor, Victor, for controlling the intake.
      */
     private Victor intake;
-    static double inCoeff = .75;
-    static double outCoeff = 1;
-    /**
-     * Default constructor.
-     */
+    
+    // Constants!!!
+    static private final double inCoeff = .75;
+    static private final double outCoeff = 1;
+    static private final int INTAKE_VICTOR = 5;
+    
     public Intake() {
-        gameCube = new Joystick(2);
-        intake = Registrar.victor(5);
+        intake = Registrar.victor(INTAKE_VICTOR);
     }
     
-    /**
-     * Run on this
-     */
-    public void Run() {
-        
-        if (gameCube.getRawButton(3))
+    public void inOrOut(boolean in, boolean out){
+    	if(in)
             intake.set(outCoeff);
-        else if (gameCube.getRawButton(4))
+        else if (out)
             intake.set(-inCoeff);
         else intake.set(0);
     }
+    
     public double get(){
     	return intake.get();
     }
+    
     public void set(double setValue) {
         intake.set(setValue);
     }
