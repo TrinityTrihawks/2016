@@ -69,7 +69,9 @@ public class UI {
     }
     
     public void choose(int num) {
-        auto.chooseAuto(num);
+    	// Well as long as no one  this, it should work
+    	
+        //auto.chooseAuto(num);
     }
 
     public void choose(Integer num) {
