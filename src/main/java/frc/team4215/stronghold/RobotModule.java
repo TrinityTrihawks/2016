@@ -131,14 +131,18 @@ public class RobotModule extends IterativeModule {
     
     // Declaring the array outside so it isn't reallocated every time
     double[] inputs;
+    boolean[] intakeInputs;
     
     @Override
     public void teleopPeriodic() {
         
         inputs = driveStation.getDriveInputs();
         chassis.drive(-inputs[0], -inputs[1]);
-        arm.Run();
-        intake.Run();
+        
+        double armInput = driveStation.getArmInput();
+        intakeInputs = driveStation.getIntakeInput();
+        arm.set(armInput);
+        intake.inOrOut(intakeInputs[0],intakeInputs[0]);
         
     }
     
