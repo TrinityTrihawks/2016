@@ -35,30 +35,14 @@ public class UI {
         this.choose(num);
     }
     
-    private ArrayList<Joystick> driveSticks =
-            new ArrayList<Joystick>();
+    private Joystick driveStick;
     private Joystick thirdstick;
-    
-    public UI(Joystick leftStick_, Joystick rightStick_,
-            Joystick thirdstick_, Victor leftmotor_,
-            Victor rightmotor_, Victor rightmotor2_,
-            Victor leftmotor2_, Victor intake_, Victor arm_) {
-        driveSticks.add(leftStick_);
-        driveSticks.add(rightStick_);
-        thirdstick = thirdstick_;
-        frontLeftMotor = leftmotor_;
-        frontRightMotor = rightmotor_;
-        backLeftMotor = leftmotor2_;
-        backRightMotor = rightmotor2_;
-        intake = intake_;
-        arm = arm_;
-    }
 
     public UI(Joystick leftStick_, Joystick thirdstick_,
             Victor leftmotor_, Victor rightmotor_,
             Victor rightmotor2_, Victor leftmotor2_, Victor intake_,
             Victor arm_) {
-        driveSticks.add(leftStick_);
+        driveStick = leftStick_;
         thirdstick = thirdstick_;
         frontLeftMotor = leftmotor_;
         frontRightMotor = rightmotor_;
@@ -77,21 +61,29 @@ public class UI {
     public void choose(Integer num) {
         this.choose(num.intValue());
     }
-    double[] inputs = new double[2];;
+    
+    double[] inputs = new double[2];
+    
+    /**
+     * Get's drive inputs from the joystick
+     * @return
+     */
     double[] getDriveInputs() {
-        if (driveSticks.size() == 1) {
-            inputs[0] = driveSticks.get(0).getRawAxis(1);
-            inputs[1] = driveSticks.get(0).getRawAxis(5);
-        } else {
-            inputs[0] = driveSticks.get(0).getRawAxis(1);
-            inputs[1] = driveSticks.get(1).getRawAxis(1);
-        }
+        inputs[0] = driveStick.getRawAxis(1);
+        inputs[1] = driveStick.getRawAxis(5);
+        
         return inputs;
     }
 
-    double[] getArmInput() {
-        return new double[] { thirdstick
-                .getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD) };
+    double getArmInput() {
+        return  thirdstick.getRawAxis(Const.JoyStick.Axis.GameCubeCtrl_UD);
+    }
+    
+    boolean[] getIntakeInput() {
+    	return new boolean[] {
+    			thirdstick.getRawButton(3),
+    			thirdstick.getRawButton(4)
+    	};
     }
     
     public Joystick leftStick, rightStick;
@@ -137,12 +129,8 @@ public class UI {
         
     }
     
-    public UI() {
-    }
-    
     public UI(Joystick left, Joystick thirdstick) {
-        this();
-        driveSticks.add(left);
+        this.driveStick = (left);
         this.thirdstick = thirdstick;
     }
     
