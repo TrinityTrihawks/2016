@@ -18,13 +18,10 @@ public class RobotModule extends IterativeModule {
     private Victor left, right, left2, right2, intakeMotor, armMotor;
     
     double setPoint = .5;
-    double lastPoint;
-    double lastTime;
-    double sum;
-    
-    double Kp = .1;
-    double Ki = 0;
-    double Kd = 0;
+    private double Kp = .1;
+    private double Ki = 0;
+    private double Kd = 0;
+    private boolean PIDISGO = false;
     
     private DriveTrain chassis;
     private Arm arm;
@@ -68,15 +65,13 @@ public class RobotModule extends IterativeModule {
     @Override
     public void robotInit() {
 
-        // leftStick = new Joystick(0);
+        // Declaring Joysticks
         rightStick = new Joystick(Const.JoyStick.Num.PlayStation);
         gameCube = new Joystick(Const.JoyStick.Num.GameCube);
         
-        // create winch
-        winch = new Winch();
-        intake = new Intake();
         logger = new Logger("stronghold", Logger.ATTR_DEFAULT);
-
+        
+        // Motors, Glorious motors
         left = Registrar.victor(3);
         left2 = Registrar.victor(1);
         right = Registrar.victor(2);
@@ -84,20 +79,21 @@ public class RobotModule extends IterativeModule {
         intakeMotor = Registrar.victor(5);
         armMotor = Registrar.victor(4);
         		
-        
+        // All of the objects for the different subsystems of the robot
         driveStation = new UI(rightStick, gameCube, left, right, right2,left2,intakeMotor,armMotor);
-        
         arm = new Arm();
+        winch = new Winch();
+        intake = new Intake();
         chassis = new DriveTrain(left, left2, right, right2);
-        auto = new Autonomous(chassis);
+        auto = new Autonomous(chassis,arm);
         blackBox = new DataGather(chassis,arm,driveStation);
         
-        // Gathers data 
+        // Ticks blackbox every 100ms
         Heartbeat.add(skipped -> {blackBox.tick();});
         
         
-        if(!Toast.isSimulation()){
-        	// updates drivestation
+        if(Toast.isReal()){
+        	// Updates drivestation every 100ms
             Heartbeat.add(skipped -> {driveStation.giveMotorVoltages();});
             
         	// Setting up encoder and PID controller
@@ -127,18 +123,17 @@ public class RobotModule extends IterativeModule {
     		}
     	}
     	
-    	// Making 
+    	// Making the drivetrain and arm safe
     	chassis.setSafetyEnabled(true);
     	arm.setSafetyEnabled(true);
     	
     }
+    
+    // Declaring the array outside so it isn't reallocated every time
     double[] inputs;
+    
     @Override
     public void teleopPeriodic() {
-    	/*
-    	 * Runs the winch code when a button's pressed
-    	 * 
-    	 */
         
         inputs = driveStation.getDriveInputs();
         chassis.drive(-inputs[0], -inputs[1]);
@@ -149,12 +144,9 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit(){
-    	sum = 0;
-    	lastTime = 0;
-    	timer.reset();
-    	auto.timeBasedLowBarAuto();
+    	auto.moatChevalAuto();
     	
-    	if(Toast.isReal()){
+    	if(Toast.isReal() && PIDISGO){
     		armControl.setSetpoint(setPoint);
     		armControl.enable();
     		Heartbeat.add(skipped -> {if(armControl.isEnabled()) logger.info("Error:" + armControl.getAvgError());});
@@ -162,12 +154,11 @@ public class RobotModule extends IterativeModule {
     	
     }
     
-    
     @Override
-    public void testPeriodic(){
-    	double[] inputs = driveStation.getDriveInputs();
-    	
-    	chassis.setIndependently( inputs[0],inputs[0],inputs[1],inputs[1]);
+    public void testInit(){
+    	if(Toast.isReal())
+    		if(armControl.isEnabled()){
+    			armControl.disable();
+    		}
     }
-    
 }
