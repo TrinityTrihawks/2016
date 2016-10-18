@@ -1,6 +1,7 @@
 
 package frc.team4215.stronghold;
 
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.Victor;
  *
  * @author Waweru
  */
-public class DriveTrain {
+public class DriveTrain implements PIDOutput {
     
     Victor leftMotor;
     Victor rightMotor;
@@ -95,6 +96,9 @@ public class DriveTrain {
         drive(speed, speed);
     }
     
+    public void pidWrite(double speed){
+    	drive(speed,-speed);
+    }
     
     public void setSafetyEnabled(boolean enabled){
     	leftMotor.setSafetyEnabled(enabled);
