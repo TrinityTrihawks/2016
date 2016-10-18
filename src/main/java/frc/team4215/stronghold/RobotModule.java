@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import jaci.openrio.toast.core.Toast;
 import jaci.openrio.toast.core.thread.Heartbeat;
@@ -32,7 +33,7 @@ public class RobotModule extends IterativeModule {
 
     private UI driveStation;
     private Encoder encode;
-    
+    private AnalogGyro gyro;
     Autonomous auto;
     
     DataGather blackBox;
@@ -88,9 +89,11 @@ public class RobotModule extends IterativeModule {
         auto = new Autonomous(chassis,arm);
         blackBox = new DataGather(chassis,arm,driveStation);
         
+        gyro = new AnalogGyro(0);
+        
         // Ticks blackbox every 100ms
         Heartbeat.add(skipped -> {blackBox.tick();});
-        
+        Heartbeat.add(skipped -> {logger.info("Angle: " + gyro.getAngle());});
         
         if(Toast.isReal()){
         	// Updates drivestation every 100ms
