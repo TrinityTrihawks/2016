@@ -90,6 +90,8 @@ public class RobotModule extends IterativeModule {
         blackBox = new DataGather(chassis,arm,driveStation);
         
         gyro = new AnalogGyro(0);
+        gyro.calibrate();
+        gyro.reset();
         
         // Ticks blackbox every 100ms
         Heartbeat.add(skipped -> {blackBox.tick();});
