@@ -15,30 +15,38 @@ import jaci.openrio.toast.lib.module.IterativeModule;
 import jaci.openrio.toast.lib.registry.Registrar;
 
 public class RobotModule extends IterativeModule {
-
+	// Physical Components
     private Victor left, right, left2, right2, intakeMotor, armMotor;
-    
-    double setPoint = .5;
-    private double Kp = .1;
-    private double Ki = 0;
-    private double Kd = 0;
-    private boolean PIDISGO = false;
-    
-    private DriveTrain chassis;
-    private Arm arm;
-    private Winch winch;
-    private Intake intake;
-    
     private Joystick rightStick, gameCube;
-
-    private UI driveStation;
+    
+    // Sensors
     private Encoder encode;
     private AnalogGyro gyro;
-    Autonomous auto;
+    
+    // Constants for the arm PID
+    private final double  ARM_SETPOINT = .5;
+    private final double ARM_KP = .1;
+    private final double ARM_KI = 0;
+    private final double ARM_KD = 0;
+    private final boolean ARMISGO = false;
+    private PIDController  armControl;
+    
+    // Constants for turning PID
+    private final double TURN_TO = 180;
+    private final double TURN_KP = .1;
+    private final double TURN_KI = 0;
+    private final double TURN_KD = 0;
+    private final boolean TURNISGO = true;
+    private PIDController turnControl;
+    
+    // Subsystems
+    private DriveTrain chassis;
+    private Arm arm;
+    private Intake intake;
+    private UI driveStation;
+    private Autonomous auto;
     
     DataGather blackBox;
-    
-    PIDController  armControl;
     
     Timer timer = new Timer();
     
@@ -83,7 +91,6 @@ public class RobotModule extends IterativeModule {
         // All of the objects for the different subsystems of the robot
         driveStation = new UI(rightStick, gameCube, left, right, right2,left2,intakeMotor,armMotor);
         arm = new Arm();
-        winch = new Winch();
         intake = new Intake();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis,arm);
@@ -93,18 +100,24 @@ public class RobotModule extends IterativeModule {
         gyro.calibrate();
         gyro.reset();
         
+        // Setting a PID controller to turn the robot
+        turnControl = new PIDController(TURN_KP,TURN_KI,TURN_KD,gyro,chassis);
+        
         // Ticks blackbox every 100ms
         Heartbeat.add(skipped -> {blackBox.tick();});
-        Heartbeat.add(skipped -> {logger.info("Angle: " + gyro.getAngle());});
         
+        /*
+         *  Encoders are'nt supported by Toast's simulation
+         *  so we only activate them if not in a simulations
+         */
         if(Toast.isReal()){
         	// Updates drivestation every 100ms
             Heartbeat.add(skipped -> {driveStation.giveMotorVoltages();});
             
-        	// Setting up encoder and PID controller
+        	// Setting up encoder and arm PID controller
         	encode = new Encoder(1,2,false);
         	encode.setDistancePerPulse(0);
-        	armControl = new PIDController(Kp,Ki,Kd,encode,arm);
+        	armControl = new PIDController(ARM_KP,ARM_KI,ARM_KD,encode,arm);
         }
     }
     
@@ -116,6 +129,9 @@ public class RobotModule extends IterativeModule {
     			armControl.disable();
     		}
     	}
+    	if(turnControl.isEnabled()){
+    		turnControl.disable();
+    	}
     }
     
     @Override
@@ -126,6 +142,10 @@ public class RobotModule extends IterativeModule {
     		if(armControl.isEnabled()){
     			armControl.disable();
     		}
+    	}
+    	
+    	if(turnControl.isEnabled()){
+    		turnControl.disable();
     	}
     	
     	// Making the drivetrain and arm safe
@@ -151,12 +171,24 @@ public class RobotModule extends IterativeModule {
     public void autonomousInit(){
     	auto.moatChevalAuto();
     	
-    	if(Toast.isReal() && PIDISGO){
-    		armControl.setSetpoint(setPoint);
-    		armControl.enable();
-    		Heartbeat.add(skipped -> {if(armControl.isEnabled()) logger.info("Error:" + armControl.getAvgError());});
+    	if(Toast.isReal()){
+    		if(ARMISGO){
+    			armControl.setSetpoint(ARM_SETPOINT);
+    			armControl.enable();
+    			Heartbeat.add(skipped -> {
+    					if(armControl.isEnabled()) logger.info("Arm Error:" + armControl.getAvgError());
+    				});
+    		}
+    		
     	}
     	
+    	if(TURNISGO){
+			turnControl.setSetpoint(TURN_TO);
+			turnControl.enable();
+			Heartbeat.add(skipped -> {
+				if(turnControl.isEnabled()) logger.info("Turn error:" + turnControl.getAvgError());
+			});
+		}
     }
     
     @Override
