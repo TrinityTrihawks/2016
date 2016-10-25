@@ -25,7 +25,7 @@ public class RobotModule extends IterativeModule {
     
     // Constants for the arm PID
     private final double  ARM_SETPOINT = .5;
-    private final double ARM_KP = .1;
+    private final double ARM_KP = .01;
     private final double ARM_KI = 0;
     private final double ARM_KD = 0;
     private final boolean ARMISGO = false;
@@ -97,11 +97,16 @@ public class RobotModule extends IterativeModule {
         blackBox = new DataGather(chassis,arm,driveStation);
         
         gyro = new AnalogGyro(0);
-        gyro.calibrate();
         gyro.reset();
+        gyro.calibrate();
+        
+        // Sending Gyro data
+        Heartbeat.add(skipped -> { if(!turnControl.isEnabled()) logger.info("Gyro:" + gyro.getAngle());});
         
         // Setting a PID controller to turn the robot
         turnControl = new PIDController(TURN_KP,TURN_KI,TURN_KD,gyro,chassis);
+
+        
         
         // Ticks blackbox every 100ms
         Heartbeat.add(skipped -> {blackBox.tick();});
@@ -169,7 +174,6 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit(){
-    	auto.moatChevalAuto();
     	
     	if(Toast.isReal()){
     		if(ARMISGO){
