@@ -52,8 +52,8 @@ public class Autonomous {
         dT.drive(0);
         arm.set(0);
         
-        arm.setSafetyEnabled(false);
-    	dT.setSafetyEnabled(false);
+        arm.setSafetyEnabled(true);
+    	dT.setSafetyEnabled(true);
     }
     
     private void autoArmCycle(double volt, double time){
