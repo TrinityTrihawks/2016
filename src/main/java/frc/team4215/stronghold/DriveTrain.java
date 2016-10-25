@@ -1,6 +1,7 @@
 
 package frc.team4215.stronghold;
 
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -8,7 +9,7 @@ import edu.wpi.first.wpilibj.Victor;
  *
  * @author Waweru
  */
-public class DriveTrain {
+public class DriveTrain implements PIDOutput {
     
     Victor leftMotor;
     Victor rightMotor;
@@ -27,17 +28,11 @@ public class DriveTrain {
     
     /**
      * Set Drive train speed Inputs from -1 to 1
-     * 2/23/16
-     * The World is sane again!!
      *
      * @param leftSpeed
      * @param rightSpeed
      */
     public void drive(double leftSpeed, double rightSpeed) {
-        /*
-         * The Victors don't respond to a voltage of less then 4%
-         * either direction so I provided some scaling.
-         */
         /*
          * The scaling part is moved into a new function to simplify
          * the code. - James
@@ -51,6 +46,14 @@ public class DriveTrain {
         rightMotor2.set(-rightSpeed);
     }
     
+    /**
+     * Sets all motors independently
+     * 
+     * @param leftSpeed1
+     * @param leftSpeed2
+     * @param rightSpeed1
+     * @param rightSpeed2
+     */
     public void setIndependently(double leftSpeed1, double leftSpeed2, 
     							 double rightSpeed1, double rightSpeed2) {
         
@@ -59,7 +62,12 @@ public class DriveTrain {
         rightMotor.set(rightSpeed1);
         rightMotor2.set(rightSpeed2);
     }
-    public void setState(boolean newState){
+    
+    /**
+     * Chooses coeffecients for drivetrain
+     * @param newState
+     */
+    public void setCoeffState(boolean newState){
     	state = newState;
     	if(state){
     		coeff = 1;
@@ -68,6 +76,7 @@ public class DriveTrain {
     		coeff = .65;
     	}
     }
+    
     /**
      * Scaling because Victor does not respond to voltage less than 4%
      * in either direction.
@@ -84,6 +93,7 @@ public class DriveTrain {
     	return new double[] { leftMotor.get(),leftMotor2.get(),
     						rightMotor.get(),rightMotor2.get()};
     }
+    
     /**
      * You can use this function when the left speed and right speed
      * is the same.
@@ -95,7 +105,19 @@ public class DriveTrain {
         drive(speed, speed);
     }
     
+    /**
+     * Turns Robot to the right at given speed
+     * @author waweros
+     * @param speed
+     */
+    public void pidWrite(double speed){
+    	drive(speed,-speed);
+    }
     
+    /**
+     * Sets motors safetyEnabled key
+     * @param enabled
+     */
     public void setSafetyEnabled(boolean enabled){
     	leftMotor.setSafetyEnabled(enabled);
     	leftMotor2.setSafetyEnabled(enabled);
