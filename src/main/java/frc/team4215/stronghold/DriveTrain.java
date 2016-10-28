@@ -10,13 +10,22 @@ import edu.wpi.first.wpilibj.Victor;
  * @author Waweru
  */
 public class DriveTrain implements PIDOutput {
+	
+	// Used to say what mode it's in
+    public enum PIDOutputType{
+    	TURN, // Makes the robot turn on the spot
+    	DRIVE_STRAIGHT // Drive the robot foward while turning
+    }
     
-    Victor leftMotor;
-    Victor rightMotor;
-    Victor rightMotor2;
-    Victor leftMotor2;
-    boolean state;
-    double coeff = .65;
+    private Victor leftMotor;
+    private Victor rightMotor;
+    private Victor rightMotor2;
+    private Victor leftMotor2;
+    private boolean state;
+    private double coeff = .65;
+    private double autoDriveSpeed = .25;
+    private PIDOutputType PIDState = PIDOutputType.TURN;
+    
     
     DriveTrain(Victor leftMotor_, Victor leftMotor_2,
             Victor rightMotor_, Victor rightMotor_2) {
@@ -89,6 +98,7 @@ public class DriveTrain implements PIDOutput {
         else return Math.signum(speed)
                 * ((Math.abs(speed) * .96) + .04);
     }
+    
     public double[] getVoltages() {
     	return new double[] { leftMotor.get(),leftMotor2.get(),
     						rightMotor.get(),rightMotor2.get()};
@@ -106,12 +116,53 @@ public class DriveTrain implements PIDOutput {
     }
     
     /**
+     *Implementation of PIDOutput depends on PIDState
+     *@author waweros
+     *@param speed
+     */
+    public void pidWrite(double speed){
+    	switch(PIDState){
+    		case TURN:
+    			turnOutput(speed);
+    			break;
+    		case DRIVE_STRAIGHT:
+    			driveOutput(speed);
+    			break;
+    	}
+    }
+    
+    /**
      * Turns Robot to the right at given speed
      * @author waweros
      * @param speed
      */
-    public void pidWrite(double speed){
+    public void turnOutput(double speed){
     	drive(speed,-speed);
+    }
+    
+    /**
+     * makes the robot deviate from a straight path
+     * @author waweros
+     * @param speed
+     */
+    public void driveOutput(double speed){
+    	drive(autoDriveSpeed + speed, autoDriveSpeed - speed);
+    }
+    
+    /**
+     * Gives the current PIDState for the DriveTrain
+     * @return
+     */
+    public PIDOutputType getPIDState(){
+    	return PIDState;
+    }
+    
+    /**
+     * Sets the PIDState 
+     * @param state
+     */
+    public void setPIDState(PIDOutputType state){
+    	PIDState = state;
     }
     
     /**
