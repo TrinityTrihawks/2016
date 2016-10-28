@@ -25,8 +25,8 @@ public class RobotModule extends IterativeModule {
     
     // Constants for the arm PID
     private final double  ARM_SETPOINT = .5;
-    private final double ARM_KP = .01;
-    private final double ARM_KI = 0;
+    private final double ARM_KP = .02;
+    private final double ARM_KI = .01;
     private final double ARM_KD = 0;
     private final boolean ARMISGO = false;
     private PIDController  armControl;
@@ -94,7 +94,6 @@ public class RobotModule extends IterativeModule {
         intake = new Intake();
         chassis = new DriveTrain(left, left2, right, right2);
         auto = new Autonomous(chassis,arm);
-        blackBox = new DataGather(chassis,arm,driveStation);
         
         gyro = new AnalogGyro(0);
         gyro.reset();
@@ -105,6 +104,7 @@ public class RobotModule extends IterativeModule {
         
         // Setting a PID controller to turn the robot
         turnControl = new PIDController(TURN_KP,TURN_KI,TURN_KD,gyro,chassis);
+        turnControl.setAbsoluteTolerance(.1);
 
         
         
@@ -124,6 +124,7 @@ public class RobotModule extends IterativeModule {
         	encode.setDistancePerPulse(0);
         	armControl = new PIDController(ARM_KP,ARM_KI,ARM_KD,encode,arm);
         }
+        blackBox = new DataGather(chassis,arm,driveStation,gyro);
     }
     
     @Override
@@ -187,6 +188,7 @@ public class RobotModule extends IterativeModule {
     	}
     	
     	if(TURNISGO){
+    		gyro.calibrate();
 			turnControl.setSetpoint(TURN_TO);
 			turnControl.enable();
 			Heartbeat.add(skipped -> {
