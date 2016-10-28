@@ -160,18 +160,25 @@ public class RobotModule extends IterativeModule {
     	
     }
     
-    // Declaring the array outside so it isn't reallocated every time
+    // Declaring the variables outside so it isn't reallocated every time
+    double armInput;
     double[] inputs;
     boolean[] intakeInputs;
     
     @Override
     public void teleopPeriodic() {
         
+    	/*
+    	 *  Drive code, the inputs are made negative because the drive controller
+    	 *   outputs in reverse of the normal
+    	 */
         inputs = driveStation.getDriveInputs();
         chassis.drive(-inputs[0], -inputs[1]);
         
-        double armInput = driveStation.getArmInput();
+        armInput = driveStation.getArmInput();
+        // Intake input is a array of booleans
         intakeInputs = driveStation.getIntakeInput();
+        
         arm.set(armInput);
         intake.inOrOut(intakeInputs[0],intakeInputs[0]);
         
