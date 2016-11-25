@@ -26,8 +26,8 @@ public class RobotModule extends IterativeModule {
     // Constants for the arm PID
     private final double  ARM_SETPOINT = .5;
     private final double ARM_KP = .02;
-    private final double ARM_KI = .01;
-    private final double ARM_KD = 0;
+    private final double ARM_KI = 0;
+    private final double ARM_KD = .03;
     private final boolean ARMISGO = false;
     private PIDController  armControl;
     
@@ -175,7 +175,7 @@ public class RobotModule extends IterativeModule {
     
     @Override
     public void autonomousInit(){
-    	
+    	// Turning on PID Controllers
     	if(Toast.isReal()){
     		if(ARMISGO){
     			armControl.setSetpoint(ARM_SETPOINT);
@@ -188,7 +188,6 @@ public class RobotModule extends IterativeModule {
     	}
     	
     	if(TURNISGO){
-    		gyro.calibrate();
 			turnControl.setSetpoint(TURN_TO);
 			turnControl.enable();
 			Heartbeat.add(skipped -> {
