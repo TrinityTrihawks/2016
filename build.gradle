@@ -36,5 +36,6 @@ gradlerio.deployFile = "toast/modules/${archivesBaseName}.jar"
 dependencies {
   compile group: 'jaci.openrio.toast', name: 'Toast', version: '+'    //Change this line to update Toast
   compile group: 'jaci.openrio.modules', name: 'BlackBox', version: '+'
+  compile group: 'org.ejml', name: 'all', version: '0.30'
   toastModule group: 'jaci.openrio.modules', name: 'BlackBox', version: '+'
 }
