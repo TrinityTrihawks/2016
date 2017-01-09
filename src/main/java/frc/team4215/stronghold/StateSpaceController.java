@@ -1,5 +1,6 @@
 package frc.team4215.stronghold;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.DoubleConsumer;
@@ -24,8 +25,8 @@ public class StateSpaceController {
 	private DenseMatrix64F r;
 	private DenseMatrix64F x;
 	private DenseMatrix64F u;
-	private DoubleConsumer[] motors;
-	private DoubleSupplier[] sensors;
+	private List<DoubleConsumer> motors;
+	private List<DoubleSupplier> sensors;
 	
 	private Timer controlLoop;
 	
@@ -39,17 +40,17 @@ public class StateSpaceController {
 	 * @param motors
 	 * @throws Exception
 	 */
-	public StateSpaceController(double[][] K, double[] r, DoubleSupplier[] sensors, DoubleConsumer[] motors) throws Exception {
+	public StateSpaceController(double[][] K, double[] r, List<DoubleSupplier> sensors, List<DoubleConsumer> motors) throws Exception {
 		controlLoop = new Timer();
 		
-		if(r.length != sensors.length) throw new Exception("Dimension mismatch between x and r");
-		if(K.length != motors.length) throw new Exception("Dimension mismatch between K and u");
-		if(K[0].length != sensors.length) throw new Exception("Dimension mismatch between K and x");
+		if(r.length != sensors.size()) throw new Exception("Dimension mismatch between x and r");
+		if(K.length != motors.size()) throw new Exception("Dimension mismatch between K and u");
+		if(K[0].length != sensors.size()) throw new Exception("Dimension mismatch between K and x");
 		
 		double[][] modR = new double[1][r.length];
 		for(int i = 0; r.length > i; i++){
 			// Adjusting reference point
-			modR[0][i] = sensors[i].getAsDouble() - r[i];
+			modR[0][i] = sensors.get(i).getAsDouble() - r[i];
 		}
 		
 		this.K = new DenseMatrix64F(K);
@@ -78,14 +79,14 @@ public class StateSpaceController {
 	 * Should only be called by StateSpaceTask
 	 */
 	private void calculate(){
-		double[] sensorData = new double[sensors.length];
+		double[] sensorData = new double[sensors.size()];
 		boolean ourEnabled;
 	    
 		//Taking  a snapshots of our variables
 		synchronized(this){
 			ourEnabled = enabled;
-			for(int i = 0; sensors.length > i; i++){
-				sensorData[i] = sensors[i].getAsDouble();
+			for(int i = 0; sensors.size() > i; i++){
+				sensorData[i] = sensors.get(i).getAsDouble();
 			}
 	    }
 		
@@ -100,8 +101,8 @@ public class StateSpaceController {
 			
 			double[] motorSettings = u.data;
 			
-			for(int i = 0; sensors.length > i; i++){
-				motors[i].accept(motorSettings[i]);
+			for(int i = 0; sensors.size() > i; i++){
+				motors.get(i).accept(motorSettings[i]);
 			}
 		}
 	}

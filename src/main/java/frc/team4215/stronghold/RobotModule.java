@@ -6,6 +6,12 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Encoder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.DoubleConsumer;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import jaci.openrio.toast.core.Toast;
@@ -31,13 +37,14 @@ public class RobotModule extends IterativeModule {
     private final boolean ARMISGO = false;
     private PIDController  armControl;
     
-    // Constants for turning PID
+    // Constants for turning State Space Controller
     private final double TURN_TO = 180;
-    private final double TURN_KP = .1;
-    private final double TURN_KI = 0;
-    private final double TURN_KD = 0;
+    private final double[] R = {TURN_TO,0};
+    private final double TURN_KP = 3.5;
+    private final double TURN_KV = 5.8;
+    private final double[][] K = {{TURN_KP,TURN_KV}};
     private final boolean TURNISGO = true;
-    private PIDController turnControl;
+    private StateSpaceController turnControl;
     
     // Subsystems
     private DriveTrain chassis;
@@ -101,10 +108,20 @@ public class RobotModule extends IterativeModule {
         
         // Sending Gyro data
         Heartbeat.add(skipped -> { if(!turnControl.isEnabled()) logger.info("Gyro:" + gyro.getAngle());});
+        List<DoubleSupplier> sensors = new ArrayList();
+        sensors.add(gyro::getAngle);
+        sensors.add(gyro::getRate);
+        
+        List<DoubleConsumer> motors = new ArrayList();
+        motors.add(chassis::pidWrite);
         
         // Setting a PID controller to turn the robot
-        turnControl = new PIDController(TURN_KP,TURN_KI,TURN_KD,gyro,chassis);
-        turnControl.setAbsoluteTolerance(.1);
+        try {
+			turnControl = new StateSpaceController(K,R,sensors,motors);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         
         
@@ -188,11 +205,12 @@ public class RobotModule extends IterativeModule {
     	}
     	
     	if(TURNISGO){
-			turnControl.setSetpoint(TURN_TO);
 			turnControl.enable();
+			/*
 			Heartbeat.add(skipped -> {
 				if(turnControl.isEnabled()) logger.info("Turn error:" + turnControl.getAvgError());
 			});
+			*/
 		}
     }
     

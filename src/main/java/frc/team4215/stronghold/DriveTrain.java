@@ -85,9 +85,16 @@ public class DriveTrain implements PIDOutput {
      * @return scaled speed
      */
     private static double scaling(double speed) {
-        if (speed == 0) return 0d;
-        else return Math.signum(speed)
-                * ((Math.abs(speed) * .96) + .04);
+        if (speed == 0) {
+        	return 0d;
+        }
+        else if (Math.abs(speed) > 1){
+        	return Math.signum(speed);
+        }
+        else {
+        	return Math.signum(speed) * ((Math.abs(speed) * .96) + .04);
+        }
+        	
     }
     public double[] getVoltages() {
     	return new double[] { leftMotor.get(),leftMotor2.get(),
